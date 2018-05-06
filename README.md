@@ -6,6 +6,8 @@
 [![Language](https://img.shields.io/badge/Language-TypeScript-blue.svg?style=flat-square)](https://www.typescriptlang.org)
 [![Bundler](https://img.shields.io/badge/Bundler-Webpack-2B3A42.svg?style=flat-square)](https://webpack.js.org)
 
+Specific work scheduler.
+
 ## Miscellaneous
 
 This project was bootstrapped with [RKSTWB](https://github.com/miZyind/rkstwb).
