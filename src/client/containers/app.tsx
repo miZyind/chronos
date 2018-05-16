@@ -1,9 +1,12 @@
 // Node module
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Grid, Transition, Dimmer, Loader, Header, Image, Step } from 'semantic-ui-react';
+import { Container, Grid, Transition, Dimmer, Loader, Header, Image, Step, Button } from 'semantic-ui-react';
 // Component
 import FullGrid from '@components/full-grid';
+import ButtonExampleButton from '@components/button-example-button';
+import Table from '@components/table';
+import HeadDayLine from '@components/head-day-line';
 // Action
 import { Actions } from '@actions/main';
 // Model
@@ -26,9 +29,9 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
   public render() {
     const {
       // StateProps
-      isLoading, isCompleted,
+      isLoading, isCompleted, counterCaption, getSelectYear, getSelectMonth, getdays,
       // DispatchProps
-      toggleStepStatue,
+      toggleStepStatue, increment, decrement, selectyear, selectmonth,
       // OwnProps
       name, version, className
     } = this.props;
@@ -47,10 +50,19 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
                 <Image centered size='large' src='/favicon.ico' />
                 <Header.Content>{`${name} v${version}`}</Header.Content>
               </Header>
+              <HeadDayLine
+                onChangeYearEvent={selectyear}
+                onChangeMonthEvent={selectmonth}
+                selectYear={getSelectYear}
+                selectMonth={getSelectMonth}
+                getDayLineHead={getdays}
+              ></HeadDayLine>
               <Step.Group ordered>
-                <Step completed={isCompleted} onClick={toggleStepStatue}>
+                <Step completed={isCompleted} >
                   <Step.Content>
-                    <Step.Title>Getting Started</Step.Title>
+                    <Step.Title>{getSelectYear}-{getSelectMonth}-{counterCaption}</Step.Title>
+                    <Button primary onClick={decrement}>Blue </Button>
+                    <ButtonExampleButton onClick={increment}>123</ButtonExampleButton>
                   </Step.Content>
                 </Step>
               </Step.Group>
