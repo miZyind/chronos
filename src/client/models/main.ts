@@ -4,7 +4,8 @@ interface IMain {
   counterCaption: number;
   getSelectYear: string;
   getSelectMonth: string;
-  getdays: number[];
+  getDays: number[];
+  getShift: string;
 }
 
 export {

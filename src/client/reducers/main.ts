@@ -9,10 +9,10 @@ let getCurrentMonth = () => {
 let getCurrentTaiwanYear = () => {
   return (new Date().getFullYear() - 1911).toString()
 }
-let getDaysInMonth = (getdays: number[], month: number, year: number) => {
+let getDaysInMonth = (getDays: number[], month: number, year: number) => {
   for (var i = 1; i <= getLastDayInMonth(month, year); i++) 
-    getdays.push(i);
-  return getdays;
+    getDays.push(i);
+  return getDays;
 }
 let getLastDayInMonth = (month: number, year: number) => {
   return new Date(year, month, 0).getDate();
@@ -26,7 +26,8 @@ const initState: IMain = {
   counterCaption: 0,
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
-  getdays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear()))
+  getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
+  getShift:''
 };
 
 const main = (state = initState, action: Actions) => {
@@ -44,13 +45,17 @@ const main = (state = initState, action: Actions) => {
       return { ...state, counterCaption: state.counterCaption - 1 }; 
     }
     case ActionTypes.SELECTYEAR: {
-      state.getdays = getDaysInMonth([],parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
-      return { ...state, getSelectYear: action.payload,getdays: state.getdays };    
+      state.getDays = getDaysInMonth([],parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
+      return { ...state, getSelectYear: action.payload, getDays: state.getDays };    
     }
     case ActionTypes.SELECTMONTH: {
-      state.getdays = getDaysInMonth([],parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
-      return { ...state, getSelectMonth: action.payload, getdays: state.getdays};
-    }  
+      state.getDays = getDaysInMonth([],parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
+      return { ...state, getSelectMonth: action.payload, getDays: state.getDays};
+    }
+    case ActionTypes.ADDSHILT: {
+      console.log(action.payload);
+      return { ...state, getShift: state.getShift+action.payload };
+    }
     default: {
       return state;
     }

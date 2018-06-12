@@ -7,8 +7,9 @@ enum ActionTypes {
   TOGGLE_STEP_STATUS = '[main] toggle step status',
   INCREMENT = '[main] increment',
   DECREMENT = '[main] decrement',
-  SELECTYEAR = '[main] selectyear',
-  SELECTMONTH = '[main] selectmonth',
+  SELECTYEAR = '[dayline] selectyear',
+  SELECTMONTH = '[dayline] selectmonth',
+  ADDSHILT = '[add] addshift',
 }
 
 const Actions = {
@@ -18,6 +19,7 @@ const Actions = {
   decrement: () => createAction(ActionTypes.DECREMENT),
   selectyear: (val: string) => createAction(ActionTypes.SELECTYEAR, val),
   selectmonth: (val: string) => createAction(ActionTypes.SELECTMONTH, val),
+  addshift: (val1: string, val2: number) => createAction(ActionTypes.ADDSHILT, val1 + '-' + val2),
 };
 
 type Actions = ActionsUnion<typeof Actions>;

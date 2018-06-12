@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import Selector from '@components/selector';
 import TableDays from '@components/table-day';
+import AddShiftForm from '@components/add-shift-form';
 
-type HeadDayLineProps = {
+type DaysLineTableProps = {
     className?: string;
     onChangeYearEvent?: any;
     onChangeMonthEvent?: any;
     selectYear: string;
     selectMonth: string;
     getDayLineHead: Array<number>;
+    addShiftClick: any;
+    getShift: string;
 };
 const optionYears = [
     { title: '107年', key: '107' },
@@ -30,26 +33,20 @@ const optionMonths = [
     { title: '12月', key: '12' },
 ];
 
-class HeadDayLine extends Component<HeadDayLineProps> {
-    //getTable: number[] = [];
-    // change = (event: React.FormEvent<HTMLSelectElement>) => {
-    //     this.getTable = [];
-    //     this.props.onChangeMonthEvent(event)
-    //     console.log('b:', this.props.selectMonth);
-    //     for (var i = 0; i < parseInt(this.props.selectMonth); i++) {
-    //         this.getTable.push(i);
-    //     }
-    //     // console.log(this.getTable);
-    // }
+class DaysLineTable extends Component<DaysLineTableProps> {
     render() {
         return (
-            <div>
+            <div className={this.props.className} >
                 <Selector options={optionYears} currentSelected={this.props.selectYear} onChangeEvent={this.props.onChangeYearEvent}></Selector>
                 <Selector options={optionMonths} currentSelected={this.props.selectMonth} onChangeEvent={this.props.onChangeMonthEvent} ></Selector>
+                <AddShiftForm
+                    addShiftClick={this.props.addShiftClick}
+                    getShift={this.props.getShift}
+                ></AddShiftForm>
                 <TableDays days={this.props.getDayLineHead}></TableDays>
-            </div>        
+            </div>
         );
-  }
+    }
 }
 
-export default HeadDayLine
+export default DaysLineTable

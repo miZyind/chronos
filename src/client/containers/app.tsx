@@ -1,12 +1,10 @@
 // Node module
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Grid, Transition, Dimmer, Loader, Header, Image, Step, Button } from 'semantic-ui-react';
+import { Container, Header, Image } from 'semantic-ui-react';
 // Component
-import FullGrid from '@components/full-grid';
-import ButtonExampleButton from '@components/button-example-button';
-import Table from '@components/table';
-import HeadDayLine from '@components/head-day-line';
+import MainTabs from '@components/main-tabs';
+
 // Action
 import { Actions } from '@actions/main';
 // Model
@@ -29,46 +27,28 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
   public render() {
     const {
       // StateProps
-      isLoading, isCompleted, counterCaption, getSelectYear, getSelectMonth, getdays,
+      getSelectYear, getSelectMonth, getDays, getShift,
       // DispatchProps
-      toggleStepStatue, increment, decrement, selectyear, selectmonth,
+      selectyear, selectmonth, addshift,
       // OwnProps
       name, version, className
     } = this.props;
 
     return (
       <Container className={className}>
-        <FullGrid>
-          <Grid.Row>
-            <Grid.Column>
-              <Transition visible={isLoading} duration={500} unmountOnHide>
-                <Dimmer page active>
-                  <Loader size='large' content='Loading...' active />
-                </Dimmer>
-              </Transition>
-              <Header as='h1' icon textAlign='center'>
-                <Image centered size='large' src='/favicon.ico' />
-                <Header.Content>{`${name} v${version}`}</Header.Content>
-              </Header>
-              <HeadDayLine
-                onChangeYearEvent={selectyear}
-                onChangeMonthEvent={selectmonth}
-                selectYear={getSelectYear}
-                selectMonth={getSelectMonth}
-                getDayLineHead={getdays}
-              ></HeadDayLine>
-              <Step.Group ordered>
-                <Step completed={isCompleted} >
-                  <Step.Content>
-                    <Step.Title>{getSelectYear}-{getSelectMonth}-{counterCaption}</Step.Title>
-                    <Button primary onClick={decrement}>Blue </Button>
-                    <ButtonExampleButton onClick={increment}>123</ButtonExampleButton>
-                  </Step.Content>
-                </Step>
-              </Step.Group>
-            </Grid.Column>
-          </Grid.Row>
-        </FullGrid>
+        <Header as='h1' icon textAlign='center'>
+          <Image centered size='large' src='/favicon.ico' />
+          <Header.Content>{`${name} v${version}`}</Header.Content>
+        </Header>  
+        <MainTabs
+          onChangeYearEvent={selectyear}
+          onChangeMonthEvent={selectmonth}
+          selectYear={getSelectYear}
+          selectMonth={getSelectMonth}
+          getDayLineHead={getDays}
+          addShiftClick={addshift}
+          getShift={getShift}
+        ></MainTabs>  
       </Container>
     );
   }
