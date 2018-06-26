@@ -6,7 +6,7 @@ type SelectorProps = {
   onChangeEvent?: any;
   options: Array<{ key: string, title: string }>;
   currentSelected: string;
-};
+}
 
 class Selector extends Component<SelectorProps> {
   change = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -17,9 +17,9 @@ class Selector extends Component<SelectorProps> {
       <select className={this.props.className} onChange={this.change} value={this.props.currentSelected}>
         {this.props.options.map((row, index) =>
           <option key={index} value={row.key} >{row.title}</option >
-        )}  
+        )}
       </select>
-    );
+    )
   }
 }
 

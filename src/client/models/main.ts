@@ -5,7 +5,7 @@ interface IMain {
   getSelectYear: string;
   getSelectMonth: string;
   getDays: number[];
-  getShift: string;
+  getShift1: any;
 }
 
 export {

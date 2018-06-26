@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Container, Header, Image } from 'semantic-ui-react';
 // Component
 import MainTabs from '@components/main-tabs';
-
 // Action
 import { Actions } from '@actions/main';
 // Model
@@ -17,29 +16,26 @@ type OwnProps = {
   name: string;
   version: string;
   className?: string;
-};
+}
 
 class App extends React.Component<StateProps & DispatchProps & OwnProps> {
-  public componentDidMount() {
-    setTimeout(this.props.toggleLoadingStatus, 1500);
-  }
+
 
   public render() {
     const {
       // StateProps
-      getSelectYear, getSelectMonth, getDays, getShift,
+      getSelectYear, getSelectMonth, getDays, getShift1,
       // DispatchProps
       selectyear, selectmonth, addshift,
       // OwnProps
       name, version, className
     } = this.props;
-
     return (
       <Container className={className}>
         <Header as='h1' icon textAlign='center'>
           <Image centered size='large' src='/favicon.ico' />
           <Header.Content>{`${name} v${version}`}</Header.Content>
-        </Header>  
+        </Header>
         <MainTabs
           onChangeYearEvent={selectyear}
           onChangeMonthEvent={selectmonth}
@@ -47,8 +43,8 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
           selectMonth={getSelectMonth}
           getDayLineHead={getDays}
           addShiftClick={addshift}
-          getShift={getShift}
-        ></MainTabs>  
+          getShift1={getShift1}>
+        </MainTabs>
       </Container>
     );
   }

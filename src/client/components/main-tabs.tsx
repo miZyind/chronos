@@ -9,18 +9,18 @@ type MainTabProps = {
     onChangeYearEvent?: any;
     onChangeMonthEvent?: any;
     addShiftClick?: any;
-    getShift: string;
+    getShift1: any;
     selectYear: string;
     selectMonth: string;
     getDayLineHead: Array<number>;
-};
+}
 
 const tablTitle = {
     title1: "班表管理",
-    title2: "社區管理",
+    title2: "駐點管理",
     title3: "保全管理",
 }
-class MainTab extends Component<MainTabProps> { 
+class MainTab extends Component<MainTabProps> {
     panes = [
         {
             menuItem: tablTitle.title1, render: () =>
@@ -32,9 +32,8 @@ class MainTab extends Component<MainTabProps> {
                         selectMonth={this.props.selectMonth}
                         getDayLineHead={this.props.getDayLineHead}
                         addShiftClick={this.props.addShiftClick}
-                        getShift={this.props.getShift}
-                    ></DaysLineTable>
-                    {this.props.getShift}
+                        getShift1={this.props.getShift1}>
+                    </DaysLineTable>
                 </Tab.Pane>
         },
         {
@@ -50,11 +49,11 @@ class MainTab extends Component<MainTabProps> {
                 </Tab.Pane>
         },
     ]
-    
+
     render() {
         return (
             <Tab className={this.props.className} panes={this.panes} menu={{ pointing: true }} />
-        );
+        )
     }
 }
 

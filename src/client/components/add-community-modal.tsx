@@ -3,13 +3,9 @@ import { Button, Header, Modal, Form } from 'semantic-ui-react'
 
 type AddShiftFormProps = {
     className?: string;
-    addShiftClick?: any;
-    getShift: any;
 }
 const formPropos = {
-    title: "新增班表",
-    selectCommunity: "選擇駐點",
-    selectSecurityCounts: "選擇人數",
+    title: "新增駐點",
 }
 const backdropStyle = {
     marginTop: '0px !important',
@@ -22,19 +18,9 @@ class AddShift extends Component<AddShiftFormProps> {
     state = { open: false, dimmer:true, closeondocument:false,closeondimmer:false}
     show = (dimmer: boolean) => () => this.setState({ dimmer, open: true })
     close = () => this.setState({ open: false })
-    getCommunity: string = 'AA';
-    getSecurityCounts: string = '1';
+
     add = () => {
         this.setState({ open: false });
-        this.props.addShiftClick(this.getCommunity, this.getSecurityCounts);
-    }
-    changeCommunity = (event: React.FormEvent<HTMLSelectElement>) => {
-        this.getCommunity = event.currentTarget.value;
-        console.log(event.currentTarget.value);
-    }
-    changeSecurityCounts = (event: React.FormEvent<HTMLSelectElement>) => {
-        this.getSecurityCounts = event.currentTarget.value;
-        console.log(event.currentTarget.value);
     }
     render() {
         const { open, dimmer,closeondocument,closeondimmer } = this.state
@@ -53,17 +39,10 @@ class AddShift extends Component<AddShiftFormProps> {
                         <Header>{formPropos.title}</Header>
                         <Form>
                             <Form.Group widths='equal'>
-                                <Form.Field label={formPropos.selectCommunity} control='select' onChange={this.changeCommunity} >
-                                    <option value='AA'>AA</option>
-                                    <option value='BB'>BB</option>
-                                </Form.Field>
-                                <Form.Field label={formPropos.selectSecurityCounts} control='select' onChange={this.changeSecurityCounts}>
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                </Form.Field>
+                              <Form.Field>
+                                <label>駐點名稱</label>
+                                <input placeholder='請輸入駐點名稱' />
+                              </Form.Field>
                             </Form.Group>
                         </Form>
                     </Modal.Description>

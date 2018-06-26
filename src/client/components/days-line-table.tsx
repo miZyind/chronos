@@ -11,13 +11,13 @@ type DaysLineTableProps = {
     selectMonth: string;
     getDayLineHead: Array<number>;
     addShiftClick: any;
-    getShift: string;
-};
+    getShift1: any;
+}
 const optionYears = [
     { title: '107年', key: '107' },
     { title: '108年', key: '108' },
     { title: '109年', key: '109' },
-];
+]
 const optionMonths = [
     { title: '1月', key: '1' },
     { title: '2月', key: '2' },
@@ -31,9 +31,13 @@ const optionMonths = [
     { title: '10月', key: '10' },
     { title: '11月', key: '11' },
     { title: '12月', key: '12' },
-];
+]
 
 class DaysLineTable extends Component<DaysLineTableProps> {
+    getCommonEra = (year: number) => {
+        return year + 1911;
+    }
+
     render() {
         return (
             <div className={this.props.className} >
@@ -41,11 +45,16 @@ class DaysLineTable extends Component<DaysLineTableProps> {
                 <Selector options={optionMonths} currentSelected={this.props.selectMonth} onChangeEvent={this.props.onChangeMonthEvent} ></Selector>
                 <AddShiftForm
                     addShiftClick={this.props.addShiftClick}
-                    getShift={this.props.getShift}
-                ></AddShiftForm>
-                <TableDays days={this.props.getDayLineHead}></TableDays>
+                    getShift={this.props.getShift1}>
+                </AddShiftForm>
+                <TableDays
+                    year={this.getCommonEra(parseInt(this.props.selectYear))}
+                    month={parseInt(this.props.selectMonth)}
+                    days={this.props.getDayLineHead}
+                    getShift1={this.props.getShift1}>
+                </TableDays>
             </div>
-        );
+        )
     }
 }
 

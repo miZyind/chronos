@@ -10,7 +10,7 @@ let getCurrentTaiwanYear = () => {
   return (new Date().getFullYear() - 1911).toString()
 }
 let getDaysInMonth = (getDays: number[], month: number, year: number) => {
-  for (var i = 1; i <= getLastDayInMonth(month, year); i++) 
+  for (var i = 1; i <= getLastDayInMonth(month, year); i++)
     getDays.push(i);
   return getDays;
 }
@@ -20,6 +20,10 @@ let getLastDayInMonth = (month: number, year: number) => {
 let getCommonEra = (year: number) => {
   return year + 1911;
 }
+let getList = (lists: number[], value: number) => {
+  lists.push(value);
+  return lists;
+}
 const initState: IMain = {
   isLoading: true,
   isCompleted: false,
@@ -27,7 +31,7 @@ const initState: IMain = {
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
-  getShift:''
+  getShift1: []
 };
 
 const main = (state = initState, action: Actions) => {
@@ -39,22 +43,26 @@ const main = (state = initState, action: Actions) => {
       return { ...state, isCompleted: !state.isCompleted };
     }
     case ActionTypes.INCREMENT: {
-      return { ...state, counterCaption: state.counterCaption + 1 };   
+      return { ...state, counterCaption: state.counterCaption + 1 };
     }
     case ActionTypes.DECREMENT: {
-      return { ...state, counterCaption: state.counterCaption - 1 }; 
+      return { ...state, counterCaption: state.counterCaption - 1 };
     }
     case ActionTypes.SELECTYEAR: {
       state.getDays = getDaysInMonth([],parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
-      return { ...state, getSelectYear: action.payload, getDays: state.getDays };    
+      console.log(state.getDays);
+      return { ...state, getSelectYear: action.payload, getDays: state.getDays };
     }
     case ActionTypes.SELECTMONTH: {
       state.getDays = getDaysInMonth([],parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
       return { ...state, getSelectMonth: action.payload, getDays: state.getDays};
     }
     case ActionTypes.ADDSHILT: {
-      console.log(action.payload);
-      return { ...state, getShift: state.getShift+action.payload };
+      let getC = action.payload.split('-')[0];
+      let getS = action.payload.split('-')[1];
+      state.getShift1 = [...state.getShift1, { cc: getC, ss: getS }]
+      console.log(state.getShift1);
+      return { ...state, isCompleted: !state.isCompleted, getShift1: state.getShift1};
     }
     default: {
       return state;

@@ -1,69 +1,33 @@
 import React, { Component } from 'react';
-import FormMoal from '@components/form-modal';
-import { Table } from 'semantic-ui-react'
+import AddCommunityMoal from '@components/add-community-modal';
+import { Table, Button,Icon } from 'semantic-ui-react'
 type CommunityTableProps = {
     className?: string;
-};
-const modalTitle = {
-    title1: "新增社區",
 }
 
 class CommunityTable extends Component<CommunityTableProps> {
     render() {
         return (
             <div className={this.props.className} >
-                <FormMoal titleName={modalTitle.title1}></FormMoal>
+                <AddCommunityMoal></AddCommunityMoal>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Name</Table.HeaderCell>
-                            <Table.HeaderCell>Status</Table.HeaderCell>
-                            <Table.HeaderCell>Notes</Table.HeaderCell>
+                            <Table.HeaderCell>序號</Table.HeaderCell>
+                            <Table.HeaderCell>社區名稱</Table.HeaderCell>
+                            <Table.HeaderCell>動作</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
-
                     <Table.Body>
                         <Table.Row>
-                            <Table.Cell>John</Table.Cell>
-                            <Table.Cell>No Action</Table.Cell>
-                            <Table.Cell selectable>
-                                <a href='#'>Edit</a>
-                            </Table.Cell>
+                            <Table.Cell>1</Table.Cell>
+                            <Table.Cell>AA駐點</Table.Cell>
+                            <Table.Cell selectable><Button icon> <Icon name='compose' /></Button></Table.Cell>
                         </Table.Row>
                         <Table.Row>
-                            <Table.Cell>Jamie</Table.Cell>
-                            <Table.Cell>Approved</Table.Cell>
-                            <Table.Cell selectable>
-                                <a href='#'>Edit</a>
-                            </Table.Cell>
-                        </Table.Row>
-                        <Table.Row>
-                            <Table.Cell>Jill</Table.Cell>
-                            <Table.Cell>Denied</Table.Cell>
-                            <Table.Cell selectable>
-                                <a href='#'>Edit</a>
-                            </Table.Cell>
-                        </Table.Row>
-                        <Table.Row warning>
-                            <Table.Cell>John</Table.Cell>
-                            <Table.Cell>No Action</Table.Cell>
-                            <Table.Cell selectable warning>
-                                <a href='#'>Requires change</a>
-                            </Table.Cell>
-                        </Table.Row>
-                        <Table.Row>
-                            <Table.Cell>Jamie</Table.Cell>
-                            <Table.Cell positive>Approved</Table.Cell>
-                            <Table.Cell selectable positive>
-                                <a href='#'>Approve</a>
-                            </Table.Cell>
-                        </Table.Row>
-                        <Table.Row>
-                            <Table.Cell>Jill</Table.Cell>
-                            <Table.Cell negative>Denied</Table.Cell>
-                            <Table.Cell selectable negative>
-                                <a href='#'>Remove</a>
-                            </Table.Cell>
+                            <Table.Cell>2</Table.Cell>
+                            <Table.Cell>BB駐點</Table.Cell>
+                            <Table.Cell selectable><Button icon> <Icon name='compose' /></Button></Table.Cell>
                         </Table.Row>
                     </Table.Body>
                 </Table>
@@ -71,5 +35,4 @@ class CommunityTable extends Component<CommunityTableProps> {
         );
   }
 }
-
 export default CommunityTable
