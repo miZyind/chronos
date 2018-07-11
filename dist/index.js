@@ -132,7 +132,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__
 /*! exports provided: name, version, description, repository, author, license, scripts, dependencies, devDependencies, default */
 /***/ (function(module) {
 
-eval("module.exports = {\"name\":\"chronos\",\"version\":\"0.0.1\",\"description\":\"Specific work scheduler.\",\"repository\":\"git@github.com:miZyind/chronos.git\",\"author\":\"miZyind <mizyind@gmail.com>\",\"license\":\"MIT\",\"scripts\":{\"clean\":\"rimraf dist/*\",\"serve\":\"node dist/index.js\",\"start\":\"webpack --config config/webpack/server/webpack.dev.ts && node dist/index.js\",\"build\":\"yarn clean && yarn build:server && yarn build:client\",\"build:server\":\"webpack --config config/webpack/server/webpack.prod.ts\",\"build:client\":\"webpack --config config/webpack/client/webpack.prod.ts\"},\"dependencies\":{\"chalk\":\"^2.4.1\",\"isomorphic-fetch\":\"^2.2.1\",\"koa\":\"^2.5.1\",\"koa-compose\":\"^4.0.0\",\"koa-logger\":\"^3.2.0\",\"koa-static\":\"^4.0.2\",\"koa-webpack\":\"^3.0.2\",\"node-json-db\":\"^0.7.5\",\"pino\":\"^4.16.1\",\"react\":\"^16.3.2\",\"react-dom\":\"^16.3.2\",\"react-perf-devtool\":\"^3.0.6\",\"react-redux\":\"^5.0.7\",\"react-router-dom\":\"^4.2.2\",\"redux\":\"^4.0.0\",\"semantic-ui-css\":\"^2.3.1\",\"semantic-ui-react\":\"^0.80.0\",\"styled-components\":\"^3.2.6\",\"why-did-you-update\":\"^0.1.1\"},\"devDependencies\":{\"@types/autoprefixer\":\"^6.7.3\",\"@types/koa\":\"^2.0.45\",\"@types/koa-logger\":\"^3.1.0\",\"@types/koa-static\":\"^4.0.0\",\"@types/node\":\"^10.0.4\",\"@types/node-json-db\":\"^0.0.1\",\"@types/pino\":\"^4.7.1\",\"@types/react\":\"^16.3.10\",\"@types/react-dom\":\"^16.0.5\",\"@types/react-hot-loader\":\"^4.1.0\",\"@types/react-redux\":\"^5.0.19\",\"@types/react-router-dom\":\"^4.2.6\",\"@types/webpack\":\"^4.1.3\",\"@types/why-did-you-update\":\"^0.0.8\",\"autoprefixer\":\"^8.3.0\",\"css-loader\":\"^0.28.11\",\"extract-text-webpack-plugin\":\"^4.0.0-beta.0\",\"file-loader\":\"^1.1.11\",\"html-webpack-plugin\":\"^3.2.0\",\"postcss-flexbugs-fixes\":\"^3.3.1\",\"postcss-loader\":\"^2.1.5\",\"react-hot-loader\":\"^4.1.2\",\"rimraf\":\"^2.6.2\",\"style-loader\":\"^0.21.0\",\"ts-loader\":\"^4.2.0\",\"ts-node\":\"^6.0.2\",\"tslint\":\"^5.10.0\",\"tslint-react\":\"^3.5.1\",\"typescript\":\"^2.8.3\",\"typescript-styled-plugin\":\"^0.6.3\",\"url-loader\":\"^1.0.1\",\"webpack\":\"^4.7.0\",\"webpack-cli\":\"^2.1.2\",\"webpack-node-externals\":\"^1.7.2\"}};\n\n//# sourceURL=webpack:///./package.json?");
+eval("module.exports = {\"name\":\"chronos\",\"version\":\"0.0.1\",\"description\":\"Specific work scheduler.\",\"repository\":\"git@github.com:miZyind/chronos.git\",\"author\":\"miZyind <mizyind@gmail.com>\",\"license\":\"MIT\",\"scripts\":{\"clean\":\"rimraf dist/*\",\"serve\":\"node dist/index.js\",\"start\":\"webpack --config config/webpack/server/webpack.dev.ts && node dist/index.js\",\"build\":\"yarn clean && yarn build:server && yarn build:client\",\"build:server\":\"webpack --config config/webpack/server/webpack.prod.ts\",\"build:client\":\"webpack --config config/webpack/client/webpack.prod.ts\"},\"dependencies\":{\"chalk\":\"^2.4.1\",\"isomorphic-fetch\":\"^2.2.1\",\"koa\":\"^2.5.1\",\"koa-bodyparser\":\"^4.2.1\",\"koa-compose\":\"^4.0.0\",\"koa-logger\":\"^3.2.0\",\"koa-router\":\"^7.4.0\",\"koa-static\":\"^4.0.2\",\"koa-webpack\":\"^3.0.2\",\"node-json-db\":\"^0.7.5\",\"pino\":\"^4.16.1\",\"react\":\"^16.3.2\",\"react-dom\":\"^16.3.2\",\"react-perf-devtool\":\"^3.0.6\",\"react-redux\":\"^5.0.7\",\"react-router-dom\":\"^4.2.2\",\"redux\":\"^4.0.0\",\"semantic-ui-css\":\"^2.3.1\",\"semantic-ui-react\":\"^0.80.0\",\"styled-components\":\"^3.2.6\",\"why-did-you-update\":\"^0.1.1\"},\"devDependencies\":{\"@types/autoprefixer\":\"^6.7.3\",\"@types/koa\":\"^2.0.45\",\"@types/koa-logger\":\"^3.1.0\",\"@types/koa-static\":\"^4.0.0\",\"@types/node\":\"^10.0.4\",\"@types/node-json-db\":\"^0.0.1\",\"@types/pino\":\"^4.7.1\",\"@types/react\":\"^16.3.10\",\"@types/react-dom\":\"^16.0.5\",\"@types/react-hot-loader\":\"^4.1.0\",\"@types/react-redux\":\"^5.0.19\",\"@types/react-router-dom\":\"^4.2.6\",\"@types/webpack\":\"^4.1.3\",\"@types/why-did-you-update\":\"^0.0.8\",\"autoprefixer\":\"^8.3.0\",\"css-loader\":\"^0.28.11\",\"extract-text-webpack-plugin\":\"^4.0.0-beta.0\",\"file-loader\":\"^1.1.11\",\"html-webpack-plugin\":\"^3.2.0\",\"postcss-flexbugs-fixes\":\"^3.3.1\",\"postcss-loader\":\"^2.1.5\",\"react-hot-loader\":\"^4.1.2\",\"rimraf\":\"^2.6.2\",\"style-loader\":\"^0.21.0\",\"ts-loader\":\"^4.2.0\",\"ts-node\":\"^6.0.2\",\"tslint\":\"^5.10.0\",\"tslint-react\":\"^3.5.1\",\"typescript\":\"^2.8.3\",\"typescript-styled-plugin\":\"^0.6.3\",\"url-loader\":\"^1.0.1\",\"webpack\":\"^4.7.0\",\"webpack-cli\":\"^2.1.2\",\"webpack-node-externals\":\"^1.7.2\"}};\n\n//# sourceURL=webpack:///./package.json?");
 
 /***/ }),
 
@@ -160,6 +160,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__
 
 /***/ }),
 
+/***/ "./src/server/controller/workers.ts":
+/*!******************************************!*\
+  !*** ./src/server/controller/workers.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nclass WorkController {\n    static async getWorkers(ctx) {\n        ctx.status = 200;\n        ctx.body = 'Hello World!';\n    }\n    static async createWorker(ctx) {\n        ctx.status = 201;\n        ctx.body = ctx.request.body.name;\n        // userToBeSaved.name = ctx.request.body.name;\n        // userToBeSaved.email = ctx.request.body.email;\n        // validate user entity\n        // const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors\n        // if (errors.length > 0) {\n        //   // return BAD REQUEST status code and errors array\n        //   ctx.status = 400;\n        //   ctx.body = errors;\n        // } else if (await userRepository.findOne({ email: userToBeSaved.email })) {\n        //   // return BAD REQUEST status code and email already exists error\n        //   ctx.status = 400;\n        //   ctx.body = 'The specified e-mail address already exists';\n        // } else {\n        //   // save the user contained in the POST body\n        //   const user = await userRepository.save(userToBeSaved);\n        //   // return CREATED status code and updated user\n        //   ctx.status = 201;\n        //   ctx.body = user;\n        // }\n    }\n}\n/* harmony default export */ __webpack_exports__[\"default\"] = (WorkController);\n\n\n//# sourceURL=webpack:///./src/server/controller/workers.ts?");
+
+/***/ }),
+
 /***/ "./src/server/index.ts":
 /*!*****************************!*\
   !*** ./src/server/index.ts ***!
@@ -168,7 +180,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var koa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! koa */ \"koa\");\n/* harmony import */ var koa__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(koa__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url */ \"url\");\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var koa_static__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! koa-static */ \"koa-static\");\n/* harmony import */ var koa_static__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(koa_static__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var node_json_db__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! node-json-db */ \"node-json-db\");\n/* harmony import */ var node_json_db__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(node_json_db__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var koa_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! koa-logger */ \"koa-logger\");\n/* harmony import */ var koa_logger__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(koa_logger__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _lib_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! #lib/logger */ \"./src/lib/logger.ts\");\n/* harmony import */ var _middleware_hmr_middleware__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./middleware/hmr-middleware */ \"./src/server/middleware/hmr-middleware.ts\");\n/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./config */ \"./src/server/config.ts\");\n// Node Module\n\n\n\n\n\n// Lib\n\n// Middleware\n\n// Config\n\n// Env\nconst { isDev, dist, name, version, connection, dbPath } = _config__WEBPACK_IMPORTED_MODULE_7__[\"default\"];\nconst { protocol, host, port, path } = connection;\nconst address = Object(url__WEBPACK_IMPORTED_MODULE_1__[\"format\"])({ protocol, hostname: host, port, pathname: path });\nconst printMsg = () => _lib_logger__WEBPACK_IMPORTED_MODULE_5__[\"default\"].info(`${name} v${version} [Address] ${address} [Mode] ${isDev ? '⚙️' : '🌎'}`);\n// Init App\nconst app = new koa__WEBPACK_IMPORTED_MODULE_0___default.a();\n// Init JsonDB\napp.context.db = new node_json_db__WEBPACK_IMPORTED_MODULE_3___default.a(dbPath, true, true);\nif (isDev) {\n    app\n        .use(koa_logger__WEBPACK_IMPORTED_MODULE_4___default()())\n        .use(Object(_middleware_hmr_middleware__WEBPACK_IMPORTED_MODULE_6__[\"default\"])());\n}\nelse {\n    app\n        .use(koa_static__WEBPACK_IMPORTED_MODULE_2___default()(dist));\n}\napp\n    .use(async (ctx) => ctx.status = 404)\n    .listen(port, printMsg);\n\n\n//# sourceURL=webpack:///./src/server/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var koa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! koa */ \"koa\");\n/* harmony import */ var koa__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(koa__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url */ \"url\");\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var koa_static__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! koa-static */ \"koa-static\");\n/* harmony import */ var koa_static__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(koa_static__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var node_json_db__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! node-json-db */ \"node-json-db\");\n/* harmony import */ var node_json_db__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(node_json_db__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var koa_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! koa-logger */ \"koa-logger\");\n/* harmony import */ var koa_logger__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(koa_logger__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var koa_bodyparser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! koa-bodyparser */ \"koa-bodyparser\");\n/* harmony import */ var koa_bodyparser__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(koa_bodyparser__WEBPACK_IMPORTED_MODULE_5__);\n/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./routes */ \"./src/server/routes.ts\");\n/* harmony import */ var _lib_logger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! #lib/logger */ \"./src/lib/logger.ts\");\n/* harmony import */ var _middleware_hmr_middleware__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./middleware/hmr-middleware */ \"./src/server/middleware/hmr-middleware.ts\");\n/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./config */ \"./src/server/config.ts\");\n// Node Module\n\n\n\n\n\n\n\n// Lib\n\n// Middleware\n\n// Config\n\n// Env\nconst { isDev, dist, name, version, connection, dbPath } = _config__WEBPACK_IMPORTED_MODULE_9__[\"default\"];\nconst { protocol, host, port, path } = connection;\nconst address = Object(url__WEBPACK_IMPORTED_MODULE_1__[\"format\"])({ protocol, hostname: host, port, pathname: path });\nconst printMsg = () => _lib_logger__WEBPACK_IMPORTED_MODULE_7__[\"default\"].info(`${name} v${version} [Address] ${address} [Mode] ${isDev ? '⚙️' : '🌎'}`);\n// const router = new Router();\n// Init App\nconst app = new koa__WEBPACK_IMPORTED_MODULE_0___default.a();\n// Init JsonDB\napp.context.db = new node_json_db__WEBPACK_IMPORTED_MODULE_3___default.a(dbPath, true, true);\nif (isDev) {\n    app\n        .use(koa_logger__WEBPACK_IMPORTED_MODULE_4___default()())\n        .use(Object(_middleware_hmr_middleware__WEBPACK_IMPORTED_MODULE_8__[\"default\"])());\n}\nelse {\n    app\n        .use(koa_static__WEBPACK_IMPORTED_MODULE_2___default()(dist));\n}\napp\n    .use(koa_bodyparser__WEBPACK_IMPORTED_MODULE_5___default()())\n    .use(_routes__WEBPACK_IMPORTED_MODULE_6__[\"router\"].routes())\n    .use(_routes__WEBPACK_IMPORTED_MODULE_6__[\"router\"].allowedMethods())\n    .listen(port, printMsg);\n\n\n//# sourceURL=webpack:///./src/server/index.ts?");
 
 /***/ }),
 
@@ -181,6 +193,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var koa_
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var koa_webpack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! koa-webpack */ \"koa-webpack\");\n/* harmony import */ var koa_webpack__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(koa_webpack__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _config_webpack_client_webpack_dev__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../config/webpack/client/webpack.dev */ \"./config/webpack/client/webpack.dev.ts\");\n/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ \"./src/server/config.ts\");\n// Node module\n\n// Webpack config\n\n// Config\n\nconst hmrMiddleware = () => koa_webpack__WEBPACK_IMPORTED_MODULE_0___default()({\n    config: _config_webpack_client_webpack_dev__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n    dev: { publicPath: _config__WEBPACK_IMPORTED_MODULE_2__[\"default\"].connection.path, logLevel: 'silent' },\n    hot: { logLevel: 'silent' }\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (hmrMiddleware);\n\n\n//# sourceURL=webpack:///./src/server/middleware/hmr-middleware.ts?");
+
+/***/ }),
+
+/***/ "./src/server/routes.ts":
+/*!******************************!*\
+  !*** ./src/server/routes.ts ***!
+  \******************************/
+/*! exports provided: router */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"router\", function() { return router; });\n/* harmony import */ var koa_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! koa-router */ \"koa-router\");\n/* harmony import */ var koa_router__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(koa_router__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _controller_workers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controller/workers */ \"./src/server/controller/workers.ts\");\n\n\nconst router = new koa_router__WEBPACK_IMPORTED_MODULE_0___default.a({ prefix: '/api/v1' });\n// GENERAL ROUTES\nrouter.get('/work', _controller_workers__WEBPACK_IMPORTED_MODULE_1__[\"default\"].getWorkers);\nrouter.post('/work', _controller_workers__WEBPACK_IMPORTED_MODULE_1__[\"default\"].createWorker);\n\n\n\n//# sourceURL=webpack:///./src/server/routes.ts?");
 
 /***/ }),
 
@@ -239,6 +263,17 @@ eval("module.exports = require(\"koa\");\n\n//# sourceURL=webpack:///external_%2
 
 /***/ }),
 
+/***/ "koa-bodyparser":
+/*!*********************************!*\
+  !*** external "koa-bodyparser" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"koa-bodyparser\");\n\n//# sourceURL=webpack:///external_%22koa-bodyparser%22?");
+
+/***/ }),
+
 /***/ "koa-logger":
 /*!*****************************!*\
   !*** external "koa-logger" ***!
@@ -247,6 +282,17 @@ eval("module.exports = require(\"koa\");\n\n//# sourceURL=webpack:///external_%2
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"koa-logger\");\n\n//# sourceURL=webpack:///external_%22koa-logger%22?");
+
+/***/ }),
+
+/***/ "koa-router":
+/*!*****************************!*\
+  !*** external "koa-router" ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"koa-router\");\n\n//# sourceURL=webpack:///external_%22koa-router%22?");
 
 /***/ }),
 

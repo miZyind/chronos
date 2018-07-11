@@ -5,6 +5,8 @@ declare module '*webpack-plugin';
 declare module 'webpack-node-externals';
 // Other
 declare module 'koa-webpack';
+declare module 'koa-router';
+declare module 'koa-bodyparser';
 declare module 'react-perf-devtool';
 //Image
 declare module '*.png' { export default '' as string; }

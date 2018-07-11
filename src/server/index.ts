@@ -4,6 +4,8 @@ import { format } from 'url';
 import serve from 'koa-static';
 import JsonDB from 'node-json-db';
 import koaLogger from 'koa-logger';
+import bodyParser from'koa-bodyparser';
+import { router } from './routes';
 // Lib
 import logger from '#lib/logger';
 // Middleware
@@ -15,6 +17,8 @@ const { isDev, dist, name, version, connection, dbPath } = config;
 const { protocol, host, port, path } = connection;
 const address = format({ protocol, hostname: host, port, pathname: path });
 const printMsg = () => logger.info(`${name} v${version} [Address] ${address} [Mode] ${isDev ? '⚙️' : '🌎'}`);
+
+// const router = new Router();
 // Init App
 const app = new Koa();
 // Init JsonDB
@@ -30,5 +34,7 @@ if (isDev) {
 }
 
 app
-  .use(async (ctx) => ctx.status = 404)
+  .use(bodyParser())
+  .use(router.routes())
+  .use(router.allowedMethods())
   .listen(port, printMsg);
