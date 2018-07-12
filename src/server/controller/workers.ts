@@ -1,16 +1,29 @@
 import { BaseContext } from 'koa';
-
+import operation from '../db/operation';
 
 class WorkController {
 
   public static async getWorkers(ctx: BaseContext) {
+    let data1 = ctx.db.getData("/test4/json/test[0]/name");
     ctx.status = 200;
-    ctx.body = 'Hello World!';
+    ctx.body = data1;
+  }
+  public static async getWorker(ctx: BaseContext) {
+    let getId = ctx.params.id;
+    let ss = ctx.db.getData("/worker/lists");
+    let secondElement = operation.queryById(ss, getId);
+
+    ctx.status = 200;
+    ctx.body = secondElement.name;
   }
 
   public static async createWorker(ctx: BaseContext) {
-    ctx.status = 201;
     ctx.body = ctx.request.body.name;
+    //ctx.db.push("/test1", ctx.request.body.name);
+    ctx.status = 201;
+   // ctx.db.push("/test4", { test: "test", json: { test: [{ id: 1, name: "t1" }, { id: 2, name: "t2" }] } });
+    ctx.db.push("/worker", { lists: [{ id: 1, name: "t1" }, { id: 2, name: "t2" }, { id: 3, name: "t23" }] } );
+    console.log(ctx.db);
     // userToBeSaved.name = ctx.request.body.name;
     // userToBeSaved.email = ctx.request.body.email;
 
