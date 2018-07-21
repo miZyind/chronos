@@ -4,26 +4,41 @@ import operation from '../db/operation';
 class WorkController {
 
   public static async getWorkers(ctx: BaseContext) {
-    let data1 = ctx.db.getData("/worker/lists");
+    ctx.body = [];
+    let getStatus = await operation.checkTable(ctx.db.getData("/worker/lists"));
+    if (getStatus)
+      ctx.body = ctx.db.getData("/worker/lists");
     ctx.status = 200;
-    ctx.body = data1;
+
   }
   public static async getWorker(ctx: BaseContext) {
+    ctx.body = [];
     let getId = ctx.params.id;
-    let ss = ctx.db.getData("/worker/lists");
-    let secondElement = operation.queryById(ss, getId);
-
+    let getStatus = await operation.checkTable(ctx.db.getData("/worker/lists"));
+    if (getStatus) {
+      let table = ctx.db.getData("/worker/lists");
+      let getItem = await operation.queryById(table, getId);
+      if (getItem)
+        ctx.body = getItem;
+    }
     ctx.status = 200;
-    ctx.body = secondElement.name;
   }
 
   public static async createWorker(ctx: BaseContext) {
-    ctx.body = ctx.request.body.name;
-    //ctx.db.push("/test1", ctx.request.body.name);
-    ctx.status = 201;
+    let addName = ctx.request.body.name;
+    let addMobile = ctx.request.body.mobile;
+    let addId = 1;
+    let getStatus = await operation.checkTable(ctx.db.getData("/worker/lists"));
+    if (getStatus) {
+      let table = ctx.db.getData("/worker/lists");
+      let getLastId = await operation.queryLastId(table);
+      addId = parseInt(getLastId) + 1;
+    }
+    ctx.db.push("/worker/lists[]",{ id: addId, name: addName, mobile: addMobile});
+    ctx.status = 200;
    // ctx.db.push("/test4", { test: "test", json: { test: [{ id: 1, name: "t1" }, { id: 2, name: "t2" }] } });
-    ctx.db.push("/worker", { lists: [{ id: 1, name: "t1" }, { id: 2, name: "t2" }, { id: 3, name: "t23" }] } );
-    console.log(ctx.db);
+    //ctx.db.push("/worker", { lists: [{ id: 1, name: "t1" }, { id: 2, name: "t2" }, { id: 3, name: "t23" }] } );
+    //console.log(ctx.db);
     // userToBeSaved.name = ctx.request.body.name;
     // userToBeSaved.email = ctx.request.body.email;
 
@@ -45,7 +60,40 @@ class WorkController {
     //   ctx.body = user;
     // }
   }
+  public static async edit(ctx: BaseContext) {
+    let editName = ctx.request.body.name;
+    let editMobile = ctx.request.body.mobile;
+    let editId = parseInt(ctx.request.body.id);
+    let getStatus = await operation.checkTable(ctx.db.getData("/worker/lists"));
+    if (getStatus) {
+      let table = ctx.db.getData("/worker/lists");
+      let getIndex = await operation.getIndexById(table, editId);
+      if (getIndex != -1) {
+        getIndex = parseInt(getIndex);
+        ctx.db.delete("/worker/lists[" + getIndex + "]");
+      }
+      ctx.db.push("/worker/lists[]", { id: editId, name: editName, mobile: editMobile });
+    }
+    ctx.status = 200;
+  }
+  public static async delete(ctx: BaseContext) {
+    let deleteId = ctx.request.body.id;
+    let getStatus = await operation.checkTable(ctx.db.getData("/worker/lists"));
+    if (getStatus) {
+      let table = ctx.db.getData("/worker/lists");
+      let getIndex = await operation.getIndexById(table, editId);
+      if (getIndex != -1) {
+        getIndex = parseInt(getIndex);
+        ctx.db.delete("/worker/lists[" + getIndex + "]");
+      }
+    }
+    ctx.status = 200;
+  }
 
+  public static async deleteAll(ctx: BaseContext) {
+    ctx.db.delete("/worker/lists");
+    ctx.status = 200;
+  }
 }
 
 export default WorkController

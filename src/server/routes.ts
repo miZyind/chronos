@@ -7,5 +7,7 @@ const router = new Router({ prefix: '/api/v1' });
 router.get('/work', WorkController.getWorkers);
 router.get('/work/:id', WorkController.getWorker);
 router.post('/work', WorkController.createWorker);
-
+router.put('/work', WorkController.edit);
+router.delete('/work', WorkController.delete);
+router.get('/workall', WorkController.deleteAll);
 export { router };
