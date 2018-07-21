@@ -4,7 +4,7 @@ import operation from '../db/operation';
 class WorkController {
 
   public static async getWorkers(ctx: BaseContext) {
-    let data1 = ctx.db.getData("/test4/json/test[0]/name");
+    let data1 = ctx.db.getData("/worker/lists");
     ctx.status = 200;
     ctx.body = data1;
   }

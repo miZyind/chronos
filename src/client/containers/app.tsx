@@ -10,6 +10,7 @@ import { Actions } from '@actions/main';
 import { IStore } from '../models';
 import { IMain } from '../models/main';
 
+
 type StateProps = IMain;
 type DispatchProps = typeof Actions;
 type OwnProps = {

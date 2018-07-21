@@ -1,6 +1,8 @@
 // Model
 import { IMain } from './main';
+import { IWork } from './work';
 
 export interface IStore {
-  main: IMain;
+  main: IMain,
+  work: IWork
 }

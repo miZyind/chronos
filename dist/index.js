@@ -2,9 +2,6 @@
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
-/******/ 	// object to store loaded and loading wasm modules
-/******/ 	var installedWasmModules = {};
-/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -39,17 +36,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -66,9 +78,6 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// object with all compiled WebAssembly.Modules
-/******/ 	__webpack_require__.w = {};
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -109,7 +118,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var auto
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../package.json */ \"./package.json\");\nvar _package_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/Object.assign({}, _package_json__WEBPACK_IMPORTED_MODULE_0__, {\"default\": _package_json__WEBPACK_IMPORTED_MODULE_0__});\n// Version\n\nconst env = {\n    name: 'Chronos',\n    version: _package_json__WEBPACK_IMPORTED_MODULE_0__.version,\n    connection: {\n        protocol: 'http',\n        host: 'localhost',\n        port: 3500,\n        path: '/'\n    }\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (env);\n\n\n//# sourceURL=webpack:///./config/webpack/env.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../package.json */ \"./package.json\");\nvar _package_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../package.json */ \"./package.json\", 1);\n// Version\n\nconst env = {\n    name: 'Chronos',\n    version: _package_json__WEBPACK_IMPORTED_MODULE_0__.version,\n    connection: {\n        protocol: 'http',\n        host: 'localhost',\n        port: 3500,\n        path: '/'\n    }\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (env);\n\n\n//# sourceURL=webpack:///./config/webpack/env.ts?");
 
 /***/ }),
 
@@ -132,7 +141,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__
 /*! exports provided: name, version, description, repository, author, license, scripts, dependencies, devDependencies, default */
 /***/ (function(module) {
 
-eval("module.exports = {\"name\":\"chronos\",\"version\":\"0.0.1\",\"description\":\"Specific work scheduler.\",\"repository\":\"git@github.com:miZyind/chronos.git\",\"author\":\"miZyind <mizyind@gmail.com>\",\"license\":\"MIT\",\"scripts\":{\"clean\":\"rimraf dist/*\",\"serve\":\"node dist/index.js\",\"start\":\"webpack --config config/webpack/server/webpack.dev.ts && node dist/index.js\",\"build\":\"yarn clean && yarn build:server && yarn build:client\",\"build:server\":\"webpack --config config/webpack/server/webpack.prod.ts\",\"build:client\":\"webpack --config config/webpack/client/webpack.prod.ts\"},\"dependencies\":{\"chalk\":\"^2.4.1\",\"isomorphic-fetch\":\"^2.2.1\",\"koa\":\"^2.5.1\",\"koa-bodyparser\":\"^4.2.1\",\"koa-compose\":\"^4.0.0\",\"koa-logger\":\"^3.2.0\",\"koa-router\":\"^7.4.0\",\"koa-static\":\"^4.0.2\",\"koa-webpack\":\"^3.0.2\",\"node-json-db\":\"^0.7.5\",\"pino\":\"^4.16.1\",\"react\":\"^16.3.2\",\"react-dom\":\"^16.3.2\",\"react-fetch\":\"^0.0.9\",\"react-perf-devtool\":\"^3.0.6\",\"react-redux\":\"^5.0.7\",\"react-router-dom\":\"^4.2.2\",\"redux\":\"^4.0.0\",\"semantic-ui-css\":\"^2.3.1\",\"semantic-ui-react\":\"^0.80.0\",\"styled-components\":\"^3.2.6\",\"why-did-you-update\":\"^0.1.1\"},\"devDependencies\":{\"@types/autoprefixer\":\"^6.7.3\",\"@types/koa\":\"^2.0.45\",\"@types/koa-logger\":\"^3.1.0\",\"@types/koa-static\":\"^4.0.0\",\"@types/node\":\"^10.0.4\",\"@types/node-json-db\":\"^0.0.1\",\"@types/pino\":\"^4.7.1\",\"@types/react\":\"^16.3.10\",\"@types/react-dom\":\"^16.0.5\",\"@types/react-hot-loader\":\"^4.1.0\",\"@types/react-redux\":\"^5.0.19\",\"@types/react-router-dom\":\"^4.2.6\",\"@types/webpack\":\"^4.1.3\",\"@types/why-did-you-update\":\"^0.0.8\",\"autoprefixer\":\"^8.3.0\",\"css-loader\":\"^0.28.11\",\"extract-text-webpack-plugin\":\"^4.0.0-beta.0\",\"file-loader\":\"^1.1.11\",\"html-webpack-plugin\":\"^3.2.0\",\"postcss-flexbugs-fixes\":\"^3.3.1\",\"postcss-loader\":\"^2.1.5\",\"react-hot-loader\":\"^4.1.2\",\"rimraf\":\"^2.6.2\",\"style-loader\":\"^0.21.0\",\"ts-loader\":\"^4.2.0\",\"ts-node\":\"^6.0.2\",\"tslint\":\"^5.10.0\",\"tslint-react\":\"^3.5.1\",\"typescript\":\"^2.8.3\",\"typescript-styled-plugin\":\"^0.6.3\",\"url-loader\":\"^1.0.1\",\"webpack\":\"^4.7.0\",\"webpack-cli\":\"^2.1.2\",\"webpack-node-externals\":\"^1.7.2\"}};\n\n//# sourceURL=webpack:///./package.json?");
+eval("module.exports = {\"name\":\"chronos\",\"version\":\"0.0.1\",\"description\":\"Specific work scheduler.\",\"repository\":\"git@github.com:miZyind/chronos.git\",\"author\":\"miZyind <mizyind@gmail.com>\",\"license\":\"MIT\",\"scripts\":{\"clean\":\"rimraf dist/*\",\"serve\":\"node dist/index.js\",\"start\":\"webpack --config config/webpack/server/webpack.dev.ts && node dist/index.js\",\"build\":\"yarn clean && yarn build:server && yarn build:client\",\"build:server\":\"webpack --config config/webpack/server/webpack.prod.ts\",\"build:client\":\"webpack --config config/webpack/client/webpack.prod.ts\"},\"dependencies\":{\"axios\":\"^0.18.0\",\"chalk\":\"^2.4.1\",\"isomorphic-fetch\":\"^2.2.1\",\"koa\":\"^2.5.1\",\"koa-bodyparser\":\"^4.2.1\",\"koa-compose\":\"^4.0.0\",\"koa-logger\":\"^3.2.0\",\"koa-router\":\"^7.4.0\",\"koa-static\":\"^4.0.2\",\"koa-webpack\":\"^3.0.2\",\"node-json-db\":\"^0.7.5\",\"pino\":\"^4.16.1\",\"react\":\"^16.3.2\",\"react-dom\":\"^16.3.2\",\"react-perf-devtool\":\"^3.0.6\",\"react-redux\":\"^5.0.7\",\"react-router-dom\":\"^4.2.2\",\"redux\":\"^4.0.0\",\"semantic-ui-css\":\"^2.3.1\",\"semantic-ui-react\":\"^0.80.0\",\"styled-components\":\"^3.2.6\",\"why-did-you-update\":\"^0.1.1\"},\"devDependencies\":{\"@types/autoprefixer\":\"^6.7.3\",\"@types/koa\":\"^2.0.45\",\"@types/koa-logger\":\"^3.1.0\",\"@types/koa-static\":\"^4.0.0\",\"@types/node\":\"^10.0.4\",\"@types/node-json-db\":\"^0.0.1\",\"@types/pino\":\"^4.7.1\",\"@types/react\":\"^16.3.10\",\"@types/react-dom\":\"^16.0.5\",\"@types/react-hot-loader\":\"^4.1.0\",\"@types/react-redux\":\"^5.0.19\",\"@types/react-router-dom\":\"^4.2.6\",\"@types/webpack\":\"^4.1.3\",\"@types/why-did-you-update\":\"^0.0.8\",\"autoprefixer\":\"^8.3.0\",\"css-loader\":\"^0.28.11\",\"extract-text-webpack-plugin\":\"^4.0.0-beta.0\",\"file-loader\":\"^1.1.11\",\"html-webpack-plugin\":\"^3.2.0\",\"postcss-flexbugs-fixes\":\"^3.3.1\",\"postcss-loader\":\"^2.1.5\",\"react-hot-loader\":\"^4.1.2\",\"rimraf\":\"^2.6.2\",\"style-loader\":\"^0.21.0\",\"ts-loader\":\"^4.2.0\",\"ts-node\":\"^6.0.2\",\"tslint\":\"^5.10.0\",\"tslint-react\":\"^3.5.1\",\"typescript\":\"^2.8.3\",\"typescript-styled-plugin\":\"^0.6.3\",\"url-loader\":\"^1.0.1\",\"webpack\":\"^4.7.0\",\"webpack-cli\":\"^2.1.2\",\"webpack-node-externals\":\"^1.7.2\"}};\n\n//# sourceURL=webpack:///./package.json?");
 
 /***/ }),
 
@@ -168,7 +177,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var fs__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _db_operation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../db/operation */ \"./src/server/db/operation.ts\");\n\nclass WorkController {\n    static async getWorkers(ctx) {\n        let data1 = ctx.db.getData(\"/test4/json/test[0]/name\");\n        ctx.status = 200;\n        ctx.body = data1;\n    }\n    static async getWorker(ctx) {\n        let getId = ctx.params.id;\n        let ss = ctx.db.getData(\"/worker/lists\");\n        let secondElement = _db_operation__WEBPACK_IMPORTED_MODULE_0__[\"default\"].queryById(ss, getId);\n        ctx.status = 200;\n        ctx.body = secondElement.name;\n    }\n    static async createWorker(ctx) {\n        ctx.body = ctx.request.body.name;\n        //ctx.db.push(\"/test1\", ctx.request.body.name);\n        ctx.status = 201;\n        // ctx.db.push(\"/test4\", { test: \"test\", json: { test: [{ id: 1, name: \"t1\" }, { id: 2, name: \"t2\" }] } });\n        ctx.db.push(\"/worker\", { lists: [{ id: 1, name: \"t1\" }, { id: 2, name: \"t2\" }, { id: 3, name: \"t23\" }] });\n        console.log(ctx.db);\n        // userToBeSaved.name = ctx.request.body.name;\n        // userToBeSaved.email = ctx.request.body.email;\n        // validate user entity\n        // const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors\n        // if (errors.length > 0) {\n        //   // return BAD REQUEST status code and errors array\n        //   ctx.status = 400;\n        //   ctx.body = errors;\n        // } else if (await userRepository.findOne({ email: userToBeSaved.email })) {\n        //   // return BAD REQUEST status code and email already exists error\n        //   ctx.status = 400;\n        //   ctx.body = 'The specified e-mail address already exists';\n        // } else {\n        //   // save the user contained in the POST body\n        //   const user = await userRepository.save(userToBeSaved);\n        //   // return CREATED status code and updated user\n        //   ctx.status = 201;\n        //   ctx.body = user;\n        // }\n    }\n}\n/* harmony default export */ __webpack_exports__[\"default\"] = (WorkController);\n\n\n//# sourceURL=webpack:///./src/server/controller/workers.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _db_operation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../db/operation */ \"./src/server/db/operation.ts\");\n\nclass WorkController {\n    static async getWorkers(ctx) {\n        let data1 = ctx.db.getData(\"/worker/lists\");\n        ctx.status = 200;\n        ctx.body = data1;\n    }\n    static async getWorker(ctx) {\n        let getId = ctx.params.id;\n        let ss = ctx.db.getData(\"/worker/lists\");\n        let secondElement = _db_operation__WEBPACK_IMPORTED_MODULE_0__[\"default\"].queryById(ss, getId);\n        ctx.status = 200;\n        ctx.body = secondElement.name;\n    }\n    static async createWorker(ctx) {\n        ctx.body = ctx.request.body.name;\n        //ctx.db.push(\"/test1\", ctx.request.body.name);\n        ctx.status = 201;\n        // ctx.db.push(\"/test4\", { test: \"test\", json: { test: [{ id: 1, name: \"t1\" }, { id: 2, name: \"t2\" }] } });\n        ctx.db.push(\"/worker\", { lists: [{ id: 1, name: \"t1\" }, { id: 2, name: \"t2\" }, { id: 3, name: \"t23\" }] });\n        console.log(ctx.db);\n        // userToBeSaved.name = ctx.request.body.name;\n        // userToBeSaved.email = ctx.request.body.email;\n        // validate user entity\n        // const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors\n        // if (errors.length > 0) {\n        //   // return BAD REQUEST status code and errors array\n        //   ctx.status = 400;\n        //   ctx.body = errors;\n        // } else if (await userRepository.findOne({ email: userToBeSaved.email })) {\n        //   // return BAD REQUEST status code and email already exists error\n        //   ctx.status = 400;\n        //   ctx.body = 'The specified e-mail address already exists';\n        // } else {\n        //   // save the user contained in the POST body\n        //   const user = await userRepository.save(userToBeSaved);\n        //   // return CREATED status code and updated user\n        //   ctx.status = 201;\n        //   ctx.body = user;\n        // }\n    }\n}\n/* harmony default export */ __webpack_exports__[\"default\"] = (WorkController);\n\n\n//# sourceURL=webpack:///./src/server/controller/workers.ts?");
 
 /***/ }),
 

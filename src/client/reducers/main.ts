@@ -20,10 +20,10 @@ let getLastDayInMonth = (month: number, year: number) => {
 let getCommonEra = (year: number) => {
   return year + 1911;
 }
-let getList = (lists: number[], value: number) => {
-  lists.push(value);
-  return lists;
-}
+// let getList = (lists: number[], value: number) => {
+//   lists.push(value);
+//   return lists;
+// }
 const initState: IMain = {
   isLoading: true,
   isCompleted: false,
