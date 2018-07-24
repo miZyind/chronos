@@ -9,5 +9,4 @@ const ButtonExampleButton = styled.button`
   border: 2px solid palevioletred;
 `;
 
-
-export default ButtonExampleButton
+export default ButtonExampleButton;

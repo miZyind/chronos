@@ -14,7 +14,6 @@
     "build:client": "webpack --config config/webpack/client/webpack.prod.ts"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "isomorphic-fetch": "^2.2.1",
     "koa": "^2.5.1",
@@ -41,6 +40,7 @@
     "@types/autoprefixer": "^6.7.3",
     "@types/koa": "^2.0.45",
     "@types/koa-logger": "^3.1.0",
+    "@types/koa-router": "^7.0.30",
     "@types/koa-static": "^4.0.0",
     "@types/node": "^10.0.4",
     "@types/node-json-db": "^0.0.1",

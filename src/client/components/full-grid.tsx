@@ -6,7 +6,7 @@ import { Grid } from 'semantic-ui-react';
 type FullGridProps = {
   className?: string;
   children?: React.ReactNode;
-}
+};
 
 const FullGrid = ({ className, children }: FullGridProps) => (
   <Grid
@@ -17,7 +17,8 @@ const FullGrid = ({ className, children }: FullGridProps) => (
     textAlign='center'
     children={children}
     className={className}
-    verticalAlign='middle'/>
+    verticalAlign='middle'
+  />
 );
 
 export default styled(FullGrid) `

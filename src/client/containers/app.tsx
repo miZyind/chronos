@@ -10,17 +10,15 @@ import { Actions } from '@actions/main';
 import { IStore } from '../models';
 import { IMain } from '../models/main';
 
-
 type StateProps = IMain;
 type DispatchProps = typeof Actions;
 type OwnProps = {
   name: string;
   version: string;
   className?: string;
-}
+};
 
 class App extends React.Component<StateProps & DispatchProps & OwnProps> {
-
 
   public render() {
     const {
@@ -44,8 +42,8 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
           selectMonth={getSelectMonth}
           getDayLineHead={getDays}
           addShiftClick={addshift}
-          getShift1={getShift1}>
-        </MainTabs>
+          getShift1={getShift1}
+        />
       </Container>
     );
   }

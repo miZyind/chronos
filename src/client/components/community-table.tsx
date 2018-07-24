@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import AddCommunityMoal from '@components/add-community-modal';
-import { Table, Button,Icon } from 'semantic-ui-react'
+import { Table, Button, Icon } from 'semantic-ui-react';
 type CommunityTableProps = {
     className?: string;
-}
+};
 
 class CommunityTable extends Component<CommunityTableProps> {
-    render() {
+    public render() {
         return (
             <div className={this.props.className} >
-                <AddCommunityMoal></AddCommunityMoal>
+                <AddCommunityMoal/>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
@@ -35,4 +35,4 @@ class CommunityTable extends Component<CommunityTableProps> {
         );
   }
 }
-export default CommunityTable
+export default CommunityTable;

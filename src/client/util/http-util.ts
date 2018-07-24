@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 export function get(url: string, opts?: any) {
   // TODO(zhoulj) deal http repeat
@@ -7,22 +6,31 @@ export function get(url: string, opts?: any) {
   // TODO(zhoulj) get add timestamp
   // TODO(zhoulj) url encoding
   return new Promise((resolve, reject) => {
-    axios.get(url)
+
+    fetch(url, {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
       .then((response) => {
         if (response.status !== 200) {
-          handleError(reject, "response.statusText")
+          handleError(reject, 'response.statusText');
         }
-        return response;
+        return response.json();
       })
       .then((data) => {
-        if (checkCode(data)) {
+        console.log(data);
+        if (data) {
           resolve(data);
         } else {
-          reject("error status");
+          reject('error status');
         }
       })
       .catch((error) => handleError(reject, error));
-  })
+  });
 }
 
 export function post(url: string, opts?: any) {
@@ -33,26 +41,26 @@ export function post(url: string, opts?: any) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        "X-Requested-With": "XMLHttpRequest",
-        "x-source": "web"
+        'X-Requested-With': 'XMLHttpRequest',
+        'x-source': 'web'
       },
       body: opts
     })
-      .then(response => {
+      .then((response) => {
         if (checkStatus(response)) {
           return response.json();
         }
       })
-      .then(data => {
-        if (checkCode(data)) {
+      .then((data) => {
+        if (data) {
           resolve(data);
         } else {
-          reject("xx");
+          reject('xx');
         }
-      }).catch(error => {
-        handleError(reject, error)
-      })
-  })
+      }).catch((error) => {
+        handleError(reject, error);
+      });
+  });
 }
 
 export function put(url: string, opts?: any) {
@@ -63,26 +71,26 @@ export function put(url: string, opts?: any) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        "X-Requested-With": "XMLHttpRequest",
-        "x-source": "web"
+        'X-Requested-With': 'XMLHttpRequest',
+        'x-source': 'web'
       },
       body: opts
     })
-      .then(response => {
+      .then((response) => {
         if (checkStatus(response)) {
           return response.json();
         }
       })
-      .then(data => {
+      .then((data) => {
         if (checkCode(data)) {
           resolve(data);
         } else {
           reject(data);
         }
-      }).catch(error => {
-        handleError(reject, error)
-      })
-  })
+      }).catch((error) => {
+        handleError(reject, error);
+      });
+  });
 }
 
 function checkStatus(response: any) {
@@ -94,8 +102,7 @@ function checkStatus(response: any) {
 }
 
 function checkCode(data: any) {
-  //if (data && data.meta && data.meta.code === 200) {
-  if (data.status === 200) {
+  if (data && data.meta && data.meta.code === 200) {
     return true;
   }
   // TODO(zhoulj) check http code detail
@@ -104,6 +111,6 @@ function checkCode(data: any) {
 
 function handleError(reject: any, error: any) {
   // TODO(zhoulj) check http error detail
-  console.log(" http error: ", error);
+  console.log(' http error: ', error);
   return reject(error);
 }

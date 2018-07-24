@@ -3,23 +3,24 @@ import { ActionTypes, Actions } from '@actions/main';
 // Model
 import { IMain } from '../models/main';
 
-let getCurrentMonth = () => {
-  return (new Date().getMonth() + 1).toString()
-}
-let getCurrentTaiwanYear = () => {
-  return (new Date().getFullYear() - 1911).toString()
-}
-let getDaysInMonth = (getDays: number[], month: number, year: number) => {
-  for (var i = 1; i <= getLastDayInMonth(month, year); i++)
+const getCurrentMonth = () => {
+  return (new Date().getMonth() + 1).toString();
+};
+const getCurrentTaiwanYear = () => {
+  return (new Date().getFullYear() - 1911).toString();
+};
+const getDaysInMonth = (getDays: number[], month: number, year: number) => {
+  for (let i = 1; i <= getLastDayInMonth(month, year); i++) {
     getDays.push(i);
+  }
   return getDays;
-}
-let getLastDayInMonth = (month: number, year: number) => {
+};
+const getLastDayInMonth = (month: number, year: number) => {
   return new Date(year, month, 0).getDate();
-}
-let getCommonEra = (year: number) => {
+};
+const getCommonEra = (year: number) => {
   return year + 1911;
-}
+};
 // let getList = (lists: number[], value: number) => {
 //   lists.push(value);
 //   return lists;
@@ -49,18 +50,18 @@ const main = (state = initState, action: Actions) => {
       return { ...state, counterCaption: state.counterCaption - 1 };
     }
     case ActionTypes.SELECTYEAR: {
-      state.getDays = getDaysInMonth([],parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
+      state.getDays = getDaysInMonth([], parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
       console.log(state.getDays);
       return { ...state, getSelectYear: action.payload, getDays: state.getDays };
     }
     case ActionTypes.SELECTMONTH: {
-      state.getDays = getDaysInMonth([],parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
+      state.getDays = getDaysInMonth([], parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
       return { ...state, getSelectMonth: action.payload, getDays: state.getDays};
     }
     case ActionTypes.ADDSHILT: {
-      let getC = action.payload.split('-')[0];
-      let getS = action.payload.split('-')[1];
-      state.getShift1 = [...state.getShift1, { cc: getC, ss: getS }]
+      const getC = action.payload.split('-')[0];
+      const getS = action.payload.split('-')[1];
+      state.getShift1 = [...state.getShift1, { cc: getC, ss: getS }];
       console.log(state.getShift1);
       return { ...state, isCompleted: !state.isCompleted, getShift1: state.getShift1};
     }

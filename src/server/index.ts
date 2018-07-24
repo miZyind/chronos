@@ -4,7 +4,7 @@ import { format } from 'url';
 import serve from 'koa-static';
 import JsonDB from 'node-json-db';
 import koaLogger from 'koa-logger';
-import bodyParser from'koa-bodyparser';
+import bodyParser from 'koa-bodyparser';
 import { router } from './routes';
 // Lib
 import logger from '#lib/logger';

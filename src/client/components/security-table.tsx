@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AddSecurityMoal from '@components/add-security-modal';
-import { Table ,Button, Icon} from 'semantic-ui-react'
+import { Table, Button, Icon } from 'semantic-ui-react';
+import { Actions } from '@actions/main';
+import { IFetch } from '../models/fetch';
+import * as service from '../services';
+
 type SecurityTableProps = {
     className?: string;
-}
+};
 
-class SecurityTable extends Component<SecurityTableProps> {
-    render() {
+type FStateProps = IFetch;
+type DispatchProps = typeof Actions;
+type Props = SecurityTableProps & FStateProps & DispatchProps;
+
+class SecurityTable extends Component<Props> {
+    constructor(prop: Props) {
+        super(prop);
+        this.fetchWorkers();
+    }
+
+    public fetchWorkers() {
+        this.props.fetchDataBegin();
+        service.register()
+            .then((response: any) => {
+                console.log(response);
+                this.props.fetchDataSuccess(response);
+            }, (error) => {
+                this.props.fetchDataFailure(error);
+            });
+    }
+
+    public render() {
         return (
             <div className={this.props.className} >
-                <AddSecurityMoal></AddSecurityMoal>
+                <AddSecurityMoal />
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
@@ -36,4 +61,4 @@ class SecurityTable extends Component<SecurityTableProps> {
   }
 }
 
-export default SecurityTable
+export default SecurityTable;

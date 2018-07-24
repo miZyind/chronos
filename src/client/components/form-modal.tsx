@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Header, Modal, Form } from 'semantic-ui-react'
+import { Button, Header, Modal, Form } from 'semantic-ui-react';
 import myImg from '../assets/images/paragraph.png';
-
 
 type ModalFormProps = {
     className?: string;
@@ -15,20 +14,20 @@ const backdropStyle = {
     padding: 50
 };
 class ModalForm extends Component<ModalFormProps> {
-    state = { open: false, dimmer:true, closeondocument:false,closeondimmer:false}
-    show = (dimmer: boolean) => () => this.setState({ dimmer, open: true })
-    close = () => this.setState({ open: false })
-    render() {
-        const { open, dimmer,closeondocument,closeondimmer } = this.state
+    public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false };
+    public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
+    public close = () => this.setState({ open: false });
+    public render() {
+        const { open, dimmer, closeondocument, closeondimmer } = this.state;
         return (
-            <Modal 
-                closeOnDimmerClick={closeondimmer} 
-                closeOnDocumentClick={closeondocument} 
-                dimmer={dimmer} 
-                onClose={this.close} 
-                open={open} 
-                className={this.props.className} 
-                style={backdropStyle} 
+            <Modal
+                closeOnDimmerClick={closeondimmer}
+                closeOnDocumentClick={closeondocument}
+                dimmer={dimmer}
+                onClose={this.close}
+                open={open}
+                className={this.props.className}
+                style={backdropStyle}
                 trigger={<Button onClick={this.show(true)}>{this.props.titleName}</Button>}
             >
                 <Modal.Content image scrolling>
@@ -60,7 +59,7 @@ class ModalForm extends Component<ModalFormProps> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='black' onClick={this.close}>取消新增</Button>  
+                    <Button color='black' onClick={this.close}>取消新增</Button>
                 </Modal.Actions>
             </Modal>
         );
@@ -68,4 +67,3 @@ class ModalForm extends Component<ModalFormProps> {
 }
 
 export default ModalForm;
-

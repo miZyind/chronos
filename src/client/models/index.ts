@@ -1,8 +1,8 @@
 // Model
 import { IMain } from './main';
-import { IWork } from './work';
+import { IFetch } from './fetch';
 
 export interface IStore {
-  main: IMain,
-  work: IWork
+  main: IMain ;
+  work: IFetch;
 }

@@ -1,37 +1,37 @@
-import { BaseContext } from 'koa';
 
-const checkTable = (tableData: any) => {
-  let status = false;
+const checkTable = (db: any, path: string) => {
+  let getData = [];
   try {
-    tableData;
-    status = true;
+    getData = db.getData(path);
   } catch (error) {
-    console.error(error);
-  };
-  return status;
+    console.error();
+  }
+  return getData;
 };
-
 
 const queryById = (parent: any, getId: number) => {
   return parent.find((item: any) => {
-    return item.id == getId;
+    return item.id === getId;
   });
 };
 
 const queryLastId = (parent: any) => {
   let oldId = 0;
-  let last = parent.slice(-1)[0];
-  if (last)
+  const last = parent.slice(-1)[0];
+  if (last) {
     oldId = last.id;
+  }
   return oldId;
 };
 
 const getIndexById = (parent: any, getId: number) => {
   let getIndex = -1;
-  for (let i = 0; i < parent.length; i++)
-    if (parent[i].id == getId)
+  for (let i = 0; i < parent.length; i++) {
+    if (parent[i].id === getId) {
       getIndex = i;
-  return getIndex
+    }
+  }
+  return getIndex;
 };
 
 const operation = {
@@ -39,5 +39,5 @@ const operation = {
   queryById,
   queryLastId,
   getIndexById
-}
+};
 export default operation;

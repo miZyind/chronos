@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
-import { Button, Header, Modal, Form } from 'semantic-ui-react'
+import { Button, Header, Modal, Form } from 'semantic-ui-react';
 
 type AddShiftFormProps = {
     className?: string;
     addShiftClick?: any;
     getShift: any;
-}
+};
 const formPropos = {
-    title: "新增班表",
-    selectCommunity: "選擇駐點",
-    selectSecurityCounts: "選擇人數",
-}
+    title: '新增班表',
+    selectCommunity: '選擇駐點',
+    selectSecurityCounts: '選擇人數',
+};
 const backdropStyle = {
     marginTop: '0px !important',
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: 'rgba(0,0,0,0.3)',
     padding: 50
-}
+};
 class AddShift extends Component<AddShiftFormProps> {
-    state = { open: false, dimmer:true, closeondocument:false,closeondimmer:false}
-    show = (dimmer: boolean) => () => this.setState({ dimmer, open: true })
-    close = () => this.setState({ open: false })
-    getCommunity: string = 'AA';
-    getSecurityCounts: string = '1';
-    add = () => {
+    public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false };
+    public getCommunity = 'AA';
+    public getSecurityCounts = '1';
+    public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
+    public close = () => this.setState({ open: false });
+
+    public add = () => {
         this.setState({ open: false });
         this.props.addShiftClick(this.getCommunity, this.getSecurityCounts);
     }
-    changeCommunity = (event: React.FormEvent<HTMLSelectElement>) => {
+    public changeCommunity = (event: React.FormEvent<HTMLSelectElement>) => {
         this.getCommunity = event.currentTarget.value;
         console.log(event.currentTarget.value);
     }
-    changeSecurityCounts = (event: React.FormEvent<HTMLSelectElement>) => {
+    public changeSecurityCounts = (event: React.FormEvent<HTMLSelectElement>) => {
         this.getSecurityCounts = event.currentTarget.value;
         console.log(event.currentTarget.value);
     }
-    render() {
-        const { open, dimmer,closeondocument,closeondimmer } = this.state
+    public render() {
+        const { open, dimmer, closeondocument, closeondimmer } = this.state;
+        const button = <Button onClick={this.show(true)}>{formPropos.title}</Button>;
         return (
             <Modal
                 closeOnDimmerClick={closeondimmer}
@@ -47,7 +49,8 @@ class AddShift extends Component<AddShiftFormProps> {
                 open={open}
                 className={this.props.className}
                 style={backdropStyle}
-                trigger={<Button onClick={this.show(true)}>{formPropos.title}</Button>}>
+                trigger={button}
+            >
                 <Modal.Content image scrolling>
                     <Modal.Description>
                         <Header>{formPropos.title}</Header>
@@ -73,9 +76,8 @@ class AddShift extends Component<AddShiftFormProps> {
                     <Button color='black' onClick={this.close}>取消</Button>
                 </Modal.Actions>
             </Modal>
-        )
+        );
     }
 }
 
 export default AddShift;
-
