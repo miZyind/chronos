@@ -4,9 +4,9 @@ import { combineReducers } from 'redux';
 import { IStore } from '../models';
 // Reducer
 import main from '@reducers/main';
-import work from '@reducers/work';
+import fetch from '@reducers/fetch';
 
 export default combineReducers<IStore>({
   main,
-  work
+  fetch
 } as any);

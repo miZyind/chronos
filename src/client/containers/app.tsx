@@ -23,9 +23,9 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
   public render() {
     const {
       // StateProps
-      getSelectYear, getSelectMonth, getDays, getShift1,
+      getSelectYear, getSelectMonth, getDays, getShift1, getSelectArea,
       // DispatchProps
-      selectyear, selectmonth, addshift,
+      selectyear, selectmonth, addshift, selectarea,
       // OwnProps
       name, version, className
     } = this.props;
@@ -43,6 +43,8 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
           getDayLineHead={getDays}
           addShiftClick={addshift}
           getShift1={getShift1}
+          selectArea={getSelectArea}
+          onChangeAreaEvent={selectarea}
         />
       </Container>
     );

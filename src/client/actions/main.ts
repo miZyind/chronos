@@ -2,7 +2,7 @@
 import createAction from '@helpers/create-action';
 import { ActionsUnion } from '@helpers/actions-union';
 
-import { IWork } from '../models/work';
+import { IFetch } from '../models/fetch';
 
 enum ActionTypes {
   TOGGLE_LOADING_STATUS = '[main] toggle loading status',
@@ -11,10 +11,12 @@ enum ActionTypes {
   DECREMENT = '[main] decrement',
   SELECTYEAR = '[dayline] selectyear',
   SELECTMONTH = '[dayline] selectmonth',
+  SELECTAREA = '[stationlist] selectarea',
   ADDSHILT = '[add] addshift',
-  FETCH_PRODUCTS_BEGIN = '[fetch] FETCH PRODUCTS BEGIN',
-  FETCH_PRODUCTS_SUCCESS = '[fetch] FETCH PRODUCTS SUCCESS',
-  FETCH_PRODUCTS_FAILURE = '[fetch] FETCH PRODUCTS FAILURE'
+  FETCH_BEGIN = '[fetch] FETCH  BEGIN',
+  FETCH_GET_DATA_SUCCESS = '[fetch] FETCH GET DATA SUCCESS',
+  FETCH_SEND_SUCCESS = '[fetch] FETCH SEND SUCCESS',
+  FETCH_FAILURE = '[fetch] FETCH FAILURE'
 }
 
 const Actions = {
@@ -24,10 +26,12 @@ const Actions = {
   decrement: () => createAction(ActionTypes.DECREMENT),
   selectyear: (val: string) => createAction(ActionTypes.SELECTYEAR, val),
   selectmonth: (val: string) => createAction(ActionTypes.SELECTMONTH, val),
+  selectarea: (val: string) => createAction(ActionTypes.SELECTAREA, val),
   addshift: (val1: string, val2: number) => createAction(ActionTypes.ADDSHILT, val1 + '-' + val2),
-  fetchProductsBegin: () => createAction(ActionTypes.FETCH_PRODUCTS_BEGIN),
-  fetchProductsSuccess: (products: IWork) => createAction(ActionTypes.FETCH_PRODUCTS_SUCCESS, products),
-  fetchProductsFailure: (error: IWork) => createAction(ActionTypes.FETCH_PRODUCTS_FAILURE, error)
+  fetchBegin: () => createAction(ActionTypes.FETCH_BEGIN),
+  fetchGetDataSuccess: (data: IFetch) => createAction(ActionTypes.FETCH_GET_DATA_SUCCESS, data),
+  fetchSendSuccess: () => createAction(ActionTypes.FETCH_SEND_SUCCESS),
+  fetchFailure: (error: IFetch) => createAction(ActionTypes.FETCH_FAILURE, error),
 };
 
 type Actions = ActionsUnion<typeof Actions>;

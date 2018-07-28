@@ -9,35 +9,40 @@ const checkTable = (db: any, path: string) => {
   return getData;
 };
 
-const queryById = (parent: any, getId: number) => {
-  return parent.find((item: any) => {
-    return item.id === getId;
-  });
-};
-
 const queryLastId = (parent: any) => {
-  let oldId = 0;
-  const last = parent.slice(-1)[0];
+  let oldId = '0';
+  const last = Object.keys(parent).sort().reverse()[0];
   if (last) {
-    oldId = last.id;
+    oldId = last;
   }
-  return oldId;
+  return parseInt(oldId);
 };
 
-const getIndexById = (parent: any, getId: number) => {
-  let getIndex = -1;
-  for (let i = 0; i < parent.length; i++) {
-    if (parent[i].id === getId) {
-      getIndex = i;
+const groupByKey = (data: any, key: string, condition: string) => {
+  const groupedData = Object.keys(data).reduce((result: any, current) => {
+    const getItemValue = data[current][result.key];
+    const getItem = data[current];
+    getItem.id = current;
+    const getCondition = result.condition;
+    if (getCondition === 'all') {
+      result[getItemValue] = result[getItemValue] || [];
+      result[getItemValue].push(data[current]);
+    } else {
+      if (getItemValue === getCondition) {
+        result[getItemValue] = result[getItemValue] || [];
+        result[getItemValue].push(data[current]);
+      }
     }
-  }
-  return getIndex;
+    return result;
+  }, { 'key': key, 'condition': condition});
+  delete groupedData.key;
+  delete groupedData.condition;
+  return groupedData;
 };
 
 const operation = {
   checkTable,
-  queryById,
   queryLastId,
-  getIndexById
+  groupByKey
 };
 export default operation;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import DaysLineTable from '@components/days-line-table';
-import CommunityTable from '@components/community-table';
-import SecurityTable from '@components/security-table';
+import StationTable from '@components/station/list';
+import WorkerTable from '@components/worker/list';
 
 type MainTabProps = {
     className?: string;
@@ -13,6 +13,8 @@ type MainTabProps = {
     selectYear: string;
     selectMonth: string;
     getDayLineHead: number[];
+    onChangeAreaEvent?: any;
+    selectArea: string;
 };
 
 const tablTitle = {
@@ -39,11 +41,17 @@ class MainTab extends Component<MainTabProps> {
         },
         {
             menuItem: tablTitle.title2, render: () =>
-                <Tab.Pane attached={false}><CommunityTable /></Tab.Pane>
+                // tslint:disable-next-line:jsx-wrap-multiline
+                <Tab.Pane attached={false}>
+                    <StationTable
+                        onChangeAreaEvent={this.props.onChangeAreaEvent}
+                        selectArea={this.props.selectArea}
+                    />
+                </Tab.Pane>
         },
         {
             menuItem: tablTitle.title3, render: () =>
-                <Tab.Pane attached={false}><SecurityTable /></Tab.Pane>
+                <Tab.Pane attached={false}><WorkerTable /></Tab.Pane>
         },
     ];
     public render() {

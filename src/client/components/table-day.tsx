@@ -56,7 +56,6 @@ class TableDays extends Component<TableDaysProps> {
                 } else {
                     rows.push(
                         <Table.Row  key={key + '-' + cc}>
-                            // tslint:disable-next-line:jsx-self-close
                             <Table.Cell style={tabHeaderCellStyle} />
                             {this.props.days.map((i) => <Table.Cell style={tabHeaderCellStyle} key={cc + '-' + key + '-' + i}/>)}
                             <Table.Cell style={tabHeaderCellStyle}>
@@ -71,19 +70,6 @@ class TableDays extends Component<TableDaysProps> {
                     );
                 }
             }
-        }
-        return rows;
-    }
-    public secu(max: number, key: string) {
-        const rows = [];
-        rows.push(
-            <Table.Cell style={tabHeaderCellStyle} >GGG</Table.Cell>
-        );
-        for (let ii = 1; ii <= max; ii++) {
-            rows.push(
-                this.props.days.map((i, day) =>
-                    <Table.Cell style={tabHeaderCellStyle} key={ii + '-' + key + '-' + i}>{day}</Table.Cell>
-            ));
         }
         return rows;
     }

@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Selector from '@components/selector';
 import TableDays from '@components/table-day';
 import AddShiftForm from '@components/add-shift-form';
-
-import { Actions } from '@actions/main';
-import { IWork } from '../models/work';
-import * as service from '../services';
 
 const optionYears = [
     { title: '107年', key: '107' },
@@ -38,42 +33,13 @@ type DaysLineTableProps = {
     getShift1: any;
 };
 
-type WStateProps = IWork;
-type DispatchProps = typeof Actions;
-type Props = DaysLineTableProps & WStateProps & DispatchProps;
-
-class DaysLineTable extends Component<Props> {
-
-    constructor(prop: Props) {
-        super(prop);
-        this.fetchProducts();
-    }
-    public fetchProducts() {
-        this.props.fetchProductsBegin();
-        service.register()
-            .then((response) => {
-                this.props.fetchProductsSuccess(response);
-            }, (error) => {
-                this.props.fetchProductsFailure(error);
-            });
-    }
+class DaysLineTable extends Component<DaysLineTableProps> {
 
     public getCommonEra = (year: number) => {
         return year + 1911;
     }
 
     public render() {
-        const {
-            error, loading, items,
-        } = this.props;
-
-        if (error) {
-            return <div>Error! {error.message}</div>;
-        }
-
-        if (loading) {
-            return <div>Loading...</div>;
-        }
         return (
             <div className={this.props.className} >
                 <Selector options={optionYears} currentSelected={this.props.selectYear} onChangeEvent={this.props.onChangeYearEvent} />
@@ -88,16 +54,9 @@ class DaysLineTable extends Component<Props> {
                     days={this.props.getDayLineHead}
                     getShift1={this.props.getShift1}
                 />
-                <ul >
-                    {items.map((i: any) => <li key={i.id}>{i.name}</li>)}
-                </ul>
             </div>
         );
     }
 }
 
-// export default DaysLineTable
-export default connect<WStateProps, DispatchProps >(
-    (state: any) => state.work,
-    Actions
-)(DaysLineTable);
+export default DaysLineTable;

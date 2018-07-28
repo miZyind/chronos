@@ -2,35 +2,31 @@ import { IRouterContext} from 'koa-router';
 import operation from '../db/operation';
 
 class WorkController {
-
   public static async getAll(ctx: IRouterContext) {
     const getData = await operation.checkTable(ctx.db, '/worker');
     ctx.body = getData;
     ctx.status = 200;
-
   }
   public static async getOne(ctx: IRouterContext) {
     ctx.body = [];
     const getId = parseInt(ctx.params.id);
-    const getData = await operation.checkTable(ctx.db, '/worker');
-    const getItem = await operation.queryById(getData, getId);
-    if (getItem) {
-      ctx.body = getItem;
+    const getData = await operation.checkTable(ctx.db, `/worker/${getId}`);
+    if (getData) {
+      ctx.body = getData;
     }
     ctx.status = 200;
   }
 
   public static async add(ctx: IRouterContext) {
-    const addName = ctx.request.body!.name;
-    const addMobile = ctx.request.body!.mobile;
+    const getName = ctx.request.body!.name;
+    const getMobile = ctx.request.body!.mobile;
     let addId = 1;
     const getData = await operation.checkTable(ctx.db, '/worker');
-    console.log(getData.length);
-    if (getData.length > 0) {
+    if (Object.keys(getData).length) {
       const getLastId = await operation.queryLastId(getData);
       addId = getLastId + 1;
     }
-    ctx.db.push('/worker[]', { id: addId, name: addName, mobile: addMobile});
+    ctx.db.push(`/worker/${addId}`, { name: getName, mobile: getMobile });
     ctx.status = 200;
    // ctx.db.push('/test4', { test: 'test', json: { test: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }] } });
     // ctx.db.push('/worker', { lists: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }, { id: 3, name: 't23' }] } );
@@ -57,27 +53,20 @@ class WorkController {
     // }
   }
   public static async edit(ctx: IRouterContext) {
-    const editName = ctx.request.body.name;
-    const editMobile = ctx.request.body.mobile;
-    const editId = parseInt(ctx.request.body.id);
-    const getData = await operation.checkTable(ctx.db, '/worker');
-    if (getData.length > 0) {
-      const getIndex = await operation.getIndexById(getData, editId);
-      if (getIndex !== -1) {
-        ctx.db.delete(`/worker[${getIndex}] `);
-      }
-      ctx.db.push('/worker[]', { id: editId, name: editName, mobile: editMobile });
+    const getName = ctx.request.body.name;
+    const getMobile = ctx.request.body.mobile;
+    const getId = parseInt(ctx.request.body.id);
+    const getData = await operation.checkTable(ctx.db, `/worker/${getId}`);
+    if (getData) {
+      ctx.db.push(`/worker/${getId}`, { name: getName, mobile: getMobile });
     }
     ctx.status = 200;
   }
   public static async delete(ctx: IRouterContext) {
-    const deleteId = parseInt(ctx.request.body.id);
-    const getData = await operation.checkTable(ctx.db, '/worker');
-    if (getData.length > 0) {
-      const getIndex = await operation.getIndexById(getData, deleteId);
-      if (getIndex !== -1) {
-        ctx.db.delete(`/worker[${getIndex}] `);
-      }
+    const getId = parseInt(ctx.request.body.id);
+    const getData = await operation.checkTable(ctx.db, `/worker/${getId}`);
+    if (getData) {
+      ctx.db.delete(`/worker/${getId}`);
     }
     ctx.status = 200;
   }

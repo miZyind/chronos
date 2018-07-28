@@ -32,7 +32,8 @@ const initState: IMain = {
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
-  getShift1: []
+  getShift1: [],
+  getSelectArea: 'all'
 };
 
 const main = (state = initState, action: Actions) => {
@@ -57,6 +58,9 @@ const main = (state = initState, action: Actions) => {
     case ActionTypes.SELECTMONTH: {
       state.getDays = getDaysInMonth([], parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
       return { ...state, getSelectMonth: action.payload, getDays: state.getDays};
+    }
+    case ActionTypes.SELECTAREA: {
+      return { ...state, getSelectArea: action.payload};
     }
     case ActionTypes.ADDSHILT: {
       const getC = action.payload.split('-')[0];
