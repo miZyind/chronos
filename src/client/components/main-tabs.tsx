@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
-import DaysLineTable from '@components/days-line-table';
+import DaysLineTable from '@components/shift/days-line-table';
 import StationTable from '@components/station/list';
 import WorkerTable from '@components/worker/list';
 
@@ -8,8 +8,6 @@ type MainTabProps = {
     className?: string;
     onChangeYearEvent?: any;
     onChangeMonthEvent?: any;
-    addShiftClick?: any;
-    getShift1: any;
     selectYear: string;
     selectMonth: string;
     getDayLineHead: number[];
@@ -34,8 +32,6 @@ class MainTab extends Component<MainTabProps> {
                         selectYear={this.props.selectYear}
                         selectMonth={this.props.selectMonth}
                         getDayLineHead={this.props.getDayLineHead}
-                        addShiftClick={this.props.addShiftClick}
-                        getShift1={this.props.getShift1}
                     />
                 </Tab.Pane>
         },

@@ -32,7 +32,6 @@ const initState: IMain = {
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
-  getShift1: [],
   getSelectArea: 'all'
 };
 
@@ -61,13 +60,6 @@ const main = (state = initState, action: Actions) => {
     }
     case ActionTypes.SELECTAREA: {
       return { ...state, getSelectArea: action.payload};
-    }
-    case ActionTypes.ADDSHILT: {
-      const getC = action.payload.split('-')[0];
-      const getS = action.payload.split('-')[1];
-      state.getShift1 = [...state.getShift1, { cc: getC, ss: getS }];
-      console.log(state.getShift1);
-      return { ...state, isCompleted: !state.isCompleted, getShift1: state.getShift1};
     }
     default: {
       return state;

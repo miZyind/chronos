@@ -5,7 +5,6 @@ interface IMain {
   getSelectYear: string;
   getSelectMonth: string;
   getDays: number[];
-  getShift1: any;
   getSelectArea: string;
 }
 

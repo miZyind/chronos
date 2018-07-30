@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Selector from '@components/selector';
-import TableDays from '@components/table-day';
-import AddShiftForm from '@components/add-shift-form';
+import TableDays from '@components/shift/table-day';
 
 const optionYears = [
     { title: '107年', key: '107' },
@@ -29,8 +28,6 @@ type DaysLineTableProps = {
     selectYear: string;
     selectMonth: string;
     getDayLineHead: number[];
-    addShiftClick: any;
-    getShift1: any;
 };
 
 class DaysLineTable extends Component<DaysLineTableProps> {
@@ -44,15 +41,10 @@ class DaysLineTable extends Component<DaysLineTableProps> {
             <div className={this.props.className} >
                 <Selector options={optionYears} currentSelected={this.props.selectYear} onChangeEvent={this.props.onChangeYearEvent} />
                 <Selector options={optionMonths} currentSelected={this.props.selectMonth} onChangeEvent={this.props.onChangeMonthEvent} />
-                <AddShiftForm
-                    addShiftClick={this.props.addShiftClick}
-                    getShift={this.props.getShift1}
-                />
                 <TableDays
                     year={this.getCommonEra(parseInt(this.props.selectYear))}
                     month={parseInt(this.props.selectMonth)}
                     days={this.props.getDayLineHead}
-                    getShift1={this.props.getShift1}
                 />
             </div>
         );

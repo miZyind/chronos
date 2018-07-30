@@ -27,7 +27,6 @@ const Actions = {
   selectyear: (val: string) => createAction(ActionTypes.SELECTYEAR, val),
   selectmonth: (val: string) => createAction(ActionTypes.SELECTMONTH, val),
   selectarea: (val: string) => createAction(ActionTypes.SELECTAREA, val),
-  addshift: (val1: string, val2: number) => createAction(ActionTypes.ADDSHILT, val1 + '-' + val2),
   fetchBegin: () => createAction(ActionTypes.FETCH_BEGIN),
   fetchGetDataSuccess: (data: IFetch) => createAction(ActionTypes.FETCH_GET_DATA_SUCCESS, data),
   fetchSendSuccess: () => createAction(ActionTypes.FETCH_SEND_SUCCESS),

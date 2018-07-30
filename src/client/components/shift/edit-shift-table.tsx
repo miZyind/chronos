@@ -15,6 +15,17 @@ const tabHeaderCellStyle = {
     padding: '0px',
     borderLeft: '1px solid rgba(34, 36, 38, .1)',
 };
+const tabCellSpanStyle = {
+    fontSize: '10px',
+    textAlign: 'center',
+    padding: '0px',
+    borderLeft: '1px solid rgba(34, 36, 38, .1)',
+    height: '75px'
+};
+
+const spanStyle = {
+    writingMode: 'tb-rl'
+};
 const optionSecurity = [
     { title: '張大名', key: '107' },
     { title: '諸葛張', key: '108' },
@@ -51,7 +62,7 @@ class EditTableShifts extends Component<EditTableShiftsProps> {
         rows.push(
             <Table.Row key='r-3'>
                 <Table.Cell style={tabHeaderCellStyle} >休假</Table.Cell>
-                {this.props.days.map((i) => <Table.Cell style={tabHeaderCellStyle} key={'C-' + i}><Selector options={optionSecurity} currentSelected='' /></Table.Cell>)}</Table.Row>
+                {this.props.days.map((i) => <Table.Cell style={tabCellSpanStyle} key={'C-' + i}><span style={spanStyle}>{optionSecurity[0].title}</span></Table.Cell>)}</Table.Row>
         );
         return rows;
     }
