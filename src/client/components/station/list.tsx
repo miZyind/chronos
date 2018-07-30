@@ -22,6 +22,8 @@ const optionAreas = [
   { title: '全部', key: 'all' },
   { title: '北區', key: '北區' },
   { title: '中區', key: '中區' },
+  { title: '南區', key: '南區' },
+  { title: '東區', key: '東區' },
 ];
 
 class ListTable extends Component<Props> {
@@ -50,7 +52,6 @@ class ListTable extends Component<Props> {
   public deleteStation(getId: any) {
     this.props.fetchBegin();
     const obj: object = { 'id': getId };
-    console.log(obj);
     service.deleteStation(obj)
       .then((response: any) => {
         if (response === 'yes') {
@@ -64,31 +65,34 @@ class ListTable extends Component<Props> {
   public getLists() {
     const { items } = this.props;
     const rows: JSX.Element[] = [];
+
     Object.keys(items).map((area: any) => {
-      const getArea = items[area];
-      Object.keys(getArea).map((id: any) => {
-        rows.push(
-          <Table.Row key={`${area}-${id}`}>
-            <Table.Cell>{getArea[id].id}</Table.Cell>
-            <Table.Cell>{getArea[id].name}</Table.Cell>
-            <Table.Cell>{getArea[id].mobileNumber}</Table.Cell>
-            <Table.Cell>{getArea[id].area}</Table.Cell>
-            <Table.Cell>{getArea[id].stableNumber}</Table.Cell>
-            <Table.Cell>{getArea[id].desc}</Table.Cell>
-            <Table.Cell selectable>
-              <EditFormMoal
-                editId={getArea[id].id}
-                editName={getArea[id].name}
-                editMobile={getArea[id].mobileNumber}
-                editArea={getArea[id].area}
-                editStable={getArea[id].stableNumber}
-                editDesc={getArea[id].desc}
-              />
-              <Button icon onClick={this.deleteStation.bind(this, getArea[id].id)}> <Icon name='trash' /></Button>
-            </Table.Cell>
-          </Table.Row>
-        );
-      }
+      const getArea = Object.values(items[area]);
+      getArea.map((i: any) => {
+        if (i.id) {
+          rows.push(
+            <Table.Row key={`st-${area}-${i.id}`}>
+              <Table.Cell>{i.id}</Table.Cell>
+              <Table.Cell>{i.name}</Table.Cell>
+              <Table.Cell>{i.mobileNumber}</Table.Cell>
+              <Table.Cell>{i.area}</Table.Cell>
+              <Table.Cell>{i.stableNumber}</Table.Cell>
+              <Table.Cell>{i.desc}</Table.Cell>
+              <Table.Cell selectable>
+                <EditFormMoal
+                  editId={i.id}
+                  editName={i.name}
+                  editMobile={i.mobileNumber}
+                  editArea={i.area}
+                  editStable={i.stableNumber}
+                  editDesc={i.desc}
+                />
+                <Button icon onClick={this.deleteStation.bind(this, i.id)}> <Icon name='trash' /></Button>
+              </Table.Cell>
+            </Table.Row>
+          );
+        }
+      });
     });
     return rows;
   }
@@ -126,7 +130,6 @@ class ListTable extends Component<Props> {
     );
   }
 }
-
 export default connect<FStateProps, DispatchProps>(
   (state: any) => state.fetch,
   Actions

@@ -52,16 +52,19 @@ class ListTable extends Component<Props> {
         const {items} = this.props;
         const rows: JSX.Element[] = [];
         Object.keys(items).map((id: any) => {
+            // tslint:disable-next-line:no-string-literal
+            const getItemName = items[id]['name'];
+            const getItemMobile = items[id]['mobile'];
             rows.push(
-                <Table.Row key={id}>
+                <Table.Row key={`worker-${id}}`}>
                     <Table.Cell>{id}</Table.Cell>
-                    <Table.Cell>{items[id].name}</Table.Cell>
-                    <Table.Cell>{items[id].mobile}</Table.Cell>
+                    <Table.Cell>{getItemName}</Table.Cell>
+                    <Table.Cell>{getItemMobile}</Table.Cell>
                     <Table.Cell selectable>
                         <EditFormMoal
                             editId={id}
-                            editName={items[id].name}
-                            editMobile={items[id].mobile}
+                            editName={getItemName}
+                            editMobile={getItemMobile}
                         />
                         <Button icon onClick={this.deleteWorker.bind(this, id)}> <Icon name='trash' /></Button>
                     </Table.Cell>
