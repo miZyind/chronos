@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Grid } from 'semantic-ui-react';
+import { Table, Grid, Label } from 'semantic-ui-react';
 import Selector from '@components/selector';
-import MarkButton from '@components/mark-button';
+import Mark from '@components/shift/mark';
 
 type EditTableShiftsProps = {
     days: number[];
@@ -34,6 +34,9 @@ const optionSecurity = [
 const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
 
 class EditTableShifts extends Component<EditTableShiftsProps> {
+    public state = {
+        black: true
+    };
     public getWeekDay(day: number) {
         const getYear: string = this.props.year.toString();
         const getMonth: string = this.props.month.toString();
@@ -45,24 +48,28 @@ class EditTableShifts extends Component<EditTableShiftsProps> {
     public getCommonEra = (year: number) => {
         return year + 1911;
     }
+    public changeColor() {
+        this.setState({ black: !this.state.black });
+    }
+
     public community() {
         const rows: any = [];
         rows.push(
             <Table.Row key='r-1'>
                 <Table.Cell style={tabHeaderCellStyle} >日班</Table.Cell>
-                {this.props.days.map((i: number) => <Table.Cell style={tabHeaderCellStyle} key={'A-' + i}><MarkButton buttonName='日' /></Table.Cell>)}
+                {this.props.days.map((i: number) => <Table.Cell style={tabHeaderCellStyle} key={'A-' + i} ><Mark markName='日' getDay={i} status={true} /></Table.Cell>)}
             </Table.Row>
         );
         rows.push(
             <Table.Row key='r-2'>
                 <Table.Cell style={tabHeaderCellStyle} >晚班</Table.Cell>
-                {this.props.days.map((i) => <Table.Cell style={tabHeaderCellStyle} key={'B-' + i}><MarkButton buttonName='夜' /></Table.Cell>)}
+                {this.props.days.map((i) => <Table.Cell style={tabHeaderCellStyle} key={'B-' + i}><Mark markName='夜' getDay={i} status={true} /></Table.Cell>)}
             </Table.Row>
         );
         rows.push(
             <Table.Row key='r-3'>
                 <Table.Cell style={tabHeaderCellStyle} >休假</Table.Cell>
-                {this.props.days.map((i) => <Table.Cell style={tabCellSpanStyle} key={'C-' + i}><span style={spanStyle}>{optionSecurity[0].title}</span></Table.Cell>)}</Table.Row>
+                {this.props.days.map((i) => <Table.Cell style={tabCellSpanStyle} key={'C-' + i}><Label style={spanStyle}>{optionSecurity[0].title}</Label></Table.Cell>)}</Table.Row>
         );
         return rows;
     }

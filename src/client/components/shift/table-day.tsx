@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Message, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import EditSecurityShift from '@components/shift/edit-security-shift';
+import EditSecurityShift from '@components/shift/edit-modal';
 
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';

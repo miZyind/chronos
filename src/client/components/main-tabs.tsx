@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
-import DaysLineTable from '@components/shift/days-line-table';
+import DaysLineTable from '@components/shift/days-line-shift';
 import StationTable from '@components/station/list';
 import WorkerTable from '@components/worker/list';
 
