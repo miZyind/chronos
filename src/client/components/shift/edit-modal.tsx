@@ -5,9 +5,6 @@ import EditShiftTable from '@components/shift/edit-shift-table';
 
 type EditSecurityShiftProps = {
     className?: string;
-    days: number[];
-    month: number;
-    year: number;
     getStationName: string;
 };
 const formPropos = {
@@ -57,10 +54,7 @@ class EditSecurityShift extends Component<EditSecurityShiftProps> {
                     <Modal.Description>
                         <Header>{formPropos.title}</Header>
                         <EditShiftTable
-                            communoty={this.props.getStationName}
-                            year={this.props.year}
-                            month={this.props.month}
-                            days={this.props.days}
+                            station={this.props.getStationName}
                         />
                     </Modal.Description>
                 </Modal.Content>

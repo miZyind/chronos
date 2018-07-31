@@ -32,7 +32,8 @@ const initState: IMain = {
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
-  getSelectArea: 'all'
+  getSelectArea: 'all',
+  getCovers: {}
 };
 
 const main = (state = initState, action: Actions) => {
@@ -51,7 +52,6 @@ const main = (state = initState, action: Actions) => {
     }
     case ActionTypes.SELECTYEAR: {
       state.getDays = getDaysInMonth([], parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
-      console.log(state.getDays);
       return { ...state, getSelectYear: action.payload, getDays: state.getDays };
     }
     case ActionTypes.SELECTMONTH: {
@@ -60,6 +60,16 @@ const main = (state = initState, action: Actions) => {
     }
     case ActionTypes.SELECTAREA: {
       return { ...state, getSelectArea: action.payload};
+    }
+    case ActionTypes.ADDCOVER: {
+      const getItems: {
+            [index: string]: {
+                name: string,
+                id: string
+            }
+      } = state.getCovers;
+      getItems[action.payload.day] = { 'id': action.payload.id, 'name': action.payload.name };
+      return { ...state, getCovers: getItems, counterCaption: state.counterCaption + 1 };
     }
     default: {
       return state;

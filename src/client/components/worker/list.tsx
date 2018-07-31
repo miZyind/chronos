@@ -49,12 +49,18 @@ class ListTable extends Component<Props> {
             });
     }
     public getLists() {
-        const {items} = this.props;
+        const { items } = this.props;
+        const getItems: {
+            [index: string]: {
+                name: string,
+                mobile: string
+            }
+        } = items;
         const rows: JSX.Element[] = [];
-        Object.keys(items).map((id: any) => {
+        Object.keys(getItems).map((id: any) => {
             // tslint:disable-next-line:no-string-literal
-            const getItemName = items[id]['name'];
-            const getItemMobile = items[id]['mobile'];
+            const getItemName = getItems[id].name;
+            const getItemMobile = getItems[id].mobile;
             rows.push(
                 <Table.Row key={`worker-${id}}`}>
                     <Table.Cell>{id}</Table.Cell>

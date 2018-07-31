@@ -1,5 +1,6 @@
+
 interface IFetch {
-  items: object[];
+  items: any;
   loading: boolean;
   sendfinish: boolean;
   error: any;

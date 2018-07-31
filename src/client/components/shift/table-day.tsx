@@ -72,9 +72,6 @@ class TableDays extends Component<Props> {
                                 {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
                                 <Table.Cell style={tabHeaderCellStyle}>
                                     <EditSecurityShift
-                                        year={this.props.year}
-                                        month={this.props.month}
-                                        days={this.props.days}
                                         getStationName={i.name}
                                     />
                                 </Table.Cell >
@@ -87,9 +84,6 @@ class TableDays extends Component<Props> {
                                 {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
                                 <Table.Cell style={tabHeaderCellStyle}>
                                     <EditSecurityShift
-                                        year={this.props.year}
-                                        month={this.props.month}
-                                        days={this.props.days}
                                         getStationName={i.name}
                                     />
                                 </Table.Cell >
