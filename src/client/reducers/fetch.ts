@@ -41,7 +41,7 @@ const fetch = (state = initState, action: Actions) => {
           ...state,
           loading: false,
           sendfinish: false,
-          stationShiftItems: action.payload.data.station,
+          stationShiftItems: action.payload.data.shiftList,
           workerEditShiftItems: action.payload.data.worker
         };
       } else if (action.payload.type === 'shiftEdit') {

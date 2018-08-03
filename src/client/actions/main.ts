@@ -18,7 +18,10 @@ enum ActionTypes {
   FETCH_GET_DATA_SUCCESS = '[fetch] FETCH GET DATA SUCCESS',
   FETCH_SEND_SUCCESS = '[fetch] FETCH SEND SUCCESS',
   FETCH_FAILURE = '[fetch] FETCH FAILURE',
-  SELECTWORKER = '[fetch] SELECT WORKER'
+  SELECTWORKER = '[fetch] SELECT WORKER',
+  MODAL_FETCH_BEGIN = '[modal] MODAL FETCH  BEGIN',
+  MODAL_FETCH_GET_DATA_SUCCESS = '[modal] MODAL FETCH GET DATA SUCCESS',
+  MODAL_FETCH_FAILURE = '[modal] MODAL FETCH FAILURE',
 }
 
 const Actions = {
@@ -35,6 +38,9 @@ const Actions = {
   fetchSendSuccess: () => createAction(ActionTypes.FETCH_SEND_SUCCESS),
   fetchFailure: (error: IFetch) => createAction(ActionTypes.FETCH_FAILURE, error),
   selectworker: (obj: object) => createAction(ActionTypes.SELECTWORKER, obj),
+  modalfetchBegin: () => createAction(ActionTypes.MODAL_FETCH_BEGIN),
+  modalfetchGetDataSuccess: (obj: object) => createAction(ActionTypes.MODAL_FETCH_GET_DATA_SUCCESS, obj),
+  modalfetchFailure: (error: IFetch) => createAction(ActionTypes.MODAL_FETCH_FAILURE, error),
 };
 
 type Actions = ActionsUnion<typeof Actions>;

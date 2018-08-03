@@ -10,6 +10,7 @@ type EditWorkerShiftProps = {
     className?: string;
     getStationName: string;
     getStationId: string;
+    workerId: string;
 };
 const formPropos = {
     title: '編輯班表',
@@ -30,10 +31,25 @@ class EditWorkerShift extends Component<Props> {
     public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false };
 
     public show = (dimmer: boolean) => () => {
+        this.props.main.getShift = null;
+        this.getShift();
         this.setState({ dimmer, open: true });
     }
     public close = () => this.setState({ open: false });
-
+    public getShift() {
+       this.props.modalfetchBegin();
+       service.getShift({
+            'year': this.props.main.getSelectYear,
+            'month': this.props.main.getSelectMonth,
+            'stationid': this.props.getStationId,
+            'workerid': this.props.workerId,
+        })
+            .then((response: any) => {
+                this.props.modalfetchGetDataSuccess({'data': response.shift });
+            }, (error) => {
+                this.props.modalfetchFailure(error);
+            });
+    }
     public fetchShift() {
         this.props.fetchBegin();
         const obj: object = {
@@ -49,7 +65,7 @@ class EditWorkerShift extends Component<Props> {
             .then((response: any) => {
                 if (response === 'yes') {
                     this.props.fetchSendSuccess();
-                    alert('新增成功');
+                    alert('儲存成功');
                 }
             }, (error) => {
                 this.props.fetchFailure(error);
@@ -89,7 +105,7 @@ class EditWorkerShift extends Component<Props> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='black' onClick={this.add} >新增</Button>
+                    <Button color='black' onClick={this.add} >儲存</Button>
                     <Button color='black' onClick={this.close}>取消</Button>
                 </Modal.Actions>
             </Modal>

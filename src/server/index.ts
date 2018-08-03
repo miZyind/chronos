@@ -22,7 +22,7 @@ const printMsg = () => logger.info(`${name} v${version} [Address] ${address} [Mo
 // Init App
 const app = new Koa();
 // Init JsonDB
-app.context.db = new JsonDB(dbPath, true, true);
+(app.context as any).db = new JsonDB(dbPath, true, true);
 
 if (isDev) {
   app

@@ -107,18 +107,30 @@ class EditTableShifts extends Component<Props> {
         });
         return rows;
     }
+    public dayMark(index: string, condition: string) {
+        const rows: JSX.Element[] = [];
+        this.props.main.getDays.map((i: number) => {
+            if (this.props.main.getShift[i] && this.props.main.getShift[i].shiftType === condition) {
+                rows.push(<Table.Cell style={tabHeaderCellStyle} key={index + '-' + i} > <Mark markName={condition} getDay={i} status={false} /></Table.Cell>);
+            } else {
+                rows.push(<Table.Cell style={tabHeaderCellStyle} key={index + '-' + i} > <Mark markName={condition} getDay={i} status={true} /></Table.Cell>);
+            }
+        });
+        return rows;
+    }
+
     public days() {
         const rows: JSX.Element[] = [];
         rows.push(
             <Table.Row key='r-1'>
                 <Table.Cell style={tabHeaderCellStyle} >日班</Table.Cell>
-                {this.props.main.getDays.map((i: number) => <Table.Cell style={tabHeaderCellStyle} key={'A-' + i} ><Mark markName='日' getDay={i} status={true} /></Table.Cell>)}
+                {this.dayMark('A', '日')}
             </Table.Row>
         );
         rows.push(
             <Table.Row key='r-2'>
                 <Table.Cell style={tabHeaderCellStyle} >晚班</Table.Cell>
-                {this.props.main.getDays.map((i) => <Table.Cell style={tabHeaderCellStyle} key={'B-' + i}><Mark markName='夜' getDay={i} status={true} /></Table.Cell>)}
+                {this.dayMark('B', '夜')}
             </Table.Row>
         );
         rows.push(
@@ -135,6 +147,10 @@ class EditTableShifts extends Component<Props> {
         return rows;
     }
     public render() {
+        console.log(this.props.main.getShift);
+        if (this.props.main.modalLoading) {
+            return <div>loading</div>;
+        }
         return (
             <div>
             <Grid columns='equal'>

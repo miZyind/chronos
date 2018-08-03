@@ -8,6 +8,7 @@ interface IMain {
   getSelectArea: string;
   getShift: any;
   getSelectWorker: any;
+  modalLoading: boolean;
 }
 
 export {

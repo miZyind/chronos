@@ -2,11 +2,66 @@ import { IRouterContext } from 'koa-router';
 import operation from '../db/operation';
 
 class ShiftController {
+
   public static async getAll(ctx: IRouterContext) {
     const getStationData = await operation.checkTable(ctx.db, '/station');
     const getGroupByArea = await operation.groupByKey(getStationData, 'area', 'all');
     const getWorkerData = await operation.checkTable(ctx.db, '/worker');
     const data = { 'station': getGroupByArea, 'worker': getWorkerData};
+    ctx.body = data;
+    ctx.status = 200;
+  }
+  public static async getOneByMonth(ctx: IRouterContext) {
+    const getYear = ctx.params.year;
+    const getMonth = ctx.params.month;
+    const getWorkerData = await operation.checkTable(ctx.db, '/worker');
+    const getShiftData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}`);
+    const getStationData = await operation.checkTable(ctx.db, `/station`);
+    if (Object.keys(getShiftData).length < 1) {
+      // using exit station to create shift
+      Object.keys(getStationData).map((id: any) => {
+        const max = parseInt(getStationData[id].stableNumber);
+        for (let i = 1; i <= max; i++) {
+          const emptyWork = `empty-${i}`;
+          ctx.db.push(`/shift/${getYear}/${getMonth}/${id}/${emptyWork}`, {
+            stationName: getStationData[id].name,
+            workerName: '',
+            shift: {}
+          });
+        }
+      });
+    } else {
+      // using exit station to update shift
+      // 不刪除 stationshift & 個人shift
+      Object.keys(getStationData).map((stationId: any) => {
+        const stationMax = parseInt(getStationData[stationId].stableNumber);
+        if (getShiftData[stationId]) {
+          const shiftMax = Object.keys(getShiftData[stationId]).length;
+          if (stationMax > shiftMax) {
+            for (let i = shiftMax + 1; i <= stationMax; i++) {
+              const emptyWork = `empty-${i}`;
+              ctx.db.push(`/shift/${getYear}/${getMonth}/${stationId}/${emptyWork}`, {
+                stationName: getStationData[stationId].name,
+                workerName: '',
+                shift: {}
+              });
+            }
+          }
+        } else {
+          const max = parseInt(getStationData[stationId].stableNumber);
+          for (let i = 1; i <= max; i++) {
+            const emptyWork = `empty-${i}`;
+            ctx.db.push(`/shift/${getYear}/${getMonth}/${stationId}/${emptyWork}`, {
+              stationName: getStationData[stationId].name,
+              workerName: '',
+              shift: {}
+            });
+          }
+        }
+      });
+    }
+    const getShiftNewData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}`);
+    const data = { 'shiftList': getShiftNewData, 'worker': getWorkerData };
     ctx.body = data;
     ctx.status = 200;
   }

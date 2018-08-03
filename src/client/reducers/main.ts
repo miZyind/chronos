@@ -34,7 +34,8 @@ const initState: IMain = {
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
   getSelectArea: 'all',
   getShift: {},
-  getSelectWorker: []
+  getSelectWorker: [],
+  modalLoading: false
 };
 
 const main = (state = initState, action: Actions) => {
@@ -90,6 +91,19 @@ const main = (state = initState, action: Actions) => {
     }
     case ActionTypes.SELECTWORKER: {
       return { ...state, getSelectWorker: action.payload };
+    }
+    case ActionTypes.MODAL_FETCH_BEGIN: {
+      return {
+        ...state,
+        modalLoading: true
+      };
+    }
+    case ActionTypes.MODAL_FETCH_GET_DATA_SUCCESS: {
+      return {
+        ...state,
+        modalLoading: false,
+        getShift: action.payload.data
+      };
     }
     default: {
       return state;

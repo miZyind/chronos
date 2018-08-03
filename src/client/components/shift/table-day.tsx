@@ -18,9 +18,12 @@ const tabHeaderCellStyle = {
     padding: '0px',
     borderLeft: '1px solid rgba(34, 36, 38, .1)',
 };
+const shiftStyle = {
+    width: '25px',
+    padding: '0px',
+};
 
 const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
-const getWorkerId = '4';
 
 type FStateProps = IFetch;
 type DispatchProps = typeof Actions;
@@ -38,17 +41,19 @@ class TableDays extends Component<Props> {
             this.getShifts();
         }
     }
-
     public getShifts() {
+        const obj: object = {
+            'year': this.getCommonEra(this.props.year),
+            'month': this.props.month
+        };
         this.props.fetchBegin();
-        service.getShifts()
+        service.getShifts(obj)
             .then((response: any) => {
                 this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': response });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
     }
-
     public getWeekDay(day: number) {
         const getYear: string = this.props.year.toString();
         const getMonth: string = this.props.month.toString();
@@ -57,44 +62,73 @@ class TableDays extends Component<Props> {
         const getWeekDay: number = new Date(date).getDay();
         return weekDayCht[getWeekDay];
     }
+    public getCommonEra = (year: number) => {
+        return year - 1911;
+    }
+    public printWorker(name: string) {
+        const rows: JSX.Element[] = [];
+        if (name.length > 0) {
+            rows.push(<Table.Cell style={tabHeaderCellStyle} >{name}</Table.Cell>);
+        } else {
+            rows.push(<Table.Cell style={tabHeaderCellStyle} />);
+        }
+        return rows;
+    }
+    public printShiftType(shift: any, stationId: string, workerId: string, index: number) {
+        const rows: JSX.Element[] = [];
+        this.props.days.map((v) => {
+            if (shift && shift[v]) {
+                if (shift[v].shiftType === '休') {
+                    rows.push(<Table.Cell style={shiftStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{`${ shift[v].cover.name}`}</Table.Cell>);
+                } else {
+                    rows.push(<Table.Cell style={tabHeaderCellStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                }
+            } else {
+                rows.push(<Table.Cell style={tabHeaderCellStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
+            }
+        });
+        return rows;
+    }
     public stations() {
         const { stationShiftItems } = this.props;
         const rows: JSX.Element[] = [];
-        Object.keys(stationShiftItems).map((area: any) => {
-            const getArea = Object.values(stationShiftItems[area]);
-            getArea.map((i: any) => {
-                const max = parseInt(i.stableNumber);
-                for (let cc = 1; cc <= max; cc++) {
-                    if (cc === 1) {
-                        rows.push(
-                            <Table.Row key={`day-tb-${i.id}-${cc}`}>
-                                <Table.Cell style={tabHeaderCellStyle} rowSpan={max}>{i.name}</Table.Cell>
-                                <Table.Cell style={tabHeaderCellStyle} />
-                                {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
-                                <Table.Cell style={tabHeaderCellStyle}>
-                                    <EditSecurityShift
-                                        getStationId={i.id}
-                                        getStationName={i.name}
-                                    />
-                                </Table.Cell >
-                            </Table.Row>
-                        );
-                    } else {
-                        rows.push(
-                            <Table.Row key={`day-tb-${i.id}-${cc}`}>
-                                <Table.Cell style={tabHeaderCellStyle} />
-                                {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
-                                <Table.Cell style={tabHeaderCellStyle}>
-                                    <EditSecurityShift
-                                        getStationId={i.id}
-                                        getStationName={i.name}
-                                    />
-                                </Table.Cell >
-                            </Table.Row>
-                        );
-                    }
+        Object.keys(stationShiftItems).map((stationId: any) => {
+            const getStationId = stationId;
+            const getWorker = stationShiftItems[getStationId];
+            const max = Object.keys(getWorker).length;
+            for (let cc = 0; cc < max; cc++) {
+                const workerId = Object.keys(getWorker)[cc];
+                if (cc === 0) {
+                    rows.push(
+                        <Table.Row key={`day-tb-${getStationId}-${workerId}-${cc}`}>
+                            <Table.Cell style={tabHeaderCellStyle} rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
+                            {this.printWorker(getWorker[workerId].workerName)}
+                            {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
+                            <Table.Cell style={tabHeaderCellStyle}>
+                                <EditSecurityShift
+                                    getStationId={getStationId}
+                                    getStationName={getWorker[workerId].stationName}
+                                    workerId={workerId}
+                                />
+                            </Table.Cell >
+                        </Table.Row>
+                    );
+                } else {
+                    rows.push(
+                        <Table.Row key={`day-tb-${getStationId}-${workerId}-${cc}`}>
+                            {this.printWorker(getWorker[workerId].workerName)}
+                            {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
+                            <Table.Cell style={tabHeaderCellStyle}>
+                                <EditSecurityShift
+                                    getStationId={getStationId}
+                                    getStationName={getWorker[workerId].stationName}
+                                    workerId={workerId}
+                                />
+                            </Table.Cell >
+                        </Table.Row>
+                    );
                 }
-            });
+            }
         });
         return rows;
     }
