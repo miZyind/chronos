@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 import WorkController from './controller/worker';
 import StationController from './controller/station';
+import ShiftController from './controller/shift';
 
 const router = new Router({ prefix: '/api/v1' });
 
@@ -17,4 +18,7 @@ router.post('/station', StationController.add);
 router.put('/station', StationController.edit);
 router.delete('/station', StationController.delete);
 
+router.get('/shift', ShiftController.getAll);
+router.get('/shift/:year/:month/:stationid/:workerid', ShiftController.getOne);
+router.post('/shift', ShiftController.add);
 export { router };

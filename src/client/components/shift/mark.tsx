@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Actions } from '@actions/main';
+import { IMain } from '../../models/main';
 
-type markPropos = {
+type MarkPropos = {
   markName: string,
   getDay: number
   status: boolean;
@@ -20,25 +23,36 @@ const whiteMark = {
   lineHeight: '40px'
 };
 
-class Mark extends Component<markPropos> {
+type StateProps = IMain;
+type DispatchProps = typeof Actions;
+type Props = MarkPropos & StateProps & DispatchProps;
+
+class Mark extends Component<Props> {
   public state = { black: this.props.status };
-  public changeColor(e: any) {
+  public enterShiftChange(e: any) {
     if (e.shiftKey) {
-      this.setState({ black: !this.state.black });
-      if (this.state.black) {
-        console.log(this.props.markName + '-' + this.props.getDay + '-on');
-      } else {
-        console.log(this.props.markName + '-' + this.props.getDay + '-off');
-      }
+      this.changeEvent();
     }
+  }
+  public changeEvent() {
+    this.setState({ black: !this.state.black });
+    if (this.state.black) {
+      this.props.editshift({ 'day': this.props.getDay, 'shiftType': this.props.markName, 'status': 'on' });
+    } else {
+      this.props.editshift({ 'day': this.props.getDay, 'shiftType': this.props.markName, 'status': 'off' });
+    }
+    console.log(this.props.getShift);
   }
   public render() {
     const btnStyle = this.state.black ? whiteMark : blackMark;
     return (
       // tslint:disable-next-line:jsx-no-bind
-      <div style={btnStyle} onMouseEnter={this.changeColor.bind(this)} >{this.props.markName}</div>
+      <div style={btnStyle} onClick={this.changeEvent.bind(this)} onMouseEnter={this.enterShiftChange.bind(this)} >{this.props.markName}</div>
     );
   }
 }
 
-export default Mark;
+export default connect<StateProps, DispatchProps>(
+  (state: any) => state.main,
+  Actions
+)(Mark);

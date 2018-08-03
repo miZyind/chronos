@@ -20,6 +20,7 @@ const tabHeaderCellStyle = {
 };
 
 const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
+const getWorkerId = '4';
 
 type FStateProps = IFetch;
 type DispatchProps = typeof Actions;
@@ -29,20 +30,20 @@ class TableDays extends Component<Props> {
 
     constructor(prop: Props) {
         super(prop);
-        this.getStations('all');
+        this.getShifts();
     }
 
     public componentWillUpdate(nextProps: Props) {
         if (nextProps.sendfinish !== this.props.sendfinish) {
-            this.getStations('all');
+            this.getShifts();
         }
     }
 
-    public getStations(area: string) {
-        this.props.fetchBegin();
-        service.getStations(area)
+    public getShifts() {
+        this.props.fetchBegin({ 'type': 'nomal' });
+        service.getShifts()
             .then((response: any) => {
-                this.props.fetchGetDataSuccess(response);
+                this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': response });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
@@ -57,10 +58,10 @@ class TableDays extends Component<Props> {
         return weekDayCht[getWeekDay];
     }
     public stations() {
-        const { items } = this.props;
+        const { stationShiftItems } = this.props;
         const rows: JSX.Element[] = [];
-        Object.keys(items).map((area: any) => {
-            const getArea = Object.values(items[area]);
+        Object.keys(stationShiftItems).map((area: any) => {
+            const getArea = Object.values(stationShiftItems[area]);
             getArea.map((i: any) => {
                 const max = parseInt(i.stableNumber);
                 for (let cc = 1; cc <= max; cc++) {
@@ -72,7 +73,9 @@ class TableDays extends Component<Props> {
                                 {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
                                 <Table.Cell style={tabHeaderCellStyle}>
                                     <EditSecurityShift
+                                        getStationId={i.id}
                                         getStationName={i.name}
+                                        getWorkerId={getWorkerId}
                                     />
                                 </Table.Cell >
                             </Table.Row>
@@ -84,7 +87,9 @@ class TableDays extends Component<Props> {
                                 {this.props.days.map((v) => <Table.Cell style={tabHeaderCellStyle} key={`day-tb-${cc}-${i.id}-${v}`} />)}
                                 <Table.Cell style={tabHeaderCellStyle}>
                                     <EditSecurityShift
+                                        getStationId={i.id}
                                         getStationName={i.name}
+                                        getWorkerId={getWorkerId}
                                     />
                                 </Table.Cell >
                             </Table.Row>

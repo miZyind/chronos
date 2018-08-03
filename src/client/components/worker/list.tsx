@@ -27,16 +27,16 @@ class ListTable extends Component<Props> {
         }
     }
     public getWorkers() {
-        this.props.fetchBegin();
+        this.props.fetchBegin({'type': 'nomal'});
         service.getWorkers()
             .then((response: any) => {
-                this.props.fetchGetDataSuccess(response);
+                this.props.fetchGetDataSuccess({'type': 'workerList' , 'data': response });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
     }
     public deleteWorker(getId: any) {
-        this.props.fetchBegin();
+        this.props.fetchBegin({ 'type': 'nomal' });
         const obj: object = { 'id': getId };
         service.deleteWorker(obj)
             .then((response: any) => {
@@ -49,13 +49,13 @@ class ListTable extends Component<Props> {
             });
     }
     public getLists() {
-        const { items } = this.props;
+        const { workerListItems } = this.props;
         const getItems: {
             [index: string]: {
                 name: string,
                 mobile: string
             }
-        } = items;
+        } = workerListItems;
         const rows: JSX.Element[] = [];
         Object.keys(getItems).map((id: any) => {
             // tslint:disable-next-line:no-string-literal

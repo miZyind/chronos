@@ -13,11 +13,12 @@ enum ActionTypes {
   SELECTYEAR = '[dayline] selectyear',
   SELECTMONTH = '[dayline] selectmonth',
   SELECTAREA = '[stationlist] selectarea',
-  ADDCOVER = '[shift] addcover',
+  EDITSHIFT = '[shift] editshift',
   FETCH_BEGIN = '[fetch] FETCH  BEGIN',
   FETCH_GET_DATA_SUCCESS = '[fetch] FETCH GET DATA SUCCESS',
   FETCH_SEND_SUCCESS = '[fetch] FETCH SEND SUCCESS',
-  FETCH_FAILURE = '[fetch] FETCH FAILURE'
+  FETCH_FAILURE = '[fetch] FETCH FAILURE',
+  SELECTWORKER = '[fetch] SELECT WORKER'
 }
 
 const Actions = {
@@ -28,11 +29,12 @@ const Actions = {
   selectyear: (val: IMain) => createAction(ActionTypes.SELECTYEAR, val),
   selectmonth: (val: IMain) => createAction(ActionTypes.SELECTMONTH, val),
   selectarea: (val: IMain) => createAction(ActionTypes.SELECTAREA, val),
-  addcover: (obj: object) => createAction(ActionTypes.ADDCOVER, obj),
+  editshift: (obj: object) => createAction(ActionTypes.EDITSHIFT, obj),
   fetchBegin: () => createAction(ActionTypes.FETCH_BEGIN),
-  fetchGetDataSuccess: (data: IFetch) => createAction(ActionTypes.FETCH_GET_DATA_SUCCESS, data),
+  fetchGetDataSuccess: (obj: object) => createAction(ActionTypes.FETCH_GET_DATA_SUCCESS, obj),
   fetchSendSuccess: () => createAction(ActionTypes.FETCH_SEND_SUCCESS),
   fetchFailure: (error: IFetch) => createAction(ActionTypes.FETCH_FAILURE, error),
+  selectworker: (obj: object) => createAction(ActionTypes.SELECTWORKER, obj),
 };
 
 type Actions = ActionsUnion<typeof Actions>;

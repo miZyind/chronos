@@ -41,16 +41,16 @@ class ListTable extends Component<Props> {
     }
   }
   public getStations(area: string) {
-    this.props.fetchBegin();
+    this.props.fetchBegin({ 'type': 'nomal' });
     service.getStations(area)
       .then((response: any) => {
-        this.props.fetchGetDataSuccess(response);
+        this.props.fetchGetDataSuccess({ 'type': 'stationList', 'data': response });
       }, (error) => {
         this.props.fetchFailure(error);
       });
   }
   public deleteStation(getId: any) {
-    this.props.fetchBegin();
+    this.props.fetchBegin({ 'type': 'nomal' });
     const obj: object = { 'id': getId };
     service.deleteStation(obj)
       .then((response: any) => {
@@ -63,11 +63,11 @@ class ListTable extends Component<Props> {
       });
   }
   public getLists() {
-    const { items } = this.props;
+    const { stationListItems } = this.props;
     const rows: JSX.Element[] = [];
 
-    Object.keys(items).map((area: any) => {
-      const getArea = Object.values(items[area]);
+    Object.keys(stationListItems).map((area: any) => {
+      const getArea = Object.values(stationListItems[area]);
       getArea.map((i: any) => {
         if (i.id) {
           rows.push(

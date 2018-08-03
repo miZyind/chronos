@@ -3,7 +3,7 @@ import { Button, Header, Modal, Form } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import { Actions } from '@actions/main';
-import { IMain } from '../../models/main';
+import { IStore } from '../../models';
 
 type SelectCoverProps = {
   className?: string;
@@ -28,30 +28,36 @@ const optionWorks = {
   '107' : { 'name': '張大名'},
   '108': { 'name': '諸葛張葛張'},
 };
-const getItems: {
+let getItems: {
   [index: string]: {
     name: string
   }
 } = optionWorks;
 
-type StateProps = IMain;
+type StateProps = IStore;
 type DispatchProps = typeof Actions;
 type Props = SelectCoverProps & StateProps & DispatchProps;
 
 class SelectCover extends Component<Props> {
   public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false};
-  public getCover = { 'day': this.props.getDay, 'id': '1', 'name': 'AA' };
+  public getCover = {};
   constructor(prop: Props) {
     super(prop);
+    this.getWorkrtOptions();
+  }
+  public getWorkrtOptions() {
+    const { workerEditShiftItems } = this.props.fetch;
+    getItems = workerEditShiftItems;
+    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': Object.keys(getItems)[0], 'name': getItems[Object.keys(getItems)[0]].name };
   }
   public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
   public close = () => this.setState({ open: false });
   public add = () => {
     this.setState({ open: false });
-    this.props.addcover(this.getCover);
+    this.props.editshift(this.getCover);
   }
   public changeCover = (event: React.FormEvent<HTMLSelectElement>) => {
-    this.getCover = { 'day': this.props.getDay, 'id': event.currentTarget.value, 'name': getItems[event.currentTarget.value].name };
+    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': event.currentTarget.value, 'name': getItems[event.currentTarget.value].name };
   }
 
   public render() {
@@ -90,6 +96,6 @@ class SelectCover extends Component<Props> {
 }
 
 export default connect<StateProps, DispatchProps>(
-  (state: any) => state.main,
+  (state: any) => state,
   Actions
 )(SelectCover);

@@ -6,7 +6,8 @@ interface IMain {
   getSelectMonth: string;
   getDays: number[];
   getSelectArea: string;
-  getCovers: any;
+  getShift: any;
+  getSelectWorker: any;
 }
 
 export {

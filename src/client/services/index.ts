@@ -1,5 +1,16 @@
 import * as httpUtil from '../util/http-util';
 
+// shift
+export function getShifts(): Promise<any> {
+  return httpUtil.get('/api/v1/shift');
+}
+export function getShift(opts: any): Promise<any> {
+  return httpUtil.get(`/api/v1/shift/${opts.year}/${opts.month}/${opts.stationid}/${opts.workerid}`);
+}
+export function postShift(opts: object): Promise<any> {
+  return httpUtil.post('/api/v1/shift', opts);
+}
+
 // worker
 export function getWorkers(): Promise<any> {
   return httpUtil.get('/api/v1/worker');
