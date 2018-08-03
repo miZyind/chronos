@@ -40,7 +40,7 @@ class TableDays extends Component<Props> {
     }
 
     public getShifts() {
-        this.props.fetchBegin({ 'type': 'nomal' });
+        this.props.fetchBegin();
         service.getShifts()
             .then((response: any) => {
                 this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': response });
@@ -75,7 +75,6 @@ class TableDays extends Component<Props> {
                                     <EditSecurityShift
                                         getStationId={i.id}
                                         getStationName={i.name}
-                                        getWorkerId={getWorkerId}
                                     />
                                 </Table.Cell >
                             </Table.Row>
@@ -89,7 +88,6 @@ class TableDays extends Component<Props> {
                                     <EditSecurityShift
                                         getStationId={i.id}
                                         getStationName={i.name}
-                                        getWorkerId={getWorkerId}
                                     />
                                 </Table.Cell >
                             </Table.Row>

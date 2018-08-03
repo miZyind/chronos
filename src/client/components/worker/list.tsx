@@ -27,7 +27,7 @@ class ListTable extends Component<Props> {
         }
     }
     public getWorkers() {
-        this.props.fetchBegin({'type': 'nomal'});
+        this.props.fetchBegin();
         service.getWorkers()
             .then((response: any) => {
                 this.props.fetchGetDataSuccess({'type': 'workerList' , 'data': response });
@@ -36,7 +36,7 @@ class ListTable extends Component<Props> {
             });
     }
     public deleteWorker(getId: any) {
-        this.props.fetchBegin({ 'type': 'nomal' });
+        this.props.fetchBegin();
         const obj: object = { 'id': getId };
         service.deleteWorker(obj)
             .then((response: any) => {

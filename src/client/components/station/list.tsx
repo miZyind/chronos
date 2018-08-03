@@ -41,7 +41,7 @@ class ListTable extends Component<Props> {
     }
   }
   public getStations(area: string) {
-    this.props.fetchBegin({ 'type': 'nomal' });
+    this.props.fetchBegin();
     service.getStations(area)
       .then((response: any) => {
         this.props.fetchGetDataSuccess({ 'type': 'stationList', 'data': response });
@@ -50,7 +50,7 @@ class ListTable extends Component<Props> {
       });
   }
   public deleteStation(getId: any) {
-    this.props.fetchBegin({ 'type': 'nomal' });
+    this.props.fetchBegin();
     const obj: object = { 'id': getId };
     service.deleteStation(obj)
       .then((response: any) => {
