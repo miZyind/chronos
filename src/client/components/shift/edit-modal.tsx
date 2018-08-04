@@ -65,19 +65,12 @@ class EditWorkerShift extends Component<Props> {
             .then((response: any) => {
                 if (response === 'yes') {
                     this.props.fetchSendSuccess();
-                    alert('儲存成功');
                 }
             }, (error) => {
                 this.props.fetchFailure(error);
             });
     }
     public add = () => {
-        console.log(this.props.main.getSelectYear);
-        console.log(this.props.main.getSelectMonth);
-        console.log(this.props.getStationId);
-        console.log(this.props.getStationName);
-        console.log(this.props.main.getSelectWorker);
-        console.log(this.props.main.getShift);
         this.setState({ open: false });
         this.fetchShift();
     }
@@ -99,6 +92,7 @@ class EditWorkerShift extends Component<Props> {
                     <Modal.Description>
                         <Header>{formPropos.title}</Header>
                         <EditShiftTable
+                            className='edit'
                             stationName={this.props.getStationName}
                             stationId={this.props.getStationId}
                         />

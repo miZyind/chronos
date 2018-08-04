@@ -24,15 +24,6 @@ const buttonStyle = {
   padding: '0px',
   marginRight: '0px'
 };
-const optionWorks = {
-  '107' : { 'name': '張大名'},
-  '108': { 'name': '諸葛張葛張'},
-};
-let getItems: {
-  [index: string]: {
-    name: string
-  }
-} = optionWorks;
 
 type StateProps = IStore;
 type DispatchProps = typeof Actions;
@@ -47,8 +38,7 @@ class SelectCover extends Component<Props> {
   }
   public getWorkrtOptions() {
     const { workerEditShiftItems } = this.props.fetch;
-    getItems = workerEditShiftItems;
-    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': Object.keys(getItems)[0], 'name': getItems[Object.keys(getItems)[0]].name };
+    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name };
   }
   public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
   public close = () => this.setState({ open: false });
@@ -57,11 +47,13 @@ class SelectCover extends Component<Props> {
     this.props.editshift(this.getCover);
   }
   public changeCover = (event: React.FormEvent<HTMLSelectElement>) => {
-    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': event.currentTarget.value, 'name': getItems[event.currentTarget.value].name };
+    const { workerEditShiftItems } = this.props.fetch;
+    this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'status': 'on', 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name };
   }
 
   public render() {
     const { open, dimmer, closeondocument, closeondimmer } = this.state;
+    const { workerEditShiftItems } = this.props.fetch;
     const button = <Button style={buttonStyle} onClick={this.show(true)}>{formPropos.titleBtn}</Button>;
     return (
       <Modal
@@ -80,7 +72,7 @@ class SelectCover extends Component<Props> {
             <Form>
               <Form.Group widths='equal'>
                 <Form.Field label={formPropos.selectCover} control='select' onChange={this.changeCover} >
-                  {Object.keys(getItems).map((id: any) => <option key={id} value={id} > {getItems[id].name}</option >)}
+                  {Object.keys(workerEditShiftItems).map((id: any) => <option key={id} value={id} > {workerEditShiftItems[id].name}</option >)}
                 </Form.Field>
               </Form.Group>
             </Form>

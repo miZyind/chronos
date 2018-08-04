@@ -27,24 +27,16 @@ type DaysLineTableProps = {
     onChangeMonthEvent?: any;
     selectYear: string;
     selectMonth: string;
-    getDayLineHead: number[];
 };
 
 class DaysLineTable extends Component<DaysLineTableProps> {
-
-    public getCommonEra = (year: number) => {
-        return year + 1911;
-    }
-
     public render() {
         return (
             <div className={this.props.className} >
                 <Selector options={optionYears} currentSelected={this.props.selectYear} onChangeEvent={this.props.onChangeYearEvent} />
                 <Selector options={optionMonths} currentSelected={this.props.selectMonth} onChangeEvent={this.props.onChangeMonthEvent} />
                 <TableDays
-                    year={this.getCommonEra(parseInt(this.props.selectYear))}
-                    month={parseInt(this.props.selectMonth)}
-                    days={this.props.getDayLineHead}
+                    className='table-days'
                 />
             </div>
         );

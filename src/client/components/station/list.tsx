@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Selector from '@components/selector';
 import AddFormMoal from '@components/station/add';
 import EditFormMoal from '@components/station/edit';
-import { Table, Button, Icon, Message } from 'semantic-ui-react';
+import { Table, Button, Icon } from 'semantic-ui-react';
+import Wating from '@components/waiting';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
@@ -99,14 +100,7 @@ class ListTable extends Component<Props> {
   public render() {
     const { loading } = this.props;
     if (loading) {
-      return (
-        <Message icon>
-          <Icon name='circle notched' loading />
-          <Message.Content>
-            <Message.Header>Loading</Message.Header>
-          </Message.Content>
-        </Message>
-      );
+      return (<Wating />);
     }
     return (
       <div className={this.props.className} >

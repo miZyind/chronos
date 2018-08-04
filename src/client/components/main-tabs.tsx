@@ -10,7 +10,6 @@ type MainTabProps = {
     onChangeMonthEvent?: any;
     selectYear: string;
     selectMonth: string;
-    getDayLineHead: number[];
     onChangeAreaEvent?: any;
     selectArea: string;
 };
@@ -31,7 +30,6 @@ class MainTab extends Component<MainTabProps> {
                         onChangeMonthEvent={this.props.onChangeMonthEvent}
                         selectYear={this.props.selectYear}
                         selectMonth={this.props.selectMonth}
-                        getDayLineHead={this.props.getDayLineHead}
                     />
                 </Tab.Pane>
         },

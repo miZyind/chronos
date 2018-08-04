@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
-import { Table, Message, Icon } from 'semantic-ui-react';
+import { Table, Label } from 'semantic-ui-react';
+import Wating from '@components/waiting';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import EditSecurityShift from '@components/shift/edit-modal';
-
+import shiftLabs from '#lib/shift';
 import { Actions } from '@actions/main';
-import { IFetch } from '../../models/fetch';
+import { IStore } from '../../models';
 import * as service from '../../services';
 
 type TableDaysProps = {
-    days: number[];
-    month: number;
-    year: number;
-};
-const tabHeaderCellStyle = {
-    fontSize: '10px',
-    textAlign: 'center',
-    padding: '0px',
-    borderLeft: '1px solid rgba(34, 36, 38, .1)',
-};
-const shiftStyle = {
-    width: '25px',
-    padding: '0px',
+    className: string;
 };
 
-const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
-
-type FStateProps = IFetch;
+type StateProps = IStore;
 type DispatchProps = typeof Actions;
-type Props = TableDaysProps & FStateProps & DispatchProps;
+type Props = TableDaysProps & StateProps & DispatchProps;
 
 class TableDays extends Component<Props> {
 
@@ -37,14 +25,14 @@ class TableDays extends Component<Props> {
     }
 
     public componentWillUpdate(nextProps: Props) {
-        if (nextProps.sendfinish !== this.props.sendfinish) {
+        if (nextProps.fetch.sendfinish !== this.props.fetch.sendfinish) {
             this.getShifts();
         }
     }
     public getShifts() {
         const obj: object = {
-            'year': this.getCommonEra(this.props.year),
-            'month': this.props.month
+            'year': this.props.main.getSelectYear,
+            'month': this.props.main.getSelectMonth
         };
         this.props.fetchBegin();
         service.getShifts(obj)
@@ -54,43 +42,34 @@ class TableDays extends Component<Props> {
                 this.props.fetchFailure(error);
             });
     }
-    public getWeekDay(day: number) {
-        const getYear: string = this.props.year.toString();
-        const getMonth: string = this.props.month.toString();
-        const getDay: string = day.toString();
-        const date: string = getYear + '-' + getMonth + '-' + getDay;
-        const getWeekDay: number = new Date(date).getDay();
-        return weekDayCht[getWeekDay];
-    }
-    public getCommonEra = (year: number) => {
-        return year - 1911;
-    }
+
     public printWorker(name: string) {
         const rows: JSX.Element[] = [];
         if (name.length > 0) {
-            rows.push(<Table.Cell style={tabHeaderCellStyle} >{name}</Table.Cell>);
+            rows.push(<Table.Cell ><Label className='lab-cover' as='a' basic >{name}</Label></Table.Cell>);
         } else {
-            rows.push(<Table.Cell style={tabHeaderCellStyle} />);
+            rows.push(<Table.Cell />);
         }
         return rows;
     }
     public printShiftType(shift: any, stationId: string, workerId: string, index: number) {
+        const { getDays } = this.props.main;
         const rows: JSX.Element[] = [];
-        this.props.days.map((v) => {
+        getDays.map((v) => {
             if (shift && shift[v]) {
                 if (shift[v].shiftType === '休') {
-                    rows.push(<Table.Cell style={shiftStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{`${ shift[v].cover.name}`}</Table.Cell>);
+                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
                 } else {
-                    rows.push(<Table.Cell style={tabHeaderCellStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
                 }
             } else {
-                rows.push(<Table.Cell style={tabHeaderCellStyle} key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
+                rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
             }
         });
         return rows;
     }
     public stations() {
-        const { stationShiftItems } = this.props;
+        const { stationShiftItems } = this.props.fetch;
         const rows: JSX.Element[] = [];
         Object.keys(stationShiftItems).map((stationId: any) => {
             const getStationId = stationId;
@@ -100,11 +79,11 @@ class TableDays extends Component<Props> {
                 const workerId = Object.keys(getWorker)[cc];
                 if (cc === 0) {
                     rows.push(
-                        <Table.Row key={`day-tb-${getStationId}-${workerId}-${cc}`}>
-                            <Table.Cell style={tabHeaderCellStyle} rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
+                        <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
+                            <Table.Cell rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
                             {this.printWorker(getWorker[workerId].workerName)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
-                            <Table.Cell style={tabHeaderCellStyle}>
+                            <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
                                     getStationName={getWorker[workerId].stationName}
@@ -115,10 +94,10 @@ class TableDays extends Component<Props> {
                     );
                 } else {
                     rows.push(
-                        <Table.Row key={`day-tb-${getStationId}-${workerId}-${cc}`}>
+                        <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
                             {this.printWorker(getWorker[workerId].workerName)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
-                            <Table.Cell style={tabHeaderCellStyle}>
+                            <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
                                     getStationName={getWorker[workerId].stationName}
@@ -133,39 +112,59 @@ class TableDays extends Component<Props> {
         return rows;
     }
     public render() {
-        const { loading } = this.props;
+        const { loading } = this.props.fetch;
+        const { getSelectYear, getSelectMonth, getDays } = this.props.main;
         if (loading) {
-            return (
-                <Message icon>
-                    <Icon name='circle notched' loading />
-                    <Message.Content>
-                        <Message.Header>Loading</Message.Header>
-                    </Message.Content>
-                </Message>
-            );
+            return (<Wating/>);
         }
         return (
-            <Table celled>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell rowSpan='2' style={tabHeaderCellStyle}>駐點</Table.HeaderCell>
-                        <Table.HeaderCell style={tabHeaderCellStyle}>日期</Table.HeaderCell>
-                        {this.props.days.map((day, i) => <Table.HeaderCell style={tabHeaderCellStyle} key={'d-' + i}>{day}</Table.HeaderCell>)}
-                        <Table.HeaderCell style={tabHeaderCellStyle} rowSpan='2'>動作</Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.HeaderCell style={tabHeaderCellStyle}>星期</Table.HeaderCell>
-                        {this.props.days.map((day, i) => <Table.HeaderCell style={tabHeaderCellStyle} key={'w-' + i}>{this.getWeekDay(day)}</Table.HeaderCell>)}
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {this.stations()}
-                </Table.Body>
-            </Table>
+            <div className={this.props.className}>
+                <Table celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell rowSpan='2'>駐點</Table.HeaderCell>
+                            <Table.HeaderCell >日期</Table.HeaderCell>
+                            {getDays.map((day, i) => <Table.HeaderCell key={'d-' + i}>{day}</Table.HeaderCell>)}
+                            <Table.HeaderCell rowSpan='2'>動作</Table.HeaderCell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.HeaderCell>星期</Table.HeaderCell>
+                            {getDays.map((day, i) => <Table.HeaderCell key={'w-' + i}>{shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day.toString())}</Table.HeaderCell>)}
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {this.stations()}
+                    </Table.Body>
+                </Table>
+            </div>
         );
     }
 }
-export default connect<FStateProps, DispatchProps>(
-    (state: any) => state.fetch,
+const TableDaysShifts = styled(TableDays) `
+    .ui.table thead th{
+        padding: 0px;
+        font-size: 10px;
+        width: 2px;
+        text-align: center;
+        border-right: 1px solid rgba(34,36,38,.1);
+        border-left: none;
+    }
+    .ui.table tbody tr td{
+        font-size: 14px;
+        height: 20px;
+        width: 2px;
+        padding: 0px;
+        text-align: center;
+        border-left: none;
+        border-right: 1px solid rgba(34,36,38,.1);
+    }
+    .lab-cover{
+        width: 15px;
+        writing-mode: tb-lr;
+        padding: 0px;
+    }
+`;
+export default connect<StateProps, DispatchProps>(
+    (state: any) => state,
     Actions
-)(TableDays);
+)(TableDaysShifts);

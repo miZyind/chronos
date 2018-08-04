@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AddFormMoal from '@components/worker/add';
 import EditFormMoal from '@components/worker/edit';
-import { Table, Button, Icon, Message } from 'semantic-ui-react';
+import { Table, Button, Icon} from 'semantic-ui-react';
+import Wating from '@components/waiting';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
@@ -50,17 +51,12 @@ class ListTable extends Component<Props> {
     }
     public getLists() {
         const { workerListItems } = this.props;
-        const getItems: {
-            [index: string]: {
-                name: string,
-                mobile: string
-            }
-        } = workerListItems;
+
         const rows: JSX.Element[] = [];
-        Object.keys(getItems).map((id: any) => {
+        Object.keys(workerListItems).map((id: any) => {
             // tslint:disable-next-line:no-string-literal
-            const getItemName = getItems[id].name;
-            const getItemMobile = getItems[id].mobile;
+            const getItemName = workerListItems[id].name;
+            const getItemMobile = workerListItems[id].mobile;
             rows.push(
                 <Table.Row key={`worker-${id}}`}>
                     <Table.Cell>{id}</Table.Cell>
@@ -81,14 +77,7 @@ class ListTable extends Component<Props> {
     public render() {
         const {loading} = this.props;
         if (loading) {
-            return (
-                <Message icon>
-                    <Icon name='circle notched' loading />
-                        <Message.Content>
-                        <Message.Header>Loading</Message.Header>
-                    </Message.Content>
-                </Message>
-            );
+            return (<Wating />);
         }
         return (
             <div className={this.props.className} >

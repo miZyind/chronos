@@ -40,7 +40,6 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
           onChangeMonthEvent={selectmonth}
           selectYear={getSelectYear}
           selectMonth={getSelectMonth}
-          getDayLineHead={getDays}
           selectArea={getSelectArea}
           onChangeAreaEvent={selectarea}
         />

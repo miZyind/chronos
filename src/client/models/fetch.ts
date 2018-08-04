@@ -1,6 +1,11 @@
 
 interface IFetch {
-  workerListItems: any;
+  workerListItems: {
+    [index: string]: {
+      name: string,
+      mobile: string
+    }
+  };
   stationListItems: any;
   workerEditShiftItems: any;
   stationShiftItems: any;
