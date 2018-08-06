@@ -43,12 +43,12 @@ class TableDays extends Component<Props> {
             });
     }
 
-    public printWorker(name: string) {
+    public printWorker(name: string, stationId: string, workerId: string, index: number) {
         const rows: JSX.Element[] = [];
         if (name.length > 0) {
-            rows.push(<Table.Cell ><Label className='lab-cover' as='a' basic >{name}</Label></Table.Cell>);
+            rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}`}><Label className='lab-cover' as='a' basic >{name}</Label></Table.Cell>);
         } else {
-            rows.push(<Table.Cell />);
+            rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}`} />);
         }
         return rows;
     }
@@ -81,7 +81,7 @@ class TableDays extends Component<Props> {
                     rows.push(
                         <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
                             <Table.Cell rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
-                            {this.printWorker(getWorker[workerId].workerName)}
+                            {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
                             <Table.Cell>
                                 <EditSecurityShift
@@ -95,7 +95,7 @@ class TableDays extends Component<Props> {
                 } else {
                     rows.push(
                         <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
-                            {this.printWorker(getWorker[workerId].workerName)}
+                            {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
                             <Table.Cell>
                                 <EditSecurityShift
@@ -115,7 +115,7 @@ class TableDays extends Component<Props> {
         const { loading } = this.props.fetch;
         const { getSelectYear, getSelectMonth, getDays } = this.props.main;
         if (loading) {
-            return (<Wating/>);
+            return (<Wating />);
         }
         return (
             <div className={this.props.className}>

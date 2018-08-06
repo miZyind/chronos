@@ -90,7 +90,6 @@ class AddForm extends Component<Props> {
                   <input placeholder='請輸入駐點名稱' name='sname' value={sname} onChange={this.change} />
                 </Form.Field>
                 <Form.Field label={formPropos.selectArea} name='sarea' value={sarea} control='select' onChange={this.change}>
-                  <option value='all'>全部</option>
                   <option value='北區'>北區</option>
                   <option value='中區'>中區</option>
                   <option value='南區'>南區</option>
