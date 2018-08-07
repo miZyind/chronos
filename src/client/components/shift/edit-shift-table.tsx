@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import shiftLabs from '#lib/shift';
 import { Table, Grid, Label } from 'semantic-ui-react';
-import Mark from '@components/shift/mark';
-import Cover from '@components/shift/cover';
+import Arrangement from '@components/shift/shif-work-arrangement';
 import { Actions } from '@actions/main';
 import { IStore } from '../../models';
 
@@ -12,6 +11,7 @@ type EditTableShiftsProps = {
     className: string;
     stationName: string;
     stationId: string;
+    workerId?: string;
 };
 
 const optionWorkers: any = [];
@@ -28,12 +28,16 @@ class EditTableShifts extends Component<Props> {
     public getWorkrtOptions() {
         const { workerEditShiftItems } = this.props.fetch;
         Object.keys(workerEditShiftItems).map((id: any) => {
-            // tslint:disable-next-line:no-string-literal
             const getItemName = workerEditShiftItems[id].name;
             const getItemId = id;
             optionWorkers.push({ title: getItemName, key: getItemId });
         });
-        this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name};
+        // tslint:disable-next-line:prefer-conditional-expression
+        if (this.props.workerId) {
+            (this.props.workerId.split('-')[0] === 'empty') ? this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name } : this.props.main.getSelectWorker = { 'id': this.props.workerId, 'name': workerEditShiftItems[this.props.workerId].name };
+        } else {
+            this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name };
+        }
     }
 
     public deleteCover(day: any) {
@@ -45,11 +49,9 @@ class EditTableShifts extends Component<Props> {
     }
     public cover() {
         const { getShift, getDays } = this.props.main;
-        console.log(getShift);
         const rows: JSX.Element[] = [];
         getDays.map((i) => {
             if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
-                // tslint:disable-next-line:jsx-no-bind
                 rows.push(<Table.Cell key={'E-' + i} onClick={this.deleteCover.bind(this, i)}><Label className='lab-cover'  as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
             } else {
                 rows.push(<Table.Cell className='tt'  key={'E-' + i} />);
@@ -57,28 +59,16 @@ class EditTableShifts extends Component<Props> {
         });
         return rows;
     }
-    public mark() {
-        const { getShift, getDays } = this.props.main;
-        console.log(getShift);
-        const rows: JSX.Element[] = [];
-        getDays.map((i) => {
-            if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
-                // tslint:disable-next-line:jsx-no-bind
-                rows.push(<Table.Cell key={'E-' + i} onClick={this.deleteCover.bind(this, i)}><Label className='lab-cover' as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
-            } else {
-                rows.push(<Table.Cell key={'E-' + i} />);
-            }
-        });
-        return rows;
-    }
-    public dayMark(index: string, condition: string) {
+
+    public dayMark(index: string) {
         const { getShift } = this.props.main;
         const rows: JSX.Element[] = [];
+        console.log(getShift);
         this.props.main.getDays.map((i: number) => {
-            if (getShift[i] && getShift[i].shiftType === condition) {
-                rows.push(<Table.Cell key={index + '-' + i} > <Mark className={`mark-${i}`} markName={condition} getDay={i} status={false} /></Table.Cell>);
+            if (getShift[i] && getShift[i].shiftType) {
+                rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value={getShift[i].shiftType} getDay={i} /></Table.Cell>);
             } else {
-                rows.push(<Table.Cell key={index + '-' + i} > <Mark className={`mark-${i}`} markName={condition} getDay={i} status={true} /></Table.Cell>);
+                rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value='無' getDay={i} /></Table.Cell>);
             }
         });
         return rows;
@@ -88,24 +78,13 @@ class EditTableShifts extends Component<Props> {
         const rows: JSX.Element[] = [];
         rows.push(
             <Table.Row key='r-1'>
-                <Table.Cell>日班</Table.Cell>
-                {this.dayMark('A', '日')}
+                <Table.Cell>排班</Table.Cell>
+                {this.dayMark('A')}
             </Table.Row>
         );
         rows.push(
-            <Table.Row key='r-2'>
-                <Table.Cell>晚班</Table.Cell>
-                {this.dayMark('B', '夜')}
-            </Table.Row>
-        );
-        rows.push(
-            <Table.Row key='r-3' >
-                <Table.Cell rowSpan='2'>休假</Table.Cell>
-                {this.props.main.getDays.map((i) => <Table.Cell key={'C-' + i}><Label className='btn-cover' ><Cover getDay={i.toString()}/></Label></Table.Cell>)}
-            </Table.Row >
-        );
-        rows.push(
-            <Table.Row key='r-4' >
+            <Table.Row key='r-2' >
+                <Table.Cell>代班人員</Table.Cell>
                 {this.cover()}
             </Table.Row >
         );

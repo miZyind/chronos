@@ -6,7 +6,15 @@ interface IMain {
   getSelectMonth: string;
   getDays: number[];
   getSelectArea: string;
-  getShift: any;
+  getShift: {
+    [index: string]: {
+      shiftType: string,
+      cover: {
+        name: string,
+        id: string
+      }
+    }
+  };
   getSelectWorker: any;
   modalLoading: boolean;
 }

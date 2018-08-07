@@ -3,7 +3,7 @@ import { ActionTypes, Actions  } from '../actions/main';
 import { IFetch } from '../models/fetch';
 
 const initState: IFetch = {
-  workerListItems: [],
+  workerListItems: {},
   stationListItems: [],
   workerEditShiftItems: [],
   stationShiftItems: [],

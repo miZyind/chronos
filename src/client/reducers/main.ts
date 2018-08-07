@@ -64,16 +64,7 @@ const main = (state = initState, action: Actions) => {
       return { ...state, getSelectArea: action.payload};
     }
     case ActionTypes.EDITSHIFT: {
-      const getItems: {
-        [index: string]: {
-          shiftType: string,
-          cover: {
-            name: string,
-            id: string
-          }
-        }
-      } = state.getShift;
-      // tslint:disable-next-line:prefer-conditional-expression
+      const getItems = state.getShift;
       if (action.payload.status === 'on') {
         let coverId = '';
         let coverName = '';

@@ -93,11 +93,16 @@ class ShiftController {
     const getMonth = ctx.request.body!.month;
     const getStationId = ctx.request.body!.stationid;
     const getStationName = ctx.request.body!.stationname;
-    const getWorkerId = ctx.request.body!.workerid;
+    const getOldWorkerId = ctx.request.body!.oldworkerid;
+    const getNewWorkerId = ctx.request.body!.newworkerid;
     const getWorkerName = ctx.request.body!.workername;
     const getShift = ctx.request.body!.shift;
 
-    ctx.db.push(`/shift/${getYear}/${getMonth}/${getStationId}/${getWorkerId}`, {
+    const getOldData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}}`);
+    if (getOldData) {
+      ctx.db.delete(`/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
+    }
+    ctx.db.push(`/shift/${getYear}/${getMonth}/${getStationId}/${getNewWorkerId}`, {
       stationName: getStationName,
       workerName: getWorkerName,
       shift: getShift

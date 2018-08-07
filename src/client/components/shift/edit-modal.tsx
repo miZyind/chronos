@@ -31,7 +31,7 @@ class EditWorkerShift extends Component<Props> {
     public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false };
 
     public show = (dimmer: boolean) => () => {
-        this.props.main.getShift = null;
+        this.props.main.getShift = {};
         this.getShift();
         this.setState({ dimmer, open: true });
     }
@@ -57,7 +57,8 @@ class EditWorkerShift extends Component<Props> {
             'month': this.props.main.getSelectMonth,
             'stationid': this.props.getStationId,
             'stationname': this.props.getStationName,
-            'workerid': this.props.main.getSelectWorker.id,
+            'oldworkerid': this.props.workerId,
+            'newworkerid': this.props.main.getSelectWorker.id,
             'workername': this.props.main.getSelectWorker.name,
             'shift': this.props.main.getShift
         };
@@ -95,6 +96,7 @@ class EditWorkerShift extends Component<Props> {
                             className='edit'
                             stationName={this.props.getStationName}
                             stationId={this.props.getStationId}
+                            workerId={this.props.workerId}
                         />
                     </Modal.Description>
                 </Modal.Content>
