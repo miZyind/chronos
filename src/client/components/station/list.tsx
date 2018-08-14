@@ -71,6 +71,22 @@ class ListTable extends Component<Props> {
       const getArea = Object.values(stationListItems[area]);
       getArea.map((i: any) => {
         if (i.id) {
+          let dayStart = '00:00';
+          let dayEnd = '00:00';
+          let nightStart = '00:00';
+          let nightEnd = '00:00';
+          if (i.dayStart !== null && i.dayStart !== undefined) {
+            dayStart = i.dayStart;
+          }
+          if (i.dayEnd !== null && i.dayEnd !== undefined) {
+            dayEnd = i.dayEnd;
+          }
+          if (i.nightStart !== null && i.nightStart !== undefined) {
+            nightStart = i.nightStart;
+          }
+          if (i.nightEnd !== null && i.nightEnd !== undefined) {
+            nightEnd = i.nightEnd;
+          }
           rows.push(
             <Table.Row key={`st-${area}-${i.id}`}>
               <Table.Cell>{i.id}</Table.Cell>
@@ -78,6 +94,8 @@ class ListTable extends Component<Props> {
               <Table.Cell>{i.mobileNumber}</Table.Cell>
               <Table.Cell>{i.area}</Table.Cell>
               <Table.Cell>{i.stableNumber}</Table.Cell>
+              <Table.Cell>{`${dayStart}-${dayEnd}`}</Table.Cell>
+              <Table.Cell>{`${nightStart}-${nightEnd}`}</Table.Cell>
               <Table.Cell>{i.desc}</Table.Cell>
               <Table.Cell selectable>
                 <EditFormMoal
@@ -87,6 +105,10 @@ class ListTable extends Component<Props> {
                   editArea={i.area}
                   editStable={i.stableNumber}
                   editDesc={i.desc}
+                  editDayStart={dayStart}
+                  editDayEnd={dayEnd}
+                  editNightStart={nightStart}
+                  editNightEnd={nightEnd}
                 />
                 <Button icon onClick={this.deleteStation.bind(this, i.id)}> <Icon name='trash' /></Button>
               </Table.Cell>
@@ -114,6 +136,8 @@ class ListTable extends Component<Props> {
               <Table.HeaderCell>電話</Table.HeaderCell>
               <Table.HeaderCell>地區</Table.HeaderCell>
               <Table.HeaderCell>人數</Table.HeaderCell>
+              <Table.HeaderCell>日班時間</Table.HeaderCell>
+              <Table.HeaderCell>夜班時間</Table.HeaderCell>
               <Table.HeaderCell>備註</Table.HeaderCell>
               <Table.HeaderCell>動作</Table.HeaderCell>
             </Table.Row>

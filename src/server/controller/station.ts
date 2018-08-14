@@ -1,5 +1,5 @@
 import { IRouterContext} from 'koa-router';
-import operation from '../db/operation';
+import operation from '../libs/operation';
 
 class StationController {
   public static async getAll(ctx: IRouterContext) {
@@ -33,6 +33,10 @@ class StationController {
     const getStable = ctx.request.body!.stable;
     const getMobile = ctx.request.body!.mobile;
     const getDesc = ctx.request.body!.desc;
+    const getDayStart = ctx.request.body!.daystart;
+    const getDayEnd = ctx.request.body!.dayend;
+    const getNightStart = ctx.request.body!.nightstart;
+    const getNightEnd = ctx.request.body!.nightend;
     let addId = 1;
     const getData = await operation.checkTable(ctx.db, '/station');
     if (Object.keys(getData).length) {
@@ -44,6 +48,10 @@ class StationController {
       area: getArea,
       mobileNumber: getMobile,
       stableNumber: getStable,
+      dayStart: getDayStart,
+      dayEnd: getDayEnd,
+      nightStart: getNightStart,
+      nightEnd: getNightEnd,
       desc: getDesc,
     });
     ctx.status = 200;
@@ -54,6 +62,10 @@ class StationController {
     const getStable = ctx.request.body!.stable;
     const getMobile = ctx.request.body!.mobile;
     const getDesc = ctx.request.body!.desc;
+    const getDayStart = ctx.request.body!.daystart;
+    const getDayEnd = ctx.request.body!.dayend;
+    const getNightStart = ctx.request.body!.nightstart;
+    const getNightEnd = ctx.request.body!.nightend;
     const getId = parseInt(ctx.request.body.id);
     const getData = await operation.checkTable(ctx.db, `/station/${getId}`);
     if (getData) {
@@ -62,6 +74,10 @@ class StationController {
         area: getArea,
         mobileNumber: getMobile,
         stableNumber: getStable,
+        dayStart: getDayStart,
+        dayEnd: getDayEnd,
+        nightStart: getNightStart,
+        nightEnd: getNightEnd,
         desc: getDesc,
       });
     }

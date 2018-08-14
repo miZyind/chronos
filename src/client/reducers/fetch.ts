@@ -4,6 +4,7 @@ import { IFetch } from '../models/fetch';
 
 const initState: IFetch = {
   workerListItems: {},
+  countListItems: {},
   stationListItems: [],
   workerEditShiftItems: [],
   stationShiftItems: [],
@@ -28,6 +29,13 @@ const fetch = (state = initState, action: Actions) => {
           loading: false,
           sendfinish: false,
           workerListItems: action.payload.data
+        };
+      } else if (action.payload.type === 'countList') {
+        return {
+          ...state,
+          loading: false,
+          sendfinish: false,
+          countListItems: action.payload.data
         };
       } else if (action.payload.type === 'stationList') {
         return {

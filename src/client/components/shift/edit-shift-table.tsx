@@ -39,10 +39,6 @@ class EditTableShifts extends Component<Props> {
             this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name };
         }
     }
-
-    public deleteCover(day: any) {
-        this.props.editshift({ 'day': day, 'shiftType': '休', 'status': 'off' });
-    }
     public changeWorker = (event: React.FormEvent<HTMLSelectElement>) => {
         const { workerEditShiftItems } = this.props.fetch;
         this.props.selectworker({ 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name});
@@ -52,7 +48,7 @@ class EditTableShifts extends Component<Props> {
         const rows: JSX.Element[] = [];
         getDays.map((i) => {
             if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
-                rows.push(<Table.Cell key={'E-' + i} onClick={this.deleteCover.bind(this, i)}><Label className='lab-cover'  as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
+                rows.push(<Table.Cell key={'E-' + i} ><Label className='lab-cover'  as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
             } else {
                 rows.push(<Table.Cell className='tt'  key={'E-' + i} />);
             }

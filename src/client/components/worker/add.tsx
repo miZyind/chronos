@@ -43,7 +43,6 @@ class AddForm extends Component<Props> {
       .then((response: any) => {
         if (response === 'yes') {
           this.props.fetchSendSuccess();
-          alert('新增成功');
         }
       }, (error) => {
         this.props.fetchFailure(error);

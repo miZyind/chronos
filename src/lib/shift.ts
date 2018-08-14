@@ -1,7 +1,24 @@
-import { Table } from 'semantic-ui-react';
 
 const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
-
+const optionYears = [
+  { title: '107年', key: '107' },
+  { title: '108年', key: '108' },
+  { title: '109年', key: '109' },
+];
+const optionMonths = [
+  { title: '1月', key: '1' },
+  { title: '2月', key: '2' },
+  { title: '3月', key: '3' },
+  { title: '4月', key: '4' },
+  { title: '5月', key: '5' },
+  { title: '6月', key: '6' },
+  { title: '7月', key: '7' },
+  { title: '8月', key: '8' },
+  { title: '9月', key: '9' },
+  { title: '10月', key: '10' },
+  { title: '11月', key: '11' },
+  { title: '12月', key: '12' },
+];
 const getCommonEra = (year: number) => {
   return year + 1911;
 };
@@ -22,18 +39,10 @@ const dayPrint = (db: any, path: string) => {
   return getData;
 };
 
-// const printWorker = (name: string, style) => {
-//   const rows: JSX.Element[] = [];
-//   if (name.length > 0) {
-//     rows.push(<Table.Cell  > { name } < /Table.Cell>);
-//   } else {
-//     rows.push(<Table.Cell style={ tabHeaderCellStyle } />);
-//   }
-//   return rows;
-// };
-
 const shift = {
   weekDayCht,
+  optionYears,
+  optionMonths,
   getWeekDay,
   getCommonEra,
   dayPrint,

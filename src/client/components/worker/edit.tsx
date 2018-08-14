@@ -47,7 +47,6 @@ class EditForm extends Component<Props> {
       .then((response: any) => {
         if (response === 'yes') {
           this.props.fetchSendSuccess();
-          alert('修改成功');
         }
       }, (error) => {
         this.props.fetchFailure(error);

@@ -1,5 +1,5 @@
 import { IRouterContext } from 'koa-router';
-import operation from '../db/operation';
+import operation from '../libs/operation';
 
 class ShiftController {
 
@@ -88,7 +88,7 @@ class ShiftController {
     ctx.status = 200;
   }
 
-  public static async add(ctx: IRouterContext) {
+  public static async edit(ctx: IRouterContext) {
     const getYear = ctx.request.body!.year;
     const getMonth = ctx.request.body!.month;
     const getStationId = ctx.request.body!.stationid;
@@ -96,38 +96,84 @@ class ShiftController {
     const getOldWorkerId = ctx.request.body!.oldworkerid;
     const getNewWorkerId = ctx.request.body!.newworkerid;
     const getWorkerName = ctx.request.body!.workername;
-    const getShift = ctx.request.body!.shift;
+    const getNewShift = ctx.request.body!.shift;
 
-    const getOldData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}}`);
+    const getOldData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
     if (getOldData) {
+      const getOldShift = getOldData.shift;
+      Object.keys(getOldShift).map((id: any) => {
+        if (getOldShift[id].shiftType === '休') {
+          const getDayoffData = operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
+          if (getDayoffData) {
+            ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
+          }
+        }
+      });
       ctx.db.delete(`/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
     }
+    const getOldHourCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
+    if (getOldHourCountData) {
+      ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
+    }
+    // count times
+    const getStationData = await operation.checkTable(ctx.db, `/station/${getStationId}`);
+    const getDayStart = getStationData.dayStart;
+    const getDayEnd = getStationData.dayEnd;
+    const getNightStart = getStationData.nightStart;
+    const getNightEnd = getStationData.nightEnd;
+    const dayDiff = await operation.countHour(getDayStart, getDayEnd);
+    const nightDiff = await operation.countHour(getNightStart, getNightEnd);
+    let dayCount = 0;
+    let nightCount = 0;
+    Object.keys(getNewShift).map((id: any) => {
+      if (getNewShift[id].shiftType === '日') {
+        dayCount++;
+      } else if (getNewShift[id].shiftType === '夜') {
+        nightCount++;
+      } else if (getNewShift[id].shiftType === '休') {
+        const getCountData1 = operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}`);
+        if (getCountData1.length === 0) {
+          ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}`, {
+            workerId: getNewShift[id].cover.id,
+            workerName: getNewShift[id].cover.name
+          });
+        }
+        ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}/cover/${id}`, {
+          day: id,
+          stationName: getStationName,
+          stationId: getStationId,
+        });
+      }
+    });
+    const getTotalDayHours = dayCount * dayDiff;
+    const getTotalNightHours = nightCount * nightDiff;
     ctx.db.push(`/shift/${getYear}/${getMonth}/${getStationId}/${getNewWorkerId}`, {
       stationName: getStationName,
       workerName: getWorkerName,
-      shift: getShift
+      totalDays: dayCount,
+      totalNights: nightCount,
+      totalDayHours: getTotalDayHours,
+      totalNightHours: getTotalNightHours,
+      shift: getNewShift
+    });
+    const getCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`);
+    if (getCountData.length === 0) {
+      ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`, {
+        workerId: getNewWorkerId,
+        workerName: getWorkerName
+      });
+    }
+    ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}/nomal/${getStationId}`, {
+      stationId: getStationId,
+      stationName: getStationName,
+      totalDays: dayCount,
+      totalNights: nightCount,
+      totalDayHours: getTotalDayHours,
+      totalNightHours: getTotalNightHours
     });
     ctx.status = 200;
   }
-  public static async edit(ctx: IRouterContext) {
-    const getName = ctx.request.body!.name;
-    const getArea = ctx.request.body!.area;
-    const getStable = ctx.request.body!.stable;
-    const getMobile = ctx.request.body!.mobile;
-    const getDesc = ctx.request.body!.desc;
-    const getId = parseInt(ctx.request.body.id);
-    const getData = await operation.checkTable(ctx.db, `/station/${getId}`);
-    if (getData) {
-      ctx.db.push(`/station/${getId}`, {
-        name: getName,
-        area: getArea,
-        mobileNumber: getMobile,
-        stableNumber: getStable,
-        desc: getDesc,
-      });
-    }
-    ctx.status = 200;
-  }
+
   public static async delete(ctx: IRouterContext) {
     const getId = parseInt(ctx.request.body.id);
     const getData = await operation.checkTable(ctx.db, `/station/${getId}`);

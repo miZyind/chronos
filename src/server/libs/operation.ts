@@ -18,6 +18,17 @@ const queryLastId = (parent: any) => {
   return parseInt(oldId);
 };
 
+const countHour = (start: string, end: string) => {
+  const getStart = start.split(':');
+  const getStartHour = parseInt(getStart[0]);
+  const getStartMin = parseInt(getStart[1]);
+  const getEnd = end.split(':');
+  const getEndtHour = parseInt(getEnd[0]);
+  const getEndMin = parseInt(getEnd[1]);
+  const getTimeDiff = ((getEndtHour * 60 + getEndMin) - (getStartHour * 60 + getStartMin)) / 60;
+  return getTimeDiff;
+};
+
 const groupByKey = (data: any, key: string, condition: string) => {
   const groupedData = Object.keys(data).reduce((result: any, current) => {
     const getItemValue = data[current][result.key];
@@ -42,6 +53,7 @@ const groupByKey = (data: any, key: string, condition: string) => {
 
 const operation = {
   checkTable,
+  countHour,
   queryLastId,
   groupByKey
 };

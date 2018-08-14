@@ -6,6 +6,7 @@ interface IFetch {
       mobile: string
     }
   };
+  countListItems: any;
   stationListItems: any;
   workerEditShiftItems: any;
   stationShiftItems: any;

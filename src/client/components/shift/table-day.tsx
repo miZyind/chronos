@@ -83,6 +83,10 @@ class TableDays extends Component<Props> {
                             <Table.Cell rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
                             {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
+                            <Table.Cell>{getWorker[workerId].totalDays}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalDayHours}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalNights}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalNightHours}</Table.Cell >
                             <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
@@ -97,6 +101,10 @@ class TableDays extends Component<Props> {
                         <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
                             {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
+                            <Table.Cell>{getWorker[workerId].totalDays}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalDayHours}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalNights}</Table.Cell >
+                            <Table.Cell>{getWorker[workerId].totalNightHours}</Table.Cell >
                             <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
@@ -125,6 +133,10 @@ class TableDays extends Component<Props> {
                             <Table.HeaderCell rowSpan='2'>駐點</Table.HeaderCell>
                             <Table.HeaderCell >日期</Table.HeaderCell>
                             {getDays.map((day, i) => <Table.HeaderCell key={'d-' + i}>{day}</Table.HeaderCell>)}
+                            <Table.HeaderCell rowSpan='2'>日天數</Table.HeaderCell>
+                            <Table.HeaderCell rowSpan='2'>日時數</Table.HeaderCell>
+                            <Table.HeaderCell rowSpan='2'>夜天數</Table.HeaderCell>
+                            <Table.HeaderCell rowSpan='2'>夜時數</Table.HeaderCell>
                             <Table.HeaderCell rowSpan='2'>動作</Table.HeaderCell>
                         </Table.Row>
                         <Table.Row>
@@ -144,7 +156,6 @@ const TableDaysShifts = styled(TableDays) `
     .ui.table thead th{
         padding: 0px;
         font-size: 10px;
-        width: 2px;
         text-align: center;
         border-right: 1px solid rgba(34,36,38,.1);
         border-left: none;
@@ -152,7 +163,7 @@ const TableDaysShifts = styled(TableDays) `
     .ui.table tbody tr td{
         font-size: 14px;
         height: 20px;
-        width: 2px;
+        width: 1px;
         padding: 0px;
         text-align: center;
         border-left: none;

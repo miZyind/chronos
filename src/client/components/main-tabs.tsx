@@ -3,6 +3,7 @@ import { Tab } from 'semantic-ui-react';
 import DaysLineTable from '@components/shift/days-line-shift';
 import StationTable from '@components/station/list';
 import WorkerTable from '@components/worker/list';
+import CountTable from '@components/count/list';
 
 type MainTabProps = {
     className?: string;
@@ -18,6 +19,7 @@ const tablTitle = {
     title1: '班表管理',
     title2: '駐點管理',
     title3: '保全管理',
+    title4: '保全時數',
 };
 class MainTab extends Component<MainTabProps> {
     public panes = [
@@ -46,6 +48,13 @@ class MainTab extends Component<MainTabProps> {
         {
             menuItem: tablTitle.title3, render: () =>
                 <Tab.Pane attached={false}><WorkerTable /></Tab.Pane>
+        },
+        {
+            menuItem: tablTitle.title4, render: () =>
+                // tslint:disable-next-line:jsx-wrap-multiline
+                <Tab.Pane attached={false}>
+                    <CountTable/>
+                </Tab.Pane>
         },
     ];
     public render() {

@@ -7,6 +7,7 @@ declare module 'webpack-node-externals';
 declare module 'koa-webpack';
 declare module 'koa-bodyparser';
 declare module 'react-perf-devtool';
+declare module 'rc-time-picker';
 //Image
 declare module '*.png' { export default '' as string; }
 declare module '*.jpg' { export default '' as string; }

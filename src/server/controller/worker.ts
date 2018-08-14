@@ -1,5 +1,5 @@
 import { IRouterContext} from 'koa-router';
-import operation from '../db/operation';
+import operation from '../libs/operation';
 
 class WorkController {
   public static async getAll(ctx: IRouterContext) {

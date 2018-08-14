@@ -23,7 +23,7 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
   public render() {
     const {
       // StateProps
-      getSelectYear, getSelectMonth, getDays, getSelectArea,
+      getSelectYear, getSelectMonth, getSelectArea,
       // DispatchProps
       selectyear, selectmonth, selectarea,
       // OwnProps
