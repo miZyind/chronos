@@ -25,7 +25,7 @@ const countHour = (start: string, end: string) => {
   const getEnd = end.split(':');
   const getEndtHour = parseInt(getEnd[0]);
   const getEndMin = parseInt(getEnd[1]);
-  const getTimeDiff = ((getEndtHour * 60 + getEndMin) - (getStartHour * 60 + getStartMin)) / 60;
+  const getTimeDiff = (Math.abs(((getStartHour - 12) - (getEndtHour - 12))) * 60 + (getEndMin - getStartMin)) / 60;
   return getTimeDiff;
 };
 

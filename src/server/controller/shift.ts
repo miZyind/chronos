@@ -104,7 +104,7 @@ class ShiftController {
       Object.keys(getOldShift).map((id: any) => {
         if (getOldShift[id].shiftType === '休') {
           const getDayoffData = operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
-          if (getDayoffData) {
+          if (Object.keys(getDayoffData).length > 0) {
             ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
           }
         }
@@ -112,7 +112,8 @@ class ShiftController {
       ctx.db.delete(`/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
     }
     const getOldHourCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
-    if (getOldHourCountData) {
+    console.log(Object.keys(getOldHourCountData).length);
+    if (Object.keys(getOldHourCountData).length > 0) {
       ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
     }
     // count times
@@ -157,7 +158,7 @@ class ShiftController {
       shift: getNewShift
     });
     const getCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`);
-    if (getCountData.length === 0) {
+    if (Object.keys(getCountData).length === 0) {
       ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`, {
         workerId: getNewWorkerId,
         workerName: getWorkerName
