@@ -176,11 +176,8 @@ class ShiftController {
   }
 
   public static async delete(ctx: IRouterContext) {
-    const getId = parseInt(ctx.request.body.id);
-    const getData = await operation.checkTable(ctx.db, `/station/${getId}`);
-    if (getData) {
-      ctx.db.delete(`/station/${getId}`);
-    }
+    ctx.db.delete(`/shift`);
+    ctx.db.delete(`/hourCounts`);
     ctx.status = 200;
   }
 }

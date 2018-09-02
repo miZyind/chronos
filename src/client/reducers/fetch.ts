@@ -59,6 +59,13 @@ const fetch = (state = initState, action: Actions) => {
           sendfinish: false,
           shiftEditItems: action.payload.data,
         };
+      } else if (action.payload.type === 'stationAllList') {
+        return {
+          ...state,
+          modalLoading: false,
+          sendfinish: false,
+          stationAllListItems: action.payload.data,
+        };
       } else {
         return {
           ...state,

@@ -35,9 +35,15 @@ class TableDays extends Component<Props> {
             'month': this.props.main.getSelectMonth
         };
         this.props.fetchBegin();
-        service.getShifts(obj)
+        service.getAllStations()
             .then((response: any) => {
-                this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': response });
+                this.props.fetchGetDataSuccess({ 'type': 'stationAllList', 'data': response });
+                service.getShifts(obj)
+                    .then((responseSFT: any) => {
+                        this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': responseSFT });
+                    }, (errorSFT) => {
+                        this.props.fetchFailure(errorSFT);
+                    });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
@@ -53,23 +59,35 @@ class TableDays extends Component<Props> {
         return rows;
     }
     public printShiftType(shift: any, stationId: string, workerId: string, index: number) {
-        const { getDays } = this.props.main;
+        const { getSelectYear, getSelectMonth, getDays } = this.props.main;
         const rows: JSX.Element[] = [];
         getDays.map((v) => {
-            if (shift && shift[v]) {
-                if (shift[v].shiftType === '休') {
-                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
+            if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, v.toString()) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, v.toString()) === '日') {
+                if (shift && shift[v]) {
+                    if (shift[v].shiftType === '休') {
+                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover1' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
+                    } else {
+                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                    }
                 } else {
-                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                    rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
                 }
             } else {
-                rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
+                if (shift && shift[v]) {
+                    if (shift[v].shiftType === '休') {
+                        rows.push(<Table.Cell  key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover1' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
+                    } else {
+                        rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                    }
+                } else {
+                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
+                }
             }
         });
         return rows;
     }
     public stations() {
-        const { stationShiftItems } = this.props.fetch;
+        const { stationShiftItems, stationAllListItems } = this.props.fetch;
         const rows: JSX.Element[] = [];
         Object.keys(stationShiftItems).map((stationId: any) => {
             const getStationId = stationId;
@@ -80,7 +98,7 @@ class TableDays extends Component<Props> {
                 if (cc === 0) {
                     rows.push(
                         <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
-                            <Table.Cell rowSpan={max}>{getWorker[workerId].stationName}</Table.Cell>
+                            <Table.Cell rowSpan={max}>{stationAllListItems[getStationId].name}</Table.Cell>
                             {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
                             {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
                             <Table.Cell>{getWorker[workerId].totalDays}</Table.Cell >
@@ -90,7 +108,7 @@ class TableDays extends Component<Props> {
                             <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
-                                    getStationName={getWorker[workerId].stationName}
+                                    getStationName={stationAllListItems[getStationId].name}
                                     workerId={workerId}
                                 />
                             </Table.Cell >
@@ -108,7 +126,7 @@ class TableDays extends Component<Props> {
                             <Table.Cell>
                                 <EditSecurityShift
                                     getStationId={getStationId}
-                                    getStationName={getWorker[workerId].stationName}
+                                    getStationName={stationAllListItems[getStationId].name}
                                     workerId={workerId}
                                 />
                             </Table.Cell >
@@ -132,7 +150,7 @@ class TableDays extends Component<Props> {
                         <Table.Row>
                             <Table.HeaderCell rowSpan='2'>駐點</Table.HeaderCell>
                             <Table.HeaderCell >日期</Table.HeaderCell>
-                            {getDays.map((day, i) => <Table.HeaderCell key={'d-' + i}>{day}</Table.HeaderCell>)}
+                            {getDays.map((day, i) => <Table.HeaderCell  key={'d-' + i}>{day}</Table.HeaderCell>)}
                             <Table.HeaderCell rowSpan='2'>日天數</Table.HeaderCell>
                             <Table.HeaderCell rowSpan='2'>日時數</Table.HeaderCell>
                             <Table.HeaderCell rowSpan='2'>夜天數</Table.HeaderCell>
@@ -141,7 +159,7 @@ class TableDays extends Component<Props> {
                         </Table.Row>
                         <Table.Row>
                             <Table.HeaderCell>星期</Table.HeaderCell>
-                            {getDays.map((day, i) => <Table.HeaderCell key={'w-' + i}>{shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day.toString())}</Table.HeaderCell>)}
+                            {getDays.map((day, i) => <Table.HeaderCell  key={'w-' + i}>{shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day.toString())}</Table.HeaderCell>)}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -171,8 +189,15 @@ const TableDaysShifts = styled(TableDays) `
     }
     .lab-cover{
         width: 15px;
-        writing-mode: tb-lr;
         padding: 0px;
+    }
+    .lab-cover1{
+        width: 15px;
+        padding: 0px;
+        color: red !important;
+    }
+    .yellow-cell{
+        background-color: yellow;
     }
 `;
 export default connect<StateProps, DispatchProps>(

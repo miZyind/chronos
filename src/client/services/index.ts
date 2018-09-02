@@ -12,6 +12,9 @@ export function postShift(opts: object): Promise<any> {
 }
 
 // stations
+export function getAllStations(): Promise<any> {
+  return httpUtil.get(`/api/v1/station`);
+}
 export function getStations(opts: string): Promise<any> {
   return httpUtil.get(`/api/v1/station/area/${opts}`);
 }

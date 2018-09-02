@@ -23,6 +23,7 @@ router.get('/shift', ShiftController.getAll);
 router.get('/shift/:year/:month/:stationid/:workerid', ShiftController.getOne);
 router.get('/shiftbymonth/:year/:month/', ShiftController.getOneByMonth);
 router.post('/shift', ShiftController.edit);
+router.get('/ds', ShiftController.delete);
 
 router.get('/count/:year/:month/', CountController.getAllByMonth);
 export { router };

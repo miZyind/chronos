@@ -44,27 +44,43 @@ class EditTableShifts extends Component<Props> {
         this.props.selectworker({ 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name});
     }
     public cover() {
-        const { getShift, getDays } = this.props.main;
+        const { getSelectYear, getSelectMonth, getShift, getDays } = this.props.main;
         const rows: JSX.Element[] = [];
         getDays.map((i) => {
-            if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
-                rows.push(<Table.Cell key={'E-' + i} ><Label className='lab-cover'  as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
+            if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, i.toString()) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, i.toString()) === '日') {
+                if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
+                    rows.push(<Table.Cell className='yellow-cell' key={'E-' + i} ><Label className='lab-cover' as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
+                } else {
+                    rows.push(<Table.Cell className='yellow-cell' key={'E-' + i} />);
+                }
             } else {
-                rows.push(<Table.Cell className='tt'  key={'E-' + i} />);
+                if (getShift && getShift[i] && (getShift[i].shiftType === '休')) {
+                    rows.push(<Table.Cell key={'E-' + i} ><Label className='lab-cover' as='a' basic >{getShift[i].cover.name}</Label></Table.Cell>);
+                } else {
+                    rows.push(<Table.Cell className='tt' key={'E-' + i} />);
+                }
             }
         });
         return rows;
     }
 
     public dayMark(index: string) {
-        const { getShift } = this.props.main;
+        const { getSelectYear, getSelectMonth, getShift } = this.props.main;
         const rows: JSX.Element[] = [];
-        console.log(getShift);
+        // console.log(getShift);
         this.props.main.getDays.map((i: number) => {
-            if (getShift[i] && getShift[i].shiftType) {
-                rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value={getShift[i].shiftType} getDay={i} /></Table.Cell>);
+            if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, i.toString()) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, i.toString()) === '日') {
+                if (getShift[i] && getShift[i].shiftType) {
+                    rows.push(<Table.Cell className='yellow-cell' key={index + '-' + i} > <Arrangement className={`ara-${i}`} value={getShift[i].shiftType} getDay={i} /></Table.Cell>);
+                } else {
+                    rows.push(<Table.Cell className='yellow-cell' key={index + '-' + i} > <Arrangement className={`ara-${i}`} value='無' getDay={i} /></Table.Cell>);
+                }
             } else {
-                rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value='無' getDay={i} /></Table.Cell>);
+                if (getShift[i] && getShift[i].shiftType) {
+                    rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value={getShift[i].shiftType} getDay={i} /></Table.Cell>);
+                } else {
+                    rows.push(<Table.Cell key={index + '-' + i} > <Arrangement className={`ara-${i}`} value='無' getDay={i} /></Table.Cell>);
+                }
             }
         });
         return rows;
@@ -149,6 +165,9 @@ const StyledEditTableShifts = styled(EditTableShifts) `
         width: 25px;
         padding: 0px;
         writing-mode: tb-lr;
+    }
+    .yellow-cell{
+        background-color: yellow;
     }
 `;
 export default connect < StateProps, DispatchProps>(
