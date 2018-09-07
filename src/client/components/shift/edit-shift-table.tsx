@@ -14,7 +14,7 @@ type EditTableShiftsProps = {
     workerId?: string;
 };
 
-const optionWorkers: any = [];
+let optionWorkers: any = [];
 
 type StateProps = IStore;
 type DispatchProps = typeof Actions;
@@ -26,6 +26,7 @@ class EditTableShifts extends Component<Props> {
         this.getWorkrtOptions();
     }
     public getWorkrtOptions() {
+        optionWorkers = [];
         const { workerEditShiftItems } = this.props.fetch;
         Object.keys(workerEditShiftItems).map((id: any) => {
             const getItemName = workerEditShiftItems[id].name;

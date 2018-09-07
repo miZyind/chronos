@@ -21,18 +21,24 @@ class TableDays extends Component<Props> {
 
     constructor(prop: Props) {
         super(prop);
-        this.getShifts();
+        this.getShifts(this.props.main.getSelectYear, this.props.main.getSelectMonth);
     }
 
     public componentWillUpdate(nextProps: Props) {
         if (nextProps.fetch.sendfinish !== this.props.fetch.sendfinish) {
-            this.getShifts();
+            this.getShifts(nextProps.main.getSelectYear, nextProps.main.getSelectMonth);
+        }
+        if (nextProps.main.getSelectYear !== this.props.main.getSelectYear) {
+            this.getShifts(nextProps.main.getSelectYear, nextProps.main.getSelectMonth);
+        }
+        if (nextProps.main.getSelectMonth !== this.props.main.getSelectMonth) {
+            this.getShifts(nextProps.main.getSelectYear, nextProps.main.getSelectMonth);
         }
     }
-    public getShifts() {
+    public getShifts(year: string, month: string) {
         const obj: object = {
-            'year': this.props.main.getSelectYear,
-            'month': this.props.main.getSelectMonth
+            'year': year,
+            'month': month
         };
         this.props.fetchBegin();
         service.getAllStations()

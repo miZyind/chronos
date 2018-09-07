@@ -24,7 +24,8 @@ const getCommonEra = (year: number) => {
 };
 
 const getWeekDay = (year: string, month: string, day: string) => {
-  const date = `${year}-${month}-${day}`;
+  const getYear = (parseInt(year) + 1911).toString;
+  const date = `${getYear}-${month}-${day}`;
   const weekDay: number = new Date(date).getDay();
   return weekDayCht[weekDay];
 };

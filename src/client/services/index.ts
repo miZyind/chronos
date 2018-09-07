@@ -46,3 +46,7 @@ export function deleteWorker(opts: object): Promise<any> {
 export function getCounts(opts: any): Promise<any> {
   return httpUtil.get(`/api/v1/count/${opts.year}/${opts.month}`);
 }
+
+export function getCountByWorker(opts: any): Promise<any> {
+  return httpUtil.get(`/api/v1/countbyworker/${opts.year}/${opts.month}/${opts.worker}`);
+}

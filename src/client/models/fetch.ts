@@ -7,6 +7,7 @@ interface IFetch {
     }
   };
   countListItems: any;
+  countByWorkerListItems: any;
   stationListItems: any;
   stationAllListItems: any;
   workerEditShiftItems: any;

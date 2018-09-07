@@ -1,10 +1,11 @@
 
-import { ActionTypes, Actions  } from '../actions/main';
+import { ActionTypes, Actions } from '../actions/main';
 import { IFetch } from '../models/fetch';
 
 const initState: IFetch = {
   workerListItems: {},
   countListItems: {},
+  countByWorkerListItems: {},
   stationListItems: [],
   workerEditShiftItems: [],
   stationShiftItems: [],
@@ -36,6 +37,13 @@ const fetch = (state = initState, action: Actions) => {
           loading: false,
           sendfinish: false,
           countListItems: action.payload.data
+        };
+      } else if (action.payload.type === 'countListByWorker') {
+        return {
+          ...state,
+          loading: false,
+          sendfinish: false,
+          countByWorkerListItems: action.payload.data
         };
       } else if (action.payload.type === 'stationList') {
         return {
