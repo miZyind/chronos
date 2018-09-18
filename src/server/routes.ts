@@ -23,7 +23,9 @@ router.get('/shift', ShiftController.getAll);
 router.get('/shift/:year/:month/:stationid/:workerid', ShiftController.getOne);
 router.get('/shiftbymonth/:year/:month/', ShiftController.getOneByMonth);
 router.post('/shift', ShiftController.edit);
-router.get('/ds', ShiftController.delete);
+router.get('/shift1/:year/:month/:stationarea/:stationstart/:count', ShiftController.getShiftByWorker);
+
+router.get('/shift', ShiftController.getAll);
 
 router.get('/count/:year/:month/', CountController.getAllByMonth);
 router.get('/countbyworker/:year/:month/:worker', CountController.getOneByWorker);

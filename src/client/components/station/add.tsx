@@ -36,8 +36,7 @@ class AddForm extends Component<Props> {
     closeondocument: false,
     closeondimmer: false,
     sname: '',
-    smobile: '',
-    sstable: '1',
+    sworker: '1',
     sarea: '北區',
     sdesc: '',
     daystart: '06:00',
@@ -49,13 +48,12 @@ class AddForm extends Component<Props> {
   public close = () => this.setState({ open: false });
 
   public fetchStation() {
-    const { sname, smobile, sstable, sarea, sdesc, daystart, dayend, nightstart, nightend } = this.state;
+    const { sname, sworker, sarea, sdesc, daystart, dayend, nightstart, nightend } = this.state;
     this.props.fetchBegin();
     const obj: object = {
       'name': sname,
-      'mobile': smobile,
       'area': sarea,
-      'stable': sstable,
+      'worker': sworker,
       'desc': sdesc,
       'daystart': daystart,
       'dayend': dayend,
@@ -93,7 +91,7 @@ class AddForm extends Component<Props> {
   public render() {
     const {
       open, dimmer, closeondocument, closeondimmer, sname,
-      smobile, sstable, sarea, sdesc,
+      sworker, sarea, sdesc,
       daystart, dayend, nightstart, nightend
     } = this.state;
     const button = <Button onClick={this.show(true)}>{formPropos.title}</Button>;
@@ -125,11 +123,7 @@ class AddForm extends Component<Props> {
                 </Form.Field>
               </Form.Group>
               <Form.Group widths='equal'>
-                <Form.Field>
-                  <label>駐點電話</label>
-                  <input placeholder='駐點電話' name='smobile' value={smobile} onChange={this.change} />
-                </Form.Field>
-                <Form.Field label={formPropos.selectStationCounts} name='sstable' value={sstable} control='select' onChange={this.change}>
+                <Form.Field label={formPropos.selectStationCounts} name='sworker' value={sworker} control='select' onChange={this.change}>
                   <option value='1'>1</option>
                   <option value='2'>2</option>
                   <option value='3'>3</option>

@@ -26,7 +26,7 @@ class WorkController {
       const getLastId = await operation.queryLastId(getData);
       addId = getLastId + 1;
     }
-    ctx.db.push(`/worker/${addId}`, { name: getName, mobile: getMobile });
+    ctx.db.push(`/worker/${addId}`, { id: addId, name: getName, mobile: getMobile });
     ctx.status = 200;
    // ctx.db.push('/test4', { test: 'test', json: { test: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }] } });
     // ctx.db.push('/worker', { lists: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }, { id: 3, name: 't23' }] } );
@@ -58,7 +58,7 @@ class WorkController {
     const getId = parseInt(ctx.request.body.id);
     const getData = await operation.checkTable(ctx.db, `/worker/${getId}`);
     if (getData) {
-      ctx.db.push(`/worker/${getId}`, { name: getName, mobile: getMobile });
+      ctx.db.push(`/worker/${getId}`, { id: getId, name: getName, mobile: getMobile });
     }
     ctx.status = 200;
   }

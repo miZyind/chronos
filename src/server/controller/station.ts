@@ -30,8 +30,7 @@ class StationController {
   public static async add(ctx: IRouterContext) {
     const getName = ctx.request.body!.name;
     const getArea = ctx.request.body!.area;
-    const getStable = ctx.request.body!.stable;
-    const getMobile = ctx.request.body!.mobile;
+    const getWorker = ctx.request.body!.worker;
     const getDesc = ctx.request.body!.desc;
     const getDayStart = ctx.request.body!.daystart;
     const getDayEnd = ctx.request.body!.dayend;
@@ -44,10 +43,10 @@ class StationController {
       addId = getLastId + 1;
     }
     ctx.db.push(`/station/${addId}`, {
+      id: addId,
       name: getName,
       area: getArea,
-      mobileNumber: getMobile,
-      stableNumber: getStable,
+      workerNumber: getWorker,
       dayStart: getDayStart,
       dayEnd: getDayEnd,
       nightStart: getNightStart,
@@ -59,8 +58,7 @@ class StationController {
   public static async edit(ctx: IRouterContext) {
     const getName = ctx.request.body!.name;
     const getArea = ctx.request.body!.area;
-    const getStable = ctx.request.body!.stable;
-    const getMobile = ctx.request.body!.mobile;
+    const getWorker = ctx.request.body!.worker;
     const getDesc = ctx.request.body!.desc;
     const getDayStart = ctx.request.body!.daystart;
     const getDayEnd = ctx.request.body!.dayend;
@@ -70,10 +68,10 @@ class StationController {
     const getData = await operation.checkTable(ctx.db, `/station/${getId}`);
     if (getData) {
       ctx.db.push(`/station/${getId}`, {
+        id: getId,
         name: getName,
         area: getArea,
-        mobileNumber: getMobile,
-        stableNumber: getStable,
+        workerNumber: getWorker,
         dayStart: getDayStart,
         dayEnd: getDayEnd,
         nightStart: getNightStart,

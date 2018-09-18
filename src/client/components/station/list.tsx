@@ -91,9 +91,8 @@ class ListTable extends Component<Props> {
             <Table.Row key={`st-${area}-${i.id}`}>
               <Table.Cell>{i.id}</Table.Cell>
               <Table.Cell>{i.name}</Table.Cell>
-              <Table.Cell>{i.mobileNumber}</Table.Cell>
               <Table.Cell>{i.area}</Table.Cell>
-              <Table.Cell>{i.stableNumber}</Table.Cell>
+              <Table.Cell>{i.workerNumber}</Table.Cell>
               <Table.Cell>{`${dayStart}-${dayEnd}`}</Table.Cell>
               <Table.Cell>{`${nightStart}-${nightEnd}`}</Table.Cell>
               <Table.Cell>{i.desc}</Table.Cell>
@@ -101,9 +100,8 @@ class ListTable extends Component<Props> {
                 <EditFormMoal
                   editId={i.id}
                   editName={i.name}
-                  editMobile={i.mobileNumber}
                   editArea={i.area}
-                  editStable={i.stableNumber}
+                  editWorker={i.workerNumber}
                   editDesc={i.desc}
                   editDayStart={dayStart}
                   editDayEnd={dayEnd}
@@ -133,7 +131,6 @@ class ListTable extends Component<Props> {
             <Table.Row>
               <Table.HeaderCell>Id</Table.HeaderCell>
               <Table.HeaderCell>社區</Table.HeaderCell>
-              <Table.HeaderCell>電話</Table.HeaderCell>
               <Table.HeaderCell>地區</Table.HeaderCell>
               <Table.HeaderCell>人數</Table.HeaderCell>
               <Table.HeaderCell>日班時間</Table.HeaderCell>

@@ -12,9 +12,8 @@ type EditFormProps = {
   className?: string;
   editId: string;
   editName: string;
-  editMobile: string;
+  editWorker: string;
   editArea: string;
-  editStable: string;
   editDesc: string;
   editDayStart: string;
   editDayEnd: string;
@@ -45,8 +44,7 @@ class EditForm extends Component<Props> {
     closeondocument: false,
     closeondimmer: false,
     sname: this.props.editName,
-    smobile: this.props.editMobile,
-    sstable: this.props.editStable,
+    sworker: this.props.editWorker,
     sarea: this.props.editArea,
     sdesc: this.props.editDesc,
     sid: this.props.editId,
@@ -60,15 +58,14 @@ class EditForm extends Component<Props> {
 
   public fetchStation() {
     const {
-      sname, smobile, sstable, sarea, sdesc, sid,
+      sname, sworker, sarea, sdesc, sid,
       daystart, dayend, nightstart, nightend
     } = this.state;
     this.props.fetchBegin();
     const obj: object = {
       'name': sname,
-      'mobile': smobile,
       'area': sarea,
-      'stable': sstable,
+      'worker': sworker,
       'desc': sdesc,
       'daystart': daystart,
       'dayend': dayend,
@@ -107,7 +104,7 @@ class EditForm extends Component<Props> {
   public render() {
     const {
       open, dimmer, closeondocument, closeondimmer,
-      sname, smobile, sstable, sarea, sdesc,
+      sname, sworker, sarea, sdesc,
       daystart, dayend, nightstart, nightend} = this.state;
     const button = <Button onClick={this.show(true)} icon><Icon name='compose' /></Button>;
     return (
@@ -138,11 +135,7 @@ class EditForm extends Component<Props> {
                 </Form.Field>
               </Form.Group>
               <Form.Group widths='equal'>
-                <Form.Field>
-                  <label>駐點電話</label>
-                  <input placeholder='駐點電話' name='smobile' value={smobile} onChange={this.change} />
-                </Form.Field>
-                <Form.Field label={formPropos.selectStationCounts} name='sstable' value={sstable} control='select' onChange={this.change}>
+                <Form.Field label={formPropos.selectStationCounts} name='sworker' value={sworker} control='select' onChange={this.change}>
                   <option value='1'>1</option>
                   <option value='2'>2</option>
                   <option value='3'>3</option>
