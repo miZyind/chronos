@@ -20,7 +20,7 @@ class ShiftController {
     if (Object.keys(getShiftData).length < 1) {
       // using exit station to create shift
       Object.keys(getStationData).map((id: any) => {
-        const max = parseInt(getStationData[id].stableNumber);
+        const max = parseInt(getStationData[id].workerNumber);
         for (let i = 1; i <= max; i++) {
           const emptyWork = `empty-${i}`;
           ctx.db.push(`/shift/${getYear}/${getMonth}/${id}/${emptyWork}`, {
@@ -34,7 +34,7 @@ class ShiftController {
       // using exit station to update shift
       // 不刪除 stationshift & 個人shift
       Object.keys(getStationData).map((stationId: any) => {
-        const stationMax = parseInt(getStationData[stationId].stableNumber);
+        const stationMax = parseInt(getStationData[stationId].workerNumber);
         if (getShiftData[stationId]) {
           const shiftMax = Object.keys(getShiftData[stationId]).length;
           if (stationMax > shiftMax) {
@@ -48,7 +48,7 @@ class ShiftController {
             }
           }
         } else {
-          const max = parseInt(getStationData[stationId].stableNumber);
+          const max = parseInt(getStationData[stationId].workerNumber);
           for (let i = 1; i <= max; i++) {
             const emptyWork = `empty-${i}`;
             ctx.db.push(`/shift/${getYear}/${getMonth}/${stationId}/${emptyWork}`, {

@@ -46,36 +46,19 @@ class ListTable extends Component<Props> {
   public getLists() {
     const { countListItems } = this.props.fetch;
     const rows: JSX.Element[] = [];
-    Object.keys(countListItems).map((id: any) => {
-      // tslint:disable-next-line:no-string-literal
-      const getItemName = countListItems[id].workerName;
-      let dayCount = 0;
-      let nightCount = 0;
-      let dayoffCount = 0;
-      // console.log(Object.keys(countListItems[id].nomal));
-      if (countListItems[id].nomal) {
-        const getNomal = countListItems[id].nomal;
-        Object.keys(getNomal).map((k: any) => {
-          dayCount += parseInt(getNomal[k].totalDayHours);
-          nightCount += parseInt(getNomal[k].totalNightHours);
-        });
-      }
-      if (countListItems[id].cover) {
-        const getCover = countListItems[id].cover;
-        Object.keys(getCover).map(() => {
-          dayoffCount++;
-        });
-      }
-      rows.push(
-        <Table.Row key={`worker-${id}}`}>
-          <Table.Cell>{id}</Table.Cell>
-          <Table.Cell>{getItemName}</Table.Cell>
-          <Table.Cell>{dayCount}</Table.Cell>
-          <Table.Cell>{nightCount}</Table.Cell>
-          <Table.Cell>{dayoffCount}</Table.Cell>
-          <Table.Cell><InfoMoal getWorkerId={id}/></Table.Cell>
-        </Table.Row>);
-    });
+    if (countListItems && countListItems.length > 0) {
+      countListItems.map((worker: any) => {
+        rows.push(
+          <Table.Row key={`worker-${worker.workerId}}`}>
+            <Table.Cell>{worker.workerId}</Table.Cell>
+            <Table.Cell>{worker.workerName}</Table.Cell>
+            <Table.Cell>{worker.dayCount}</Table.Cell>
+            <Table.Cell>{worker.nightCount}</Table.Cell>
+            <Table.Cell>{worker.coverCount}</Table.Cell>
+            <Table.Cell><InfoMoal getWorkerId={worker.workerId} /></Table.Cell>
+          </Table.Row>);
+      });
+    }
     return rows;
   }
   public render() {

@@ -5,8 +5,33 @@ class CountController {
   public static async getAllByMonth(ctx: IRouterContext) {
     const getYear = ctx.params.year;
     const getMonth = ctx.params.month;
-    const getCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}`);
-    ctx.body = getCountData;
+    const getWorkerData = await operation.checkTable(ctx.db, `/worker`);
+    const getCountMarkData = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark`);
+    const totalCountShifts: any[] = [];
+    Object.keys(getCountMarkData).map((workerId: string) => {
+      const getAllShiftMark = getCountMarkData[workerId].shift;
+      let dayCount = 0;
+      let nightCount = 0;
+      let coverCount = 0;
+      let workerName = '無';
+      if (getWorkerData[workerId]) {
+        workerName = getWorkerData[workerId].name;
+      }
+      Object.keys(getAllShiftMark).map((shiftId: string) => {
+        if (getAllShiftMark[shiftId].type === 'nomal') {
+          const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getAllShiftMark[shiftId].station}/nomal/${workerId}`);
+          dayCount = dayCount + getShift.day.length;
+          nightCount = nightCount + getShift.night.length;
+        } else if (getAllShiftMark[shiftId].type === 'cover') {
+          const nomalWorkerId = getAllShiftMark[shiftId].nomalWorker;
+          const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getAllShiftMark[shiftId].station}/cover/${nomalWorkerId}/${workerId}`);
+          coverCount = coverCount + getShift.coverDay.length;
+        }
+      });
+      const workerCountShift = { 'workerId': workerId, 'workerName': workerName, 'dayCount': dayCount, 'nightCount': nightCount, 'coverCount': coverCount };
+      totalCountShifts.push(workerCountShift);
+    });
+    ctx.body = totalCountShifts;
     ctx.status = 200;
   }
   public static async getOneByWorker(ctx: IRouterContext) {
@@ -19,7 +44,6 @@ class CountController {
     const getWorkerShiftCount = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark/${getWorkerId}`);
     const getShiftsByCountMark = getWorkerShiftCount.shift;
     Object.keys(getShiftsByCountMark).map((stationId: string) => {
-      console.log(stationId);
       const getStationId = getShiftsByCountMark[stationId].station;
       let getStationName = '無';
       if (getStationData[getStationId].name) {

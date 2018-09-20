@@ -26,12 +26,16 @@ type DispatchProps = typeof Actions;
 type Props = InfoProps & StateProps & DispatchProps;
 
 class Info extends Component<Props> {
+
   public state = {
     open: false,
     dimmer: true,
     closeondocument: false,
     closeondimmer: false,
   };
+  constructor(prop: Props) {
+    super(prop);
+  }
   public show = (dimmer: boolean) => () => {
     this.fetchOneCount();
     this.setState({ dimmer, open: true });
@@ -56,33 +60,18 @@ class Info extends Component<Props> {
     const { countByWorkerListItems } = this.props.fetch;
     console.log(countByWorkerListItems);
     const rows: JSX.Element[] = [];
-    // Object.keys(countByWorkerListItems.nomal).map((id: any) => {
-    //   // tslint:disable-next-line:no-string-literal
-    //   // const getItemName = countByWorkerListItems[id].workerName;
-    //   // let dayCount = 0;
-    //   // let nightCount = 0;
-    //   // let dayoffCount = 0;
-    //   // console.log(Object.keys(countListItems[id].nomal));
-    //   // if (countListItems[id].nomal) {
-    //   //   const getNomal = countListItems[id].nomal;
-    //   //   Object.keys(getNomal).map((k: any) => {
-    //   //     dayCount += parseInt(getNomal[k].totalDayHours);
-    //   //     nightCount += parseInt(getNomal[k].totalNightHours);
-    //   //   });
-    //   // }
-    //   // if (countListItems[id].cover) {
-    //   //   const getCover = countListItems[id].cover;
-    //   //   Object.keys(getCover).map(() => {
-    //   //     dayoffCount++;
-    //   //   });
-    //   // }
-    //   rows.push(
-    //     <Table.Row key={`worker-${id}}`}>
-    //       <Table.Cell>{id}</Table.Cell>
-    //       <Table.Cell>{countByWorkerListItems.nomal[id].totalDays}</Table.Cell>
-    //       <Table.Cell>{countByWorkerListItems.nomal[id].totalDays}</Table.Cell>
-    //     </Table.Row>);
-    // });
+    if (countByWorkerListItems && countByWorkerListItems.length > 0) {
+      countByWorkerListItems.map((id: any, key: number) => {
+        rows.push(
+          <Table.Row key={`worker-${key}}`}>
+            <Table.Cell>{id.stationName}</Table.Cell>
+            <Table.Cell>{id.type}</Table.Cell>
+            <Table.Cell>{id.dayCount}</Table.Cell>
+            <Table.Cell>{id.nightCount}</Table.Cell>
+            <Table.Cell>{id.coverCount}</Table.Cell>
+          </Table.Row>);
+      });
+    }
     return rows;
   }
   public render() {
@@ -106,8 +95,10 @@ class Info extends Component<Props> {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>社區</Table.HeaderCell>
+                  <Table.HeaderCell>上班型態</Table.HeaderCell>
                   <Table.HeaderCell>日班天數</Table.HeaderCell>
                   <Table.HeaderCell>夜班天數</Table.HeaderCell>
+                  <Table.HeaderCell>代班天數</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>{this.getLists()}</Table.Body>
