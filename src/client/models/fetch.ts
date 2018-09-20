@@ -9,9 +9,8 @@ interface IFetch {
   countListItems: any;
   countByWorkerListItems: any;
   stationListItems: any;
-  stationAllListItems: any;
   workerEditShiftItems: any;
-  stationShiftItems: any;
+  stationShiftsListByMonthArea: any;
   shiftEditItems: any;
   items: any;
   loading: boolean;

@@ -41,15 +41,9 @@ class TableDays extends Component<Props> {
             'month': month
         };
         this.props.fetchBegin();
-        service.getAllStations()
+        service.getShiftsByMonth(obj)
             .then((response: any) => {
-                this.props.fetchGetDataSuccess({ 'type': 'stationAllList', 'data': response });
-                service.getShifts(obj)
-                    .then((responseSFT: any) => {
-                        this.props.fetchGetDataSuccess({ 'type': 'shiftList', 'data': responseSFT });
-                    }, (errorSFT) => {
-                        this.props.fetchFailure(errorSFT);
-                    });
+                this.props.fetchGetDataSuccess({ 'type': 'stationShiftsListByMonthArea', 'data': response });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
@@ -57,90 +51,67 @@ class TableDays extends Component<Props> {
 
     public printWorker(name: string, stationId: string, workerId: string, index: number) {
         const rows: JSX.Element[] = [];
-        if (name.length > 0) {
+        if (name !== '無') {
             rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}`}><Label className='lab-cover' as='a' basic >{name}</Label></Table.Cell>);
         } else {
             rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}`} />);
         }
         return rows;
     }
-    public printShiftType(shift: any, stationId: string, workerId: string, index: number) {
-        const { getSelectYear, getSelectMonth, getDays } = this.props.main;
+    public printShiftType(shifts: any, stationId: string, workerId: string, index: number) {
+        const { getSelectYear, getSelectMonth } = this.props.main;
         const rows: JSX.Element[] = [];
-        getDays.map((v) => {
-            if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, v.toString()) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, v.toString()) === '日') {
-                if (shift && shift[v]) {
-                    if (shift[v].shiftType === '休') {
-                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover1' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
+        if (shifts && shifts.length > 0) {
+            shifts.map((v: any, key: number) => {
+                if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, (key + 1).toString()) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, (key + 1).toString()) === '日') {
+                    if (v === '日' || v === '夜' || v === '') {
+                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${key}`} >{v}</Table.Cell>);
                     } else {
-                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                        rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${key}`} ><Label className='lab-cover1' as='a' basic >{v}</Label></Table.Cell>);
                     }
                 } else {
-                    rows.push(<Table.Cell className='yellow-cell' key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
-                }
-            } else {
-                if (shift && shift[v]) {
-                    if (shift[v].shiftType === '休') {
-                        rows.push(<Table.Cell  key={`day-tb-${stationId}-${workerId}-${index}-${v}`} ><Label className='lab-cover1' as='a' basic >{shift[v].cover.name}</Label></Table.Cell>);
+                    if (v === '日' || v === '夜' || v === '') {
+                        rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${key}`} >{v}</Table.Cell>);
                     } else {
-                        rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} >{shift[v].shiftType}</Table.Cell>);
+                        rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${key}`} ><Label className='lab-cover1' as='a' basic >{v}</Label></Table.Cell>);
                     }
-                } else {
-                    rows.push(<Table.Cell key={`day-tb-${stationId}-${workerId}-${index}-${v}`} />);
                 }
-            }
-        });
+            });
+        }
         return rows;
     }
-    public stations() {
-        const { stationShiftItems, stationAllListItems } = this.props.fetch;
+    public stationNameCell(checkIndex: number, max: number, stationName: string, stationId: string) {
         const rows: JSX.Element[] = [];
-        Object.keys(stationShiftItems).map((stationId: any) => {
-            const getStationId = stationId;
-            const getWorker = stationShiftItems[getStationId];
-            const max = Object.keys(getWorker).length;
-            for (let cc = 0; cc < max; cc++) {
-                const workerId = Object.keys(getWorker)[cc];
-                if (cc === 0) {
+        if (checkIndex === 0) {
+            rows.push(<Table.Cell key={`stname-tb-tr-${stationId}`} rowSpan={max}>{stationName}</Table.Cell>);
+        }
+        return rows;
+    }
+    public stationShifts() {
+        const { stationShiftsListByMonthArea } = this.props.fetch;
+        const rows: JSX.Element[] = [];
+        if (stationShiftsListByMonthArea && stationShiftsListByMonthArea.length > 0) {
+            stationShiftsListByMonthArea.map((stationShiftRow: any) => {
+                const workerShiftRows = stationShiftRow.workerShift;
+                const max = workerShiftRows.length;
+                workerShiftRows.map((workerShiftRow: any, key: number) => {
                     rows.push(
-                        <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
-                            <Table.Cell rowSpan={max}>{stationAllListItems[getStationId].name}</Table.Cell>
-                            {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
-                            {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
-                            <Table.Cell>{getWorker[workerId].totalDays}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalDayHours}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalNights}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalNightHours}</Table.Cell >
+                        <Table.Row key={`day-tb-tr-${stationShiftRow.stationId}-${workerShiftRow.nomalWorkerId}-${key}`}>
+                            {this.stationNameCell(key, max, stationShiftRow.stationName, stationShiftRow.stationId)}
+                            {this.printWorker(workerShiftRow.nomalWorkerName, stationShiftRow.stationId, workerShiftRow.nomalWorkerId, key)}
+                            {this.printShiftType(workerShiftRow.dayShift, stationShiftRow.stationId, workerShiftRow.nomalWorkerId, key)}
                             <Table.Cell>
                                 <EditSecurityShift
-                                    getStationId={getStationId}
-                                    getStationName={stationAllListItems[getStationId].name}
-                                    workerId={workerId}
+                                    getStationId={stationShiftRow.stationId}
+                                    getStationName={stationShiftRow.stationName}
+                                    workerId={workerShiftRow.nomalWorkerId}
                                 />
                             </Table.Cell >
                         </Table.Row>
                     );
-                } else {
-                    rows.push(
-                        <Table.Row key={`day-tb-tr-${getStationId}-${workerId}-${cc}`}>
-                            {this.printWorker(getWorker[workerId].workerName, getStationId, workerId, cc)}
-                            {this.printShiftType(getWorker[workerId].shift, getStationId, workerId, cc)}
-                            <Table.Cell>{getWorker[workerId].totalDays}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalDayHours}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalNights}</Table.Cell >
-                            <Table.Cell>{getWorker[workerId].totalNightHours}</Table.Cell >
-                            <Table.Cell>
-                                <EditSecurityShift
-                                    getStationId={getStationId}
-                                    getStationName={stationAllListItems[getStationId].name}
-                                    workerId={workerId}
-                                />
-                            </Table.Cell >
-                        </Table.Row>
-                    );
-                }
-            }
-        });
+                });
+            });
+        }
         return rows;
     }
     public render() {
@@ -157,10 +128,6 @@ class TableDays extends Component<Props> {
                             <Table.HeaderCell rowSpan='2'>駐點</Table.HeaderCell>
                             <Table.HeaderCell >日期</Table.HeaderCell>
                             {getDays.map((day, i) => <Table.HeaderCell  key={'d-' + i}>{day}</Table.HeaderCell>)}
-                            <Table.HeaderCell rowSpan='2'>日天數</Table.HeaderCell>
-                            <Table.HeaderCell rowSpan='2'>日時數</Table.HeaderCell>
-                            <Table.HeaderCell rowSpan='2'>夜天數</Table.HeaderCell>
-                            <Table.HeaderCell rowSpan='2'>夜時數</Table.HeaderCell>
                             <Table.HeaderCell rowSpan='2'>動作</Table.HeaderCell>
                         </Table.Row>
                         <Table.Row>
@@ -169,7 +136,7 @@ class TableDays extends Component<Props> {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {this.stations()}
+                        {this.stationShifts()}
                     </Table.Body>
                 </Table>
             </div>

@@ -11,6 +11,10 @@ export function postShift(opts: object): Promise<any> {
   return httpUtil.post('/api/v1/shift', opts);
 }
 
+export function getShiftsByMonth(opts: any): Promise<any> {
+  return httpUtil.get(`/api/v1/shift1/${opts.year}/${opts.month}/all/1/100`);
+}
+
 // stations
 export function getAllStations(): Promise<any> {
   return httpUtil.get(`/api/v1/station`);

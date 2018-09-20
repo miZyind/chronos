@@ -188,6 +188,7 @@ class ShiftController {
     const getStationStartId = ctx.params.stationstart;
     const getStationCount = ctx.params.count;
     const totalStationShifts: any[] = [];
+    const getLastDay = new Date(getYear, getMonth, 0).getDate();
     // Get all stations
     const getStationData = await operation.checkTable(ctx.db, `/station`);
     // Get all workers
@@ -223,8 +224,8 @@ class ShiftController {
                 let getNight = [];
                 let getCover: any = [];
                 const singleNomalWorkerShift: any = [];
-                for (let i = 0; i <= 30; i++) {
-                  singleNomalWorkerShift[i] = '無';
+                for (let i = 0; i <= getLastDay; i++) {
+                  singleNomalWorkerShift[i] = '';
                 }
                 if (getNomalShift[nomalWorkerId].day) {
                   getDay = getNomalShift[nomalWorkerId].day;
@@ -270,8 +271,8 @@ class ShiftController {
               const remainNumber = parseInt(station.workerNumber) - totalWorkerShifts.length;
               for (let w = 1; w <= remainNumber; w++) {
                 const singleNomalWorkerShift = [];
-                for (let i = 0; i <= 30; i++) {
-                  singleNomalWorkerShift[i] = '無';
+                for (let i = 0; i <= getLastDay; i++) {
+                  singleNomalWorkerShift[i] = '';
                 }
                 const shift: {
                   nomalWorkerId: string

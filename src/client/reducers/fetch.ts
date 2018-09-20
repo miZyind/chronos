@@ -8,7 +8,7 @@ const initState: IFetch = {
   countByWorkerListItems: {},
   stationListItems: [],
   workerEditShiftItems: [],
-  stationShiftItems: [],
+  stationShiftsListByMonthArea: [],
   shiftEditItems: {},
   items: [],
   loading: false,
@@ -52,13 +52,12 @@ const fetch = (state = initState, action: Actions) => {
           sendfinish: false,
           stationListItems: action.payload.data
         };
-      } else if (action.payload.type === 'shiftList') {
+      } else if (action.payload.type === 'stationShiftsListByMonthArea') {
         return {
           ...state,
           loading: false,
           sendfinish: false,
-          stationShiftItems: action.payload.data.shiftList,
-          workerEditShiftItems: action.payload.data.worker
+          stationShiftsListByMonthArea: action.payload.data
         };
       } else if (action.payload.type === 'shiftEdit') {
         return {
