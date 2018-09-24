@@ -7,6 +7,7 @@ import 'rc-time-picker/assets/index.css';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import * as service from '../../services';
+import styled from 'styled-components';
 
 type EditFormProps = {
   className?: string;
@@ -24,13 +25,6 @@ const formPropos = {
   title: '修改保全資料',
   selectStationCounts: '駐點人數',
   selectArea: '地區'
-};
-const backdropStyle = {
-  marginTop: '0px !important',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  backgroundColor: 'rgba(0,0,0,0.3)',
-  padding: 50
 };
 const timeFormat = 'HH:mm';
 type FStateProps = IFetch;
@@ -115,7 +109,7 @@ class EditForm extends Component<Props> {
         onClose={this.close}
         open={open}
         className={this.props.className}
-        style={backdropStyle}
+        // style={backdropStyle}
         trigger={button}
       >
         <Modal.Content image scrolling>
@@ -216,7 +210,18 @@ class EditForm extends Component<Props> {
   }
 }
 
+const StyledEditForm = styled(EditForm)`
+  &&&& {
+    margin-top: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0,0,0,0.3);
+    padding: 50px;
+  }
+`;
+
 export default connect<FStateProps, DispatchProps>(
   (state: any) => state.fetch,
   Actions
-)(EditForm);
+// )(EditForm);
+)(StyledEditForm);
