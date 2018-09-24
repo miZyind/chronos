@@ -7,7 +7,7 @@ interface IFetch {
     }
   };
   countListItems: any;
-  countByWorkerListItems: any;
+  countByWorkerListItems: Array<{ id: string }>;
   stationListItems: any;
   workerEditShiftItems: any;
   stationShiftsListByMonthArea: any;
