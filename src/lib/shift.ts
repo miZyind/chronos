@@ -1,10 +1,19 @@
-
-const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
 const optionYears = [
   { title: '107年', key: '107' },
   { title: '108年', key: '108' },
   { title: '109年', key: '109' },
 ];
+
+const optionAreas = [
+  { title: '全部', key: 'all' },
+  { title: '北區', key: '北區' },
+  { title: '中區', key: '中區' },
+  { title: '南區', key: '南區' },
+  { title: '東區', key: '東區' },
+];
+
+const weekDayCht = ['日', '一', '二', '三', '四', '五', '六'];
+
 const optionMonths = [
   { title: '1月', key: '1' },
   { title: '2月', key: '2' },
@@ -19,6 +28,7 @@ const optionMonths = [
   { title: '11月', key: '11' },
   { title: '12月', key: '12' },
 ];
+
 const getCommonEra = (year: number) => {
   return year + 1911;
 };
@@ -39,13 +49,16 @@ const dayPrint = (db: any, path: string) => {
   }
   return getData;
 };
+const shiftPageListCounts = 5;
 
 const shift = {
-  weekDayCht,
   optionYears,
+  optionAreas,
+  weekDayCht,
   optionMonths,
-  getWeekDay,
   getCommonEra,
+  getWeekDay,
   dayPrint,
+  shiftPageListCounts
 };
 export default shift;

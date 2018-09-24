@@ -27,12 +27,7 @@ class MainTab extends Component<MainTabProps> {
             menuItem: tablTitle.title1, render: () =>
                 // tslint:disable-next-line:jsx-wrap-multiline
                 <Tab.Pane attached={false}>
-                    <DaysLineTable
-                        onChangeYearEvent={this.props.onChangeYearEvent}
-                        onChangeMonthEvent={this.props.onChangeMonthEvent}
-                        selectYear={this.props.selectYear}
-                        selectMonth={this.props.selectMonth}
-                    />
+                    <DaysLineTable />
                 </Tab.Pane>
         },
         {

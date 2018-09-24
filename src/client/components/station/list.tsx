@@ -5,6 +5,7 @@ import AddFormMoal from '@components/station/add';
 import EditFormMoal from '@components/station/edit';
 import { Table, Button, Icon } from 'semantic-ui-react';
 import Wating from '@components/waiting';
+import shiftLabs from '#lib/shift';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
@@ -18,14 +19,6 @@ type ListTableProps = {
 type FStateProps = IFetch;
 type DispatchProps = typeof Actions;
 type Props = ListTableProps & FStateProps & DispatchProps;
-
-const optionAreas = [
-  { title: '全部', key: 'all' },
-  { title: '北區', key: '北區' },
-  { title: '中區', key: '中區' },
-  { title: '南區', key: '南區' },
-  { title: '東區', key: '東區' },
-];
 
 class ListTable extends Component<Props> {
   constructor(prop: Props) {
@@ -124,7 +117,7 @@ class ListTable extends Component<Props> {
     }
     return (
       <div className={this.props.className} >
-        <Selector options={optionAreas} currentSelected={this.props.selectArea} onChangeEvent={this.props.onChangeAreaEvent} />
+        <Selector options={shiftLabs.optionAreas} currentSelected={this.props.selectArea} onChangeEvent={this.props.onChangeAreaEvent} />
         <AddFormMoal />
         <Table celled>
           <Table.Header>

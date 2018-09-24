@@ -65,16 +65,34 @@ class ShiftController {
     ctx.body = data;
     ctx.status = 200;
   }
-  public static async getOne(ctx: IRouterContext) {
+  public static async getSingleWorkerByMonth(ctx: IRouterContext) {
     ctx.body = [];
     const getYear = ctx.params.year;
     const getMonth = ctx.params.month;
     const getStationId = ctx.params.stationid;
     const getWorkerId = ctx.params.workerid;
-    const getData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}/${getStationId}/${getWorkerId}`);
-    if (getData) {
-      ctx.body = getData;
+    const getLastDay = new Date(getYear, getMonth, 0).getDate();
+    // Get all workers
+    const getWorkerData = await operation.checkTable(ctx.db, `/worker`);
+    const getNomalData = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/nomal/${getWorkerId}`);
+    const getCoverData = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getWorkerId}/list`);
+    let singleNomalWorkerShift = operation.initEveryDayPerMonth(getLastDay);
+    // Get nomal day of station in this month
+    singleNomalWorkerShift = operation.pushNomalDayTypeToShifts(getNomalData.day, '日', singleNomalWorkerShift);
+    // Get nomal night of station in this month
+    singleNomalWorkerShift = operation.pushNomalDayTypeToShifts(getNomalData.night, '夜', singleNomalWorkerShift);
+    if (getCoverData) {
+      Object.keys(getCoverData).map((coverWorkerId: any) => {
+        if (getCoverData[coverWorkerId].coverDay) {
+          const getCoverDays = getCoverData[coverWorkerId].coverDay;
+          getCoverDays.map((coverDay: number) => {
+            const getCoverWorkerName = operation.checkNameExit(getWorkerData[getCoverData[coverWorkerId].coverWorker].name);
+            singleNomalWorkerShift[coverDay - 1] = { 'type': '休', 'coverWorkerId': coverWorkerId, 'coverWorkerName': getCoverWorkerName };
+          });
+        }
+      });
     }
+    ctx.body = singleNomalWorkerShift;
     ctx.status = 200;
   }
   public static async getAllByArea(ctx: IRouterContext) {
@@ -92,86 +110,112 @@ class ShiftController {
     const getYear = ctx.request.body!.year;
     const getMonth = ctx.request.body!.month;
     const getStationId = ctx.request.body!.stationid;
-    const getStationName = ctx.request.body!.stationname;
-    const getOldWorkerId = ctx.request.body!.oldworkerid;
-    const getNewWorkerId = ctx.request.body!.newworkerid;
-    const getWorkerName = ctx.request.body!.workername;
+    const getOldNomalWorkerId = ctx.request.body!.oldworkerid;
+    const getNewNomalWorkerId = ctx.request.body!.newworkerid;
     const getNewShift = ctx.request.body!.shift;
-
-    const getOldData = await operation.checkTable(ctx.db, `/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
-    if (getOldData) {
-      const getOldShift = getOldData.shift;
-      Object.keys(getOldShift).map((id: any) => {
-        if (getOldShift[id].shiftType === '休') {
-          const getDayoffData = operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
-          if (Object.keys(getDayoffData).length > 0) {
-            ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldShift[id].cover.id}/cover/${id}`);
-          }
-        }
-      });
-      ctx.db.delete(`/shift/${getYear}/${getMonth}/${getStationId}/${getOldWorkerId}`);
+    // search old countMark and delete countMark data
+    // countMark nomal delete
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${getOldNomalWorkerId}/shift/${getStationId}-${getOldNomalWorkerId}`);
+    const getNomalCountMarkOldShift = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark/${getOldNomalWorkerId}/shift`);
+    if (Object.keys(getNomalCountMarkOldShift).length === 0) {
+      ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${getOldNomalWorkerId}`);
     }
-    const getOldHourCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
-    console.log(Object.keys(getOldHourCountData).length);
-    if (Object.keys(getOldHourCountData).length > 0) {
-      ctx.db.delete(`/hourCounts/${getYear}/${getMonth}/${getOldWorkerId}/nomal`);
-    }
-    // count times
-    const getStationData = await operation.checkTable(ctx.db, `/station/${getStationId}`);
-    const getDayStart = getStationData.dayStart;
-    const getDayEnd = getStationData.dayEnd;
-    const getNightStart = getStationData.nightStart;
-    const getNightEnd = getStationData.nightEnd;
-    const dayDiff = await operation.countHour(getDayStart, getDayEnd);
-    const nightDiff = await operation.countHour(getNightStart, getNightEnd);
-    let dayCount = 0;
-    let nightCount = 0;
-    Object.keys(getNewShift).map((id: any) => {
-      if (getNewShift[id].shiftType === '日') {
-        dayCount++;
-      } else if (getNewShift[id].shiftType === '夜') {
-        nightCount++;
-      } else if (getNewShift[id].shiftType === '休') {
-        const getCountData1 = operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}`);
-        if (getCountData1.length === 0) {
-          ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}`, {
-            workerId: getNewShift[id].cover.id,
-            workerName: getNewShift[id].cover.name
-          });
-        }
-        ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewShift[id].cover.id}/cover/${id}`, {
-          day: id,
-          stationName: getStationName,
-          stationId: getStationId,
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/nomal/${getOldNomalWorkerId}`);
+    // countMark cover
+    const getOldCoverData = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getOldNomalWorkerId}/list`);
+    Object.keys(getOldCoverData).map((oldCoverWokerId: any) => {
+      // console.log(getOldCoverData[nomalWokerId]);
+      // countMark cover delete
+      const coverWorker = getOldCoverData[oldCoverWokerId].coverWorker;
+      ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${coverWorker}/shift/${getStationId}-${getOldNomalWorkerId}`);
+      // ctx.db.delete(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getOldNomalWorkerId}/list/${oldCoverWokerId}`);
+    });
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getOldNomalWorkerId}`);
+    // shift edit
+    const nomalDays: any[] = [];
+    const nomalNights: any[] = [];
+    getNewShift.map((day: any, key: number) => {
+      if (day.type === '日') {
+        nomalDays.push(key + 1);
+      } else if (day.type === '夜') {
+        nomalNights.push(key + 1);
+      } else if (day.type === '休') {
+        const shiftCoverPath = `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getNewNomalWorkerId}/list/${day.coverWorkerId}`;
+        const getCoverList = operation.checkTable(ctx.db, `${shiftCoverPath}/coverDay`);
+        getCoverList[getCoverList.length] = key + 1;
+        ctx.db.push(shiftCoverPath, {
+          coverWorker: day.coverWorkerId,
+          coverDay: getCoverList
         });
       }
     });
-    const getTotalDayHours = dayCount * dayDiff;
-    const getTotalNightHours = nightCount * nightDiff;
-    ctx.db.push(`/shift/${getYear}/${getMonth}/${getStationId}/${getNewWorkerId}`, {
-      stationName: getStationName,
-      workerName: getWorkerName,
-      totalDays: dayCount,
-      totalNights: nightCount,
-      totalDayHours: getTotalDayHours,
-      totalNightHours: getTotalNightHours,
-      shift: getNewShift
+    ctx.db.push(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/nomal/${getNewNomalWorkerId}`, {
+      day: nomalDays,
+      night: nomalNights
     });
-    const getCountData = await operation.checkTable(ctx.db, `/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`);
-    if (Object.keys(getCountData).length === 0) {
-      ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}`, {
-        workerId: getNewWorkerId,
-        workerName: getWorkerName
-      });
+    // new countMark add
+    const newNomalCountMarkPath = `/calendar/${getYear}/${getMonth}/countMark/${getNewNomalWorkerId}`;
+    const newShiftKey = `${getStationId}-${getNewNomalWorkerId}`;
+    const getCountMarkShiftLists = operation.checkTable(ctx.db, `${newNomalCountMarkPath}/shift/${newShiftKey}`);
+    const newList = { 'station': getStationId, 'nomalWorker': getNewNomalWorkerId, 'type': 'nomal' };
+    // tslint:disable-next-line:one-variable-per-declaration
+    const newShift: {
+      [key: string]: {
+        station: string,
+        nomalWorker: string,
+        type: string
+      }
+    } = {};
+    newShift[newShiftKey] = newList;
+    if (Object.keys(getCountMarkShiftLists).length === 0) {
+      const getNomalMarkShift = operation.checkTable(ctx.db, `${newNomalCountMarkPath}/shift`);
+      if (Object.keys(getNomalMarkShift).length === 0) {
+        ctx.db.push(newNomalCountMarkPath, {
+          worker: getNewNomalWorkerId,
+          shift: newShift
+        });
+      } else {
+        getNomalMarkShift[newShiftKey] = newList;
+        ctx.db.push(newNomalCountMarkPath, {
+          worker: getNewNomalWorkerId,
+          shift: getNomalMarkShift
+        });
+      }
     }
-    ctx.db.push(`/hourCounts/${getYear}/${getMonth}/${getNewWorkerId}/nomal/${getStationId}`, {
-      stationId: getStationId,
-      stationName: getStationName,
-      totalDays: dayCount,
-      totalNights: nightCount,
-      totalDayHours: getTotalDayHours,
-      totalNightHours: getTotalNightHours
+
+    const getNewShiftCoverList = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getNewNomalWorkerId}/list`);
+    const coverCountMarkShiftKey = `${getStationId}-${getNewNomalWorkerId}`;
+    Object.keys(getNewShiftCoverList).map((coverWorker: any) => {
+      const newCoverCountMarkPath = `/calendar/${getYear}/${getMonth}/countMark/${coverWorker}`;
+      // console.log(coverCountMarkShiftKey);
+      const checkMarkExit = operation.checkTable(ctx.db, `${newCoverCountMarkPath}/shift/${coverCountMarkShiftKey}`);
+      // console.log(checkMarkExit);
+      const newCoverList = { 'station': getStationId, 'nomalWorker': getNewNomalWorkerId, 'type': 'cover' };
+      const newCoverShift: {
+        [key: string]: {
+          station: string,
+          nomalWorker: string,
+          type: string
+        }
+      } = {};
+      newCoverShift[coverCountMarkShiftKey] = newCoverList;
+      if (Object.keys(checkMarkExit).length === 0) {
+        const getMarkShift = operation.checkTable(ctx.db, `${newCoverCountMarkPath}/shift`);
+        if (Object.keys(getMarkShift).length === 0) {
+          ctx.db.push(newCoverCountMarkPath, {
+            worker: coverWorker,
+            shift: newCoverShift
+          });
+        } else {
+          getMarkShift[coverCountMarkShiftKey] = newCoverList;
+          ctx.db.push(newCoverCountMarkPath, {
+            worker: coverWorker,
+            shift: getMarkShift
+          });
+        }
+      }
     });
+    ctx.body = 'yes';
     ctx.status = 200;
   }
 
@@ -190,9 +234,9 @@ class ShiftController {
     const totalStationShifts: any[] = [];
     const getLastDay = new Date(getYear, getMonth, 0).getDate();
     // Get all stations
-    const getStationData = await operation.checkTable(ctx.db, `/station`);
+    const getStationData = await operation.checkTable(ctx.db, operation.getPath('all stations'));
     // Get all workers
-    const getWorkerData = await operation.checkTable(ctx.db, `/worker`);
+    const getWorkerData = await operation.checkTable(ctx.db, operation.getPath('all workers'));
     // Divide stations group by area
     const getStationGroupByArea = await operation.groupByKey(getStationData, 'area', getStationArea);
     let stationCount = parseInt(getStationCount);
@@ -201,13 +245,7 @@ class ShiftController {
       const getArrayByArea = Object.values(getStationGroupByArea[area]);
       getArrayByArea.map((station: any) => {
         stationIndex++;
-        // console.log(station.id + '----' + stationIndex);
         if (parseInt(getStationStartId) <= stationIndex && stationCount !== 0) {
-          const stationShift: {
-            stationId: string
-            stationName: string,
-            workerShift: any
-          } = { 'stationId': station.id, 'stationName': station.name, 'workerShift': {} };
           // Get shifts by year,month and station
           const getStationShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${station.id}`);
           if (getStationShift) {
@@ -216,80 +254,49 @@ class ShiftController {
             const totalWorkerShifts: any[] = [];
             if (getNomalShift) {
               Object.keys(getNomalShift).map((nomalWorkerId: any) => {
-                let getNomalWorkerName = 'no name';
-                if (getWorkerData[nomalWorkerId].name) {
-                  getNomalWorkerName = getWorkerData[nomalWorkerId].name;
-                }
-                let getDay = [];
-                let getNight = [];
+                const getNomalWorkerName = operation.checkNameExit(getWorkerData[nomalWorkerId].name);
                 let getCover: any = [];
-                const singleNomalWorkerShift: any = [];
-                for (let i = 0; i <= getLastDay; i++) {
-                  singleNomalWorkerShift[i] = '';
-                }
-                if (getNomalShift[nomalWorkerId].day) {
-                  getDay = getNomalShift[nomalWorkerId].day;
-                  getDay.map((dayId: number) => {
-                    singleNomalWorkerShift[dayId - 1] = '日';
-                  });
-                }
-                if (getNomalShift[nomalWorkerId].night) {
-                  getNight = getNomalShift[nomalWorkerId].night;
-                  getNight.map((dayId: number) => {
-                    singleNomalWorkerShift[dayId - 1] = '夜';
-                  });
-                }
+                let singleNomalWorkerShift = operation.initEveryDayPerMonth(getLastDay);
+                // Get nomal day of station in this month
+                singleNomalWorkerShift = operation.pushNomalDayTypeToShifts(getNomalShift[nomalWorkerId].day, '日', singleNomalWorkerShift);
+                // Get nomal night of station in this month
+                singleNomalWorkerShift = operation.pushNomalDayTypeToShifts(getNomalShift[nomalWorkerId].night, '夜', singleNomalWorkerShift);
                 // Get cover work day of station in this month
                 const getCoverShift = getStationShift.cover;
                 if (getCoverShift[nomalWorkerId]) {
-                  getCover = getCoverShift[nomalWorkerId];
+                  getCover = getCoverShift[nomalWorkerId].list;
                   if (getCover) {
                     Object.keys(getCover).map((coverWorkerId: any) => {
                       if (getCover[coverWorkerId].coverDay) {
                         const getCoverDays = getCover[coverWorkerId].coverDay;
                         getCoverDays.map((coverDay: number) => {
-                          let getCoverWorkerName = 'no name';
-                          if (getWorkerData[getCover[coverWorkerId].coverWorker].name) {
-                            getCoverWorkerName = getWorkerData[getCover[coverWorkerId].coverWorker].name;
-                          }
-                          singleNomalWorkerShift[coverDay - 1] = getCoverWorkerName;
+                          const getCoverWorkerName = operation.checkNameExit(getWorkerData[getCover[coverWorkerId].coverWorker].name);
+                          singleNomalWorkerShift[coverDay - 1] = { 'type': '休', 'coverWorkerId': coverWorkerId, 'coverWorkerName': getCoverWorkerName};
                         });
                       }
                     });
                   }
                 }
-                const shift: {
-                  nomalWorkerId: string
-                  nomalWorkerName: string,
-                  dayShift: any
-                } = { 'nomalWorkerId': nomalWorkerId, 'nomalWorkerName': getNomalWorkerName, 'dayShift': singleNomalWorkerShift };
-                totalWorkerShifts.push(shift);
+                totalWorkerShifts.push({ 'nomalWorkerId': nomalWorkerId, 'nomalWorkerName': getNomalWorkerName, 'dayShift': singleNomalWorkerShift });
               });
             }
             // check remain count of station's workerNumber
             if (totalWorkerShifts.length < parseInt(station.workerNumber)) {
               const remainNumber = parseInt(station.workerNumber) - totalWorkerShifts.length;
               for (let w = 1; w <= remainNumber; w++) {
-                const singleNomalWorkerShift = [];
-                for (let i = 0; i <= getLastDay; i++) {
-                  singleNomalWorkerShift[i] = '';
-                }
-                const shift: {
-                  nomalWorkerId: string
-                  nomalWorkerName: string,
-                  dayShift: any
-                } = { 'nomalWorkerId': '無', 'nomalWorkerName': '無', 'dayShift': singleNomalWorkerShift };
+                const singleNomalWorkerShift = operation.initEveryDayPerMonth(getLastDay);
+                const shift = { 'nomalWorkerId': '無', 'nomalWorkerName': '無', 'dayShift': singleNomalWorkerShift };
                 totalWorkerShifts.push(shift);
               }
             }
-            stationShift.workerShift = totalWorkerShifts;
-            totalStationShifts.push(stationShift);
+            totalStationShifts.push({ 'stationId': station.id, 'stationName': station.name, 'workerShift': totalWorkerShifts });
           }
           stationCount = stationCount - 1;
         }
       });
     });
-    ctx.body = totalStationShifts;
+    const data = { 'workers': getWorkerData, 'shifts': totalStationShifts, 'stationCounts': stationIndex };
+    ctx.body = data;
   }
 }
 

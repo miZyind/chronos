@@ -20,7 +20,7 @@ router.put('/station', StationController.edit);
 router.delete('/station', StationController.delete);
 
 router.get('/shift', ShiftController.getAll);
-router.get('/shift/:year/:month/:stationid/:workerid', ShiftController.getOne);
+router.get('/shift/:year/:month/:stationid/:workerid', ShiftController.getSingleWorkerByMonth);
 router.get('/shiftbymonth/:year/:month/', ShiftController.getOneByMonth);
 router.post('/shift', ShiftController.edit);
 router.get('/shift1/:year/:month/:stationarea/:stationstart/:count', ShiftController.getShiftByWorker);

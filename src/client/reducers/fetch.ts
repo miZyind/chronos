@@ -9,6 +9,7 @@ const initState: IFetch = {
   stationListItems: [],
   workerEditShiftItems: [],
   stationShiftsListByMonthArea: [],
+  totalStationByMonthArea: 0,
   shiftEditItems: {},
   items: [],
   loading: false,
@@ -57,7 +58,9 @@ const fetch = (state = initState, action: Actions) => {
           ...state,
           loading: false,
           sendfinish: false,
-          stationShiftsListByMonthArea: action.payload.data
+          stationShiftsListByMonthArea: action.payload.data.shifts,
+          workerEditShiftItems: action.payload.data.workers,
+          totalStationByMonthArea: action.payload.data.stationCounts
         };
       } else if (action.payload.type === 'shiftEdit') {
         return {

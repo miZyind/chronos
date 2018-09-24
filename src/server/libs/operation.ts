@@ -1,4 +1,3 @@
-
 const checkTable = (db: any, path: string) => {
   let getData = [];
   try {
@@ -7,6 +6,46 @@ const checkTable = (db: any, path: string) => {
     console.error();
   }
   return getData;
+};
+
+const getPath = (name: string) => {
+  const pathData = [
+    { title: 'all stations', path: `/station` },
+    { title: 'all workers', path: `/worker` }
+  ];
+  // tslint:disable-next-line:no-shadowed-variable
+  let getPath = '';
+  pathData.map((path: any) => {
+    if (path.title === name) {
+      getPath = path.path;
+    }
+  });
+  return getPath;
+};
+
+const initEveryDayPerMonth = (days: number) => {
+  const shifts: any = [];
+  for (let i = 0; i < days; i++) {
+    shifts[i] = {'type': '無'};
+  }
+  return shifts;
+};
+
+const checkNameExit = (getName: string) => {
+  let name = 'no name';
+  if (getName) {
+    name = getName;
+  }
+  return name;
+};
+
+const pushNomalDayTypeToShifts = (dayArray: any, type: string, shiftArray: any) => {
+  if (dayArray) {
+    dayArray.map((dayId: number) => {
+      shiftArray[dayId - 1] = { 'type': type };
+    });
+  }
+  return shiftArray;
 };
 
 const queryLastId = (parent: any) => {
@@ -53,8 +92,12 @@ const groupByKey = (data: any, key: string, condition: string) => {
 
 const operation = {
   checkTable,
-  countHour,
+  getPath,
+  initEveryDayPerMonth,
+  checkNameExit,
+  pushNomalDayTypeToShifts,
   queryLastId,
+  countHour,
   groupByKey
 };
 export default operation;

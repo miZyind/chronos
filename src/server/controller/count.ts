@@ -5,7 +5,7 @@ class CountController {
   public static async getAllByMonth(ctx: IRouterContext) {
     const getYear = ctx.params.year;
     const getMonth = ctx.params.month;
-    const getWorkerData = await operation.checkTable(ctx.db, `/worker`);
+    const getWorkerData = await operation.checkTable(ctx.db, operation.getPath('all workers'));
     const getCountMarkData = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark`);
     const totalCountShifts: any[] = [];
     Object.keys(getCountMarkData).map((workerId: string) => {
@@ -24,7 +24,7 @@ class CountController {
           nightCount = nightCount + getShift.night.length;
         } else if (getAllShiftMark[shiftId].type === 'cover') {
           const nomalWorkerId = getAllShiftMark[shiftId].nomalWorker;
-          const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getAllShiftMark[shiftId].station}/cover/${nomalWorkerId}/${workerId}`);
+          const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getAllShiftMark[shiftId].station}/cover/${nomalWorkerId}/list/${workerId}`);
           coverCount = coverCount + getShift.coverDay.length;
         }
       });
@@ -39,8 +39,8 @@ class CountController {
     const getMonth = ctx.params.month;
     const getWorkerId = ctx.params.worker;
     const totalCountShifts: any[] = [];
-    const getStationData = await operation.checkTable(ctx.db, `/station`);
-    const getWorkerData = await operation.checkTable(ctx.db, `/worker`);
+    const getStationData = await operation.checkTable(ctx.db, operation.getPath('all stations'));
+    const getWorkerData = await operation.checkTable(ctx.db, operation.getPath('all workers'));
     const getWorkerShiftCount = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark/${getWorkerId}`);
     const getShiftsByCountMark = getWorkerShiftCount.shift;
     Object.keys(getShiftsByCountMark).map((stationId: string) => {
@@ -62,7 +62,7 @@ class CountController {
         if (getWorkerData[nomalWorkerId]) {
           getNomalWorkerName = getWorkerData[nomalWorkerId].name;
         }
-        const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${nomalWorkerId}/${getWorkerId}`);
+        const getShift = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${nomalWorkerId}/list/${getWorkerId}`);
         const coverCount = getShift.coverDay.length;
         const type = `代班(${getNomalWorkerName})`;
         const countShift = { 'stationName': getStationName, 'type': type, 'dayCount': 0, 'nightCount': 0, 'coverCount': coverCount };

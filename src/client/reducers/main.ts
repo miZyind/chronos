@@ -29,11 +29,16 @@ const initState: IMain = {
   isLoading: true,
   isCompleted: false,
   counterCaption: 0,
+  getSelectShiftYear: getCurrentTaiwanYear(),
+  getSelectShiftMonth: getCurrentMonth(),
+  getShiftDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
+  getSelectShiftArea: 'all',
+  getShift: [],
+  getShiftPage: 1,
   getSelectYear: getCurrentTaiwanYear(),
   getSelectMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
   getSelectArea: 'all',
-  getShift: {},
   getSelectWorker: [],
   modalLoading: false
 };
@@ -52,33 +57,40 @@ const main = (state = initState, action: Actions) => {
     case ActionTypes.DECREMENT: {
       return { ...state, counterCaption: state.counterCaption - 1 };
     }
+    case ActionTypes.SELECTSHIFTYEAR: {
+      state.getShiftDays = getDaysInMonth([], parseInt(state.getSelectShiftMonth), getCommonEra(parseInt(action.payload)));
+      return { ...state, getSelectShiftYear: action.payload, getShiftDays: state.getShiftDays };
+    }
+    case ActionTypes.SELECTSHIFTMONTH: {
+      state.getShiftDays = getDaysInMonth([], parseInt(action.payload), getCommonEra(parseInt(state.getSelectShiftYear)));
+      return { ...state, getSelectShiftMonth: action.payload, getShiftDays: state.getShiftDays };
+    }
+    case ActionTypes.SELECTSHIFTAREA: {
+      return { ...state, getSelectShiftArea: action.payload};
+    }
+    case ActionTypes.SHIFTPAGINATION: {
+      return { ...state, getShiftPage: action.payload };
+    }
     case ActionTypes.SELECTYEAR: {
       state.getDays = getDaysInMonth([], parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
       return { ...state, getSelectYear: action.payload, getDays: state.getDays };
     }
     case ActionTypes.SELECTMONTH: {
       state.getDays = getDaysInMonth([], parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
-      return { ...state, getSelectMonth: action.payload, getDays: state.getDays};
+      return { ...state, getSelectMonth: action.payload, getDays: state.getDays };
     }
     case ActionTypes.SELECTAREA: {
-      return { ...state, getSelectArea: action.payload};
+      return { ...state, getSelectArea: action.payload };
     }
     case ActionTypes.EDITSHIFT: {
       const getItems = state.getShift;
-      if (action.payload.status === 'on') {
-        let coverId = '';
-        let coverName = '';
-        if (action.payload.id) {
-          coverId = action.payload.id;
-        }
-        if (action.payload.name) {
-          coverName = action.payload.name;
-        }
-        getItems[action.payload.day] = { 'shiftType': action.payload.shiftType, 'cover': { 'id': coverId, 'name': coverName } };
+      // tslint:disable-next-line:prefer-conditional-expression
+      if (action.payload.shiftType === '休') {
+        getItems[parseInt(action.payload.day) - 1] = { 'type': '休', 'coverWorkerId': action.payload.id, 'coverWorkerName': action.payload.name };
       } else {
-        delete getItems[action.payload.day];
+        getItems[parseInt(action.payload.day) - 1] = { 'type': action.payload.shiftType };
       }
-      return { ...state, getShift: getItems, counterCaption: state.counterCaption + 1 };
+      return { ...state, getShift: getItems, isCompleted: !state.isCompleted };
     }
     case ActionTypes.SELECTWORKER: {
       return { ...state, getSelectWorker: action.payload };

@@ -16,6 +16,7 @@ interface IFetch {
   loading: boolean;
   sendfinish: boolean;
   error: any;
+  totalStationByMonthArea: number;
 }
 
 export {

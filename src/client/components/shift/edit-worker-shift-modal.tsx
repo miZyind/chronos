@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Actions } from '@actions/main';
 import { IStore } from '../../models';
 import * as service from '../../services';
-import EditShiftTable from '@components/shift/edit-shift-table';
+import ShiftTable from '@components/shift/modal-shift-table';
 
 type EditWorkerShiftProps = {
     className?: string;
@@ -28,24 +28,26 @@ type DispatchProps = typeof Actions;
 type Props = EditWorkerShiftProps & StateProps & DispatchProps;
 
 class EditWorkerShift extends Component<Props> {
-    public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false };
+    public state = { open: false, dimmer: true, closeondocument: false, closeondimmer: false};
 
     public show = (dimmer: boolean) => () => {
         this.props.main.getShift = {};
         this.getShift();
         this.setState({ dimmer, open: true });
     }
-    public close = () => this.setState({ open: false });
+    public close = () => {
+        this.setState({ open: false });
+    }
     public getShift() {
-       this.props.modalfetchBegin();
-       service.getShift({
+        this.props.modalfetchBegin();
+        service.getShift({
             'year': this.props.main.getSelectYear,
             'month': this.props.main.getSelectMonth,
             'stationid': this.props.getStationId,
             'workerid': this.props.workerId,
         })
             .then((response: any) => {
-                this.props.modalfetchGetDataSuccess({'data': response.shift });
+                this.props.modalfetchGetDataSuccess({ 'data': response });
             }, (error) => {
                 this.props.modalfetchFailure(error);
             });
@@ -92,7 +94,7 @@ class EditWorkerShift extends Component<Props> {
                 <Modal.Content image scrolling>
                     <Modal.Description>
                         <Header>{formPropos.title}</Header>
-                        <EditShiftTable
+                        <ShiftTable
                             className='edit'
                             stationName={this.props.getStationName}
                             stationId={this.props.getStationId}
