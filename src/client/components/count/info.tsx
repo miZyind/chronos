@@ -5,11 +5,13 @@ import { Actions } from '@actions/main';
 import { IStore } from '../../models';
 import 'rc-time-picker/assets/index.css';
 import * as service from '../../services';
+import Row from './row';
 
 type InfoProps = {
   className?: string;
   getWorkerId: string;
 };
+
 const formPropos = {
   title: '詳細時數(建構中)'
 };
@@ -25,16 +27,15 @@ type StateProps = IStore;
 type DispatchProps = typeof Actions;
 type Props = InfoProps & StateProps & DispatchProps;
 
-class Info extends Component<Props> {
-
-  public state = {
-    open: false,
-    dimmer: true,
-    closeondocument: false,
-    closeondimmer: false,
-  };
+class Info extends Component<Props, any> {
   constructor(prop: Props) {
     super(prop);
+    this.state = {
+      open: false,
+      dimmer: true,
+      closeondocument: false,
+      closeondimmer: false,
+    };
   }
   public show = (dimmer: boolean) => () => {
     this.fetchOneCount();
@@ -51,37 +52,19 @@ class Info extends Component<Props> {
     service.getCountByWorker(obj)
       .then((response: any) => {
         this.props.fetchGetDataSuccess({ 'type': 'countListByWorker', 'data': response });
-        console.log(this.props.fetch.countByWorkerListItems);
+        this.setState({ isLoaded: true });
       }, (error) => {
         this.props.fetchFailure(error);
       });
   }
-  public getLists() {
-    const { countByWorkerListItems } = this.props.fetch;
-    console.log(countByWorkerListItems);
-    const rows: JSX.Element[] = [];
-    if (countByWorkerListItems && countByWorkerListItems.length > 0) {
-      countByWorkerListItems.map((id: any, key: number) => {
-        rows.push(
-          <Table.Row key={`worker-${key}}`}>
-            <Table.Cell>{id.stationName}</Table.Cell>
-            <Table.Cell>{id.type}</Table.Cell>
-            <Table.Cell>{id.dayCount}</Table.Cell>
-            <Table.Cell>{id.nightCount}</Table.Cell>
-            <Table.Cell>{id.coverCount}</Table.Cell>
-          </Table.Row>);
-      });
-    }
-    return rows;
-  }
   public render() {
-    const {open, dimmer, closeondocument, closeondimmer} = this.state;
+    const { open, dimmer, closeondocument, closeondimmer } = this.state;
     const button = <Button onClick={this.show(true)} icon><Icon name='compose' /></Button>;
     return (
       <Modal
         closeOnDimmerClick={closeondimmer}
         closeOnDocumentClick={closeondocument}
-        dimmer={dimmer}
+        dimmer={dimmer ? true : undefined}
         onClose={this.close}
         open={open}
         className={this.props.className}
@@ -101,7 +84,7 @@ class Info extends Component<Props> {
                   <Table.HeaderCell>代班天數</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-              <Table.Body>{this.getLists()}</Table.Body>
+              <Table.Body>{this.state.isLoaded && this.props.fetch.countByWorkerListItems.map((id, key) => <Row key={key} id={id} />)}</Table.Body>
             </Table>
           </Modal.Description>
         </Modal.Content>
