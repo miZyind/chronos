@@ -41,8 +41,8 @@ class EditWorkerShift extends Component<Props> {
     public getShift() {
         this.props.modalfetchBegin();
         service.getShift({
-            'year': this.props.main.getSelectYear,
-            'month': this.props.main.getSelectMonth,
+            'year': this.props.main.getSelectShiftYear,
+            'month': this.props.main.getSelectShiftMonth,
             'stationid': this.props.getStationId,
             'workerid': this.props.workerId,
         })
@@ -55,8 +55,8 @@ class EditWorkerShift extends Component<Props> {
     public fetchShift() {
         this.props.fetchBegin();
         const obj: object = {
-            'year': this.props.main.getSelectYear,
-            'month': this.props.main.getSelectMonth,
+            'year': this.props.main.getSelectShiftYear,
+            'month': this.props.main.getSelectShiftMonth,
             'stationid': this.props.getStationId,
             'stationname': this.props.getStationName,
             'oldworkerid': this.props.workerId,

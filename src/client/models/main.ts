@@ -1,14 +1,13 @@
 interface IMain {
   isLoading: boolean;
   isCompleted: boolean;
-  counterCaption: number;
   getSelectShiftYear: string;
   getSelectShiftMonth: string;
   getSelectShiftArea: string;
   getShiftPage: any;
   getShiftDays: number[];
-  getSelectYear: string;
-  getSelectMonth: string;
+  getSelectCountYear: string;
+  getSelectCountMonth: string;
   getDays: number[];
   getSelectArea: string;
   getShift: any;

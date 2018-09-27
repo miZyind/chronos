@@ -23,9 +23,9 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
   public render() {
     const {
       // StateProps
-      getSelectYear, getSelectMonth, getSelectArea,
+      getSelectArea,
       // DispatchProps
-      selectyear, selectmonth, selectarea,
+      selectarea,
       // OwnProps
       name, version, className
     } = this.props;
@@ -36,10 +36,6 @@ class App extends React.Component<StateProps & DispatchProps & OwnProps> {
           <Header.Content>{`${name} v${version}`}</Header.Content>
         </Header>
         <MainTabs
-          onChangeYearEvent={selectyear}
-          onChangeMonthEvent={selectmonth}
-          selectYear={getSelectYear}
-          selectMonth={getSelectMonth}
           selectArea={getSelectArea}
           onChangeAreaEvent={selectarea}
         />

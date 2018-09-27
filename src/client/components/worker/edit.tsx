@@ -4,6 +4,7 @@ import { Button, Header, Modal, Form, Icon } from 'semantic-ui-react';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
+import styled from 'styled-components';
 
 type EditFormProps = {
   className?: string;
@@ -99,7 +100,17 @@ class EditForm extends Component<Props> {
   }
 }
 
+const StyledEditForm = styled(EditForm) `
+  &&&& {
+    margin-top: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0,0,0,0.3);
+    padding: 50px;
+  }
+`;
+
 export default connect<FStateProps, DispatchProps>(
   (state: any) => state.fetch,
   Actions
-)(EditForm);
+)(StyledEditForm);

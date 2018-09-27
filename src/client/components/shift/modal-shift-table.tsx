@@ -56,9 +56,9 @@ class EditTableShifts extends Component<Props> {
         this.props.selectworker({ 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name});
     }
     public checkWeekend(day: string) {
-        const { getSelectYear, getSelectMonth } = this.props.main;
+        const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
         let result = false;
-        if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day) === '日') {
+        if (shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '六' || shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '日') {
             result = true;
         }
         return result;
@@ -99,7 +99,7 @@ class EditTableShifts extends Component<Props> {
         // this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name };
     }
     public render() {
-        const { getSelectYear, getSelectMonth } = this.props.main;
+        const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
         const { workerEditShiftItems } = this.props.fetch;
         const { open, dimmer, closeondocument, closeondimmer } = this.state;
         return (
@@ -123,7 +123,7 @@ class EditTableShifts extends Component<Props> {
                     </Table.Row>
                     <Table.Row>
                         <Table.HeaderCell >星期</Table.HeaderCell>
-                            {this.props.main.getShiftDays.map((day, i) => <Table.HeaderCell key={'w-' + i}>{shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day.toString())}</Table.HeaderCell>)}
+                            {this.props.main.getShiftDays.map((day, i) => <Table.HeaderCell key={'w-' + i}>{shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day.toString())}</Table.HeaderCell>)}
                     </Table.Row>
                 </Table.Header>
                     <Table.Body>

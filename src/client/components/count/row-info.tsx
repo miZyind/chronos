@@ -1,12 +1,11 @@
-// Node module
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 
-type RowProps = {
+type infoRowProps = {
   id: any,
 };
 
-const Row = ({ id }: RowProps) => (
+const infoRow = ({ id }: infoRowProps) => (
   <Table.Row >
     <Table.Cell>{id.stationName}</Table.Cell>
     <Table.Cell>{id.type}</Table.Cell>
@@ -16,4 +15,4 @@ const Row = ({ id }: RowProps) => (
   </Table.Row>
 );
 
-export default Row;
+export default infoRow;

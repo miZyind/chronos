@@ -4,19 +4,13 @@ import { Button, Header, Modal, Form } from 'semantic-ui-react';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
+import styled from 'styled-components';
 
 type AddFormProps = {
   className?: string;
 };
 const formPropos = {
   title: '新增保全',
-};
-const backdropStyle = {
-  marginTop: '0px !important',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  backgroundColor: 'rgba(0,0,0,0.3)',
-  padding: 50
 };
 
 type FStateProps = IFetch;
@@ -66,7 +60,6 @@ class AddForm extends Component<Props> {
         onClose={this.close}
         open={open}
         className={this.props.className}
-        style={backdropStyle}
         trigger={button}
       >
         <Modal.Content image scrolling>
@@ -95,7 +88,17 @@ class AddForm extends Component<Props> {
   }
 }
 
+const StyledAddForm = styled(AddForm) `
+  &&&& {
+    margin-top: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0,0,0,0.3);
+    padding: 50px;
+  }
+`;
+
 export default connect<FStateProps, DispatchProps>(
   (state: any) => state.fetch,
   Actions
-)(AddForm);
+)(StyledAddForm);

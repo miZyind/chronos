@@ -7,10 +7,6 @@ import CountTable from '@components/count/list';
 
 type MainTabProps = {
     className?: string;
-    onChangeYearEvent?: any;
-    onChangeMonthEvent?: any;
-    selectYear: string;
-    selectMonth: string;
     onChangeAreaEvent?: any;
     selectArea: string;
 };

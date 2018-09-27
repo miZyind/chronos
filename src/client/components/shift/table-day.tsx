@@ -70,9 +70,9 @@ class TableDays extends Component<Props> {
         return rows;
     }
     public checkWeekend(day: string) {
-        const { getSelectYear, getSelectMonth } = this.props.main;
+        const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
         let result = false;
-        if (shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day) === '六' || shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day) === '日') {
+        if (shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '六' || shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '日') {
             result = true;
         }
         return result;
@@ -131,7 +131,7 @@ class TableDays extends Component<Props> {
     }
     public render() {
         const { loading, totalStationByMonthArea } = this.props.fetch;
-        const { getSelectYear, getSelectMonth, getShiftDays } = this.props.main;
+        const { getSelectShiftYear, getSelectShiftMonth, getShiftDays } = this.props.main;
         if (loading) {
             return (<Wating />);
         }
@@ -147,7 +147,7 @@ class TableDays extends Component<Props> {
                         </Table.Row>
                         <Table.Row>
                             <Table.HeaderCell>星期</Table.HeaderCell>
-                            {getShiftDays.map((day, i) => <Table.HeaderCell  key={'w-' + i}>{shiftLabs.getWeekDay(getSelectYear, getSelectMonth, day.toString())}</Table.HeaderCell>)}
+                            {getShiftDays.map((day, i) => <Table.HeaderCell key={'w-' + i}>{shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day.toString())}</Table.HeaderCell>)}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

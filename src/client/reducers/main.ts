@@ -28,15 +28,14 @@ const getCommonEra = (year: number) => {
 const initState: IMain = {
   isLoading: true,
   isCompleted: false,
-  counterCaption: 0,
   getSelectShiftYear: getCurrentTaiwanYear(),
   getSelectShiftMonth: getCurrentMonth(),
   getShiftDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
   getSelectShiftArea: 'all',
   getShift: [],
   getShiftPage: 1,
-  getSelectYear: getCurrentTaiwanYear(),
-  getSelectMonth: getCurrentMonth(),
+  getSelectCountYear: getCurrentTaiwanYear(),
+  getSelectCountMonth: getCurrentMonth(),
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
   getSelectArea: 'all',
   getSelectWorker: [],
@@ -50,12 +49,6 @@ const main = (state = initState, action: Actions) => {
     }
     case ActionTypes.TOGGLE_STEP_STATUS: {
       return { ...state, isCompleted: !state.isCompleted };
-    }
-    case ActionTypes.INCREMENT: {
-      return { ...state, counterCaption: state.counterCaption + 1 };
-    }
-    case ActionTypes.DECREMENT: {
-      return { ...state, counterCaption: state.counterCaption - 1 };
     }
     case ActionTypes.SELECTSHIFTYEAR: {
       state.getShiftDays = getDaysInMonth([], parseInt(state.getSelectShiftMonth), getCommonEra(parseInt(action.payload)));
@@ -71,13 +64,11 @@ const main = (state = initState, action: Actions) => {
     case ActionTypes.SHIFTPAGINATION: {
       return { ...state, getShiftPage: action.payload };
     }
-    case ActionTypes.SELECTYEAR: {
-      state.getDays = getDaysInMonth([], parseInt(state.getSelectMonth), getCommonEra(parseInt(action.payload)));
-      return { ...state, getSelectYear: action.payload, getDays: state.getDays };
+    case ActionTypes.SELECTCOUNTYEAR: {
+      return { ...state, getSelectCountYear: action.payload };
     }
-    case ActionTypes.SELECTMONTH: {
-      state.getDays = getDaysInMonth([], parseInt(action.payload), getCommonEra(parseInt(state.getSelectYear)));
-      return { ...state, getSelectMonth: action.payload, getDays: state.getDays };
+    case ActionTypes.SELECTCOUNTMONTH: {
+      return { ...state, getSelectCountMonth: action.payload };
     }
     case ActionTypes.SELECTAREA: {
       return { ...state, getSelectArea: action.payload };
