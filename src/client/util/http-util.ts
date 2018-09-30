@@ -26,6 +26,32 @@ export function get(url: string) {
   });
 }
 
+export function postQuery(url: string, opts?: any) {
+  return new Promise((resolve, reject) => {
+    console.log(opts);
+    fetch(url, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json' ,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(opts)
+    })
+      .then((response) => {
+        if (response.status !== 201) {
+          handleError(reject, 'response.statusText');
+        }
+        return response;
+      })
+      .then((data) => {
+        data.text().then((obj) => resolve(obj));
+      }).catch((error) => {
+        handleError(reject, error);
+      });
+  });
+}
+
 export function post(url: string, opts?: any) {
   return new Promise((resolve, reject) => {
     console.log(opts);

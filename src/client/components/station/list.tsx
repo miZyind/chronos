@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Selector from '@components/selector';
-import AddFormMoal from '@components/station/add';
-import EditFormMoal from '@components/station/edit';
+import AddFormMoal from '@components/station/modal-add';
+import EditFormMoal from '@components/station/modal-edit';
 import { Table, Button, Icon } from 'semantic-ui-react';
-import Wating from '@components/waiting';
+import Wating from '@components/message-waiting';
 import shiftLabs from '#lib/shift';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button, Header, Modal, Form, Icon } from 'semantic-ui-react';
-import { Actions } from '@actions/main';
-import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
 import styled from 'styled-components';
 
@@ -11,23 +8,15 @@ type EditFormProps = {
   editId: string;
   editName: string;
   editMobile: string;
+  fetchBeginEvent: any;
+  fetchSendSuccessEvent: any;
+  fetchFailureEvent: any;
 };
 const formPropos = {
   title: '修改保全資料',
 };
-const backdropStyle = {
-  marginTop: '0px !important',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  backgroundColor: 'rgba(0,0,0,0.3)',
-  padding: 50
-};
 
-type FStateProps = IFetch;
-type DispatchProps = typeof Actions;
-type Props = EditFormProps & FStateProps & DispatchProps;
-
-class EditForm extends Component<Props> {
+class EditForm extends Component<EditFormProps> {
   public state = {
     open: false,
     dimmer: true,
@@ -42,15 +31,15 @@ class EditForm extends Component<Props> {
 
   public fetchWorker() {
     const { sname, smobile, sid } = this.state;
-    this.props.fetchBegin();
+    this.props.fetchBeginEvent();
     const obj: object = { 'name': sname, 'mobile': smobile, 'id': sid };
     service.putWorker(obj)
       .then((response: any) => {
         if (response === 'yes') {
-          this.props.fetchSendSuccess();
+          this.props.fetchSendSuccessEvent();
         }
       }, (error) => {
-        this.props.fetchFailure(error);
+        this.props.fetchFailureEvent(error);
       });
   }
   public edit = () => {
@@ -71,7 +60,6 @@ class EditForm extends Component<Props> {
         onClose={this.close}
         open={open}
         className={this.props.className}
-        style={backdropStyle}
         trigger={button}
       >
         <Modal.Content image scrolling>
@@ -110,7 +98,4 @@ const StyledEditForm = styled(EditForm) `
   }
 `;
 
-export default connect<FStateProps, DispatchProps>(
-  (state: any) => state.fetch,
-  Actions
-)(StyledEditForm);
+export default StyledEditForm;

@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button, Header, Modal, Form } from 'semantic-ui-react';
-import { Actions } from '@actions/main';
-import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
 import styled from 'styled-components';
 
 type AddFormProps = {
   className?: string;
+  fetchBeginEvent: any;
+  fetchSendSuccessEvent: any;
+  fetchFailureEvent: any;
 };
 const formPropos = {
   title: '新增保全',
 };
 
-type FStateProps = IFetch;
-type DispatchProps = typeof Actions;
-type Props = AddFormProps & FStateProps & DispatchProps;
-
-class AddForm extends Component<Props> {
+class AddForm extends Component<AddFormProps> {
   public state = {
     open: false,
     dimmer: true,
@@ -31,15 +27,15 @@ class AddForm extends Component<Props> {
 
   public fetchWorker() {
     const { sname, smobile } = this.state;
-    this.props.fetchBegin();
+    this.props.fetchBeginEvent();
     const obj: object = { 'name': sname, 'mobile': smobile };
     service.postWorker(obj)
       .then((response: any) => {
         if (response === 'yes') {
-          this.props.fetchSendSuccess();
+          this.props.fetchSendSuccessEvent();
         }
       }, (error) => {
-        this.props.fetchFailure(error);
+        this.props.fetchFailureEvent(error);
       });
   }
   public add = () => {
@@ -98,7 +94,4 @@ const StyledAddForm = styled(AddForm) `
   }
 `;
 
-export default connect<FStateProps, DispatchProps>(
-  (state: any) => state.fetch,
-  Actions
-)(StyledAddForm);
+export default StyledAddForm;

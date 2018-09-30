@@ -1,111 +1,114 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
-import shiftLabs from '#lib/shift';
-import { Table, Grid, Label, Modal, Form, Button, Header } from 'semantic-ui-react';
-import Arrangement from '@components/shift/shif-work-arrangement';
-import { Actions } from '@actions/main';
-import { IStore } from '../../models';
+import * as service from '../../services';
+import { Modal, Button, Header, Form } from 'semantic-ui-react';
+
+const nameProps = {
+    title: '選擇人員',
+    searchBtn: '搜尋',
+    closeBtn: '取消',
+    choiseBtn: '選擇'
+};
 
 type SelectWorkerProps = {
-    className: string;
-    stationName: string;
-    stationId: string;
-    workerId?: string;
+    className?: string;
+    open: boolean;
+    closeEvent: any;
+    fetch: any;
+    workerOptions: any;
+    constraintId: any;
+    oriSelWorkerId: number;
+    oriSelWorkerName: string;
+    oriSelWorkerMobile: string;
+    getWorker: any;
 };
-const backdropStyle = {
-    marginTop: '0px !important',
-    margin: 'auto',
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    padding: 50
-};
-const formPropos = {
-    title: '選擇代班人員',
-    titleBtn: '代班',
-    selectCover: '代班人員',
-};
-let optionWorkers: any = [];
+class SelectWorker extends Component<SelectWorkerProps, any> {
 
-type StateProps = IStore;
-type DispatchProps = typeof Actions;
-type Props = SelectWorkerProps & StateProps & DispatchProps;
-
-class SelectWorker extends Component<Props> {
-    public state = { value: '', open: false, dimmer: true, closeondocument: false, closeondimmer: false };
-    public getCover = {};
-    constructor(prop: Props) {
+    constructor(prop: SelectWorkerProps) {
         super(prop);
-        this.getWorkrtOptions();
+        this.state = {
+            qname: '',
+            qmobile: '',
+            choiceWorker: this.props.oriSelWorkerId
+        };
     }
-    public getWorkrtOptions() {
-        optionWorkers = [];
-        const { workerEditShiftItems } = this.props.fetch;
-        Object.keys(workerEditShiftItems).map((id: any) => {
-            const getItemName = workerEditShiftItems[id].name;
-            const getItemId = id;
-            optionWorkers.push({ title: getItemName, key: getItemId });
-        });
-        if (this.props.workerId) {
-            (this.props.workerId === '無') ? this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name } : this.props.main.getSelectWorker = { 'id': this.props.workerId, 'name': workerEditShiftItems[this.props.workerId].name };
-        } else {
-            this.props.main.getSelectWorker = { 'id': Object.keys(workerEditShiftItems)[0], 'name': workerEditShiftItems[Object.keys(workerEditShiftItems)[0]].name };
-        }
+    public fetchWorkers(qname: string, qmobile: string) {
+        const { constraintId } = this.props;
+        const obj: object = {
+            'constraintId': constraintId,
+            'name': qname,
+            'mobile': qmobile
+        };
+        service.getSearchWorkers(obj)
+            .then((response: any) => {
+                const getData = JSON.parse(response);
+                this.props.fetch({ 'type': 'workerOptions', 'data': getData });
+                if (getData && getData.length > 0) {
+                    this.setState({ choiceWorker: getData[0].id });
+                }
+            }, (error) => {
+                console.log(error);
+            });
     }
-    public changeWorker = (event: React.FormEvent<HTMLSelectElement>) => {
-        const { workerEditShiftItems } = this.props.fetch;
-        this.props.selectworker({ 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name});
+    public change = (event: any) => {
+        this.setState({ [event.target.name]: event.target.value });
     }
-    public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
+    public changWorker = (e: any) => {
+        this.setState({ choiceWorker: parseInt(e.currentTarget.value) });
+    }
+    public choice = () => {
+        this.props.getWorker(this.state.choiceWorker);
+        this.close();
+    }
     public close = () => {
-        this.setState({ open: false });
-    }
-    public add = () => {
-        this.setState({ open: false });
-        // this.props.editshift(this.getCover);
-    }
-    public changeCover = (event: React.FormEvent<HTMLSelectElement>) => {
-        const { workerEditShiftItems } = this.props.fetch;
-        // this.getCover = { 'day': this.props.getDay, 'shiftType': '休', 'id': event.currentTarget.value, 'name': workerEditShiftItems[event.currentTarget.value].name };
+        this.setState({ qname: '', qmobile: '', choiceWorker: 0 });
+        this.fetchWorkers('', '');
+        this.props.closeEvent();
     }
     public render() {
-        const { workerEditShiftItems } = this.props.fetch;
-        const { open, dimmer, closeondocument, closeondimmer } = this.state;
+        const { qname, qmobile} = this.state;
+        const { className, open, oriSelWorkerName, oriSelWorkerMobile, workerOptions} = this.props;
+        const { title, searchBtn, choiseBtn, closeBtn} = nameProps;
         return (
-            <div className={this.props.className}>
-                <Modal
-                    closeOnDimmerClick={closeondimmer}
-                    closeOnDocumentClick={closeondocument}
-                    dimmer={dimmer}
-                    onClose={this.close}
-                    open={open}
-                    className={this.props.className}
-                    style={backdropStyle}
-                >
-                    <Modal.Content image scrolling>
-                        <Modal.Description>
-                            <Header>{formPropos.title}</Header>
-                            <Form>
-                                <Form.Group widths='equal'>
-                                    <Form.Field label={formPropos.selectCover} control='select' onChange={this.changeCover} >
-                                        {Object.keys(workerEditShiftItems).map((id: any) => <option key={id} value={id} > {workerEditShiftItems[id].name}</option >)}
-                                    </Form.Field>
-                                </Form.Group>
-                            </Form>
-                        </Modal.Description>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button color='black' onClick={this.add} >新增</Button>
-                        <Button color='black' onClick={this.close}>取消</Button>
-                    </Modal.Actions>
-                </Modal>
-            </div>
+            <Modal
+                className={className}
+                open={open}
+            >
+                <Modal.Content >
+                    <Modal.Description>
+                        <Header>{title} <h3>原本選擇:{oriSelWorkerName}-{oriSelWorkerMobile}</h3></Header>
+                        <Form>
+                            <Form.Group>
+                                <Form.Input placeholder='請輸入搜尋名稱' name='qname' value={qname} onChange={this.change} />
+                                <Form.Input placeholder='請輸入搜尋電話' name='qmobile' value={qmobile} onChange={this.change} />
+                                <Form.Button onClick={this.fetchWorkers.bind(this, qname, qmobile)}>{searchBtn}</Form.Button>
+                                <Form.Field control='select' onChange={this.changWorker} placeholder='請選擇'>
+                                    {Object.keys(workerOptions).map((id: any) => <option key={id} value={workerOptions[id].id} > {workerOptions[id].name}-{workerOptions[id].mobile}</option >)}
+                                </Form.Field>
+                            </Form.Group>
+                         </Form>
+                    </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button color='black' onClick={this.choice}>{choiseBtn}</Button>
+                    <Button color='black' onClick={this.close}>{closeBtn}</Button>
+                </Modal.Actions>
+            </Modal>
         );
     }
 }
 
 const StyledSelectWorker = styled(SelectWorker) `
+  &&&& {
+    margin-top: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0,0,0,0.3);
+    padding: 50px;
+  }
+  .ui.form select{
+      height: 35px;
+  }
 `;
-export default connect < StateProps, DispatchProps>(
-    (state: any) => state,
-    Actions
-)(StyledSelectWorker);
+
+export default StyledSelectWorker;

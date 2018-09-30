@@ -57,6 +57,22 @@ const queryLastId = (parent: any) => {
   return parseInt(oldId);
 };
 
+const fuzzySearchByCondition = (obj: any, key: string, val: string, constraintIdObj?: any) => {
+  const objects: any[] = [];
+  Object.keys(obj).map((worker: any) => {
+    if (obj[worker][key].indexOf(val) > -1) {
+      if (constraintIdObj.length > 0) {
+        if (constraintIdObj.indexOf(parseInt(obj[worker].id)) < 0) {
+          objects.push(obj[worker]);
+        }
+      } else {
+        objects.push(obj[worker]);
+      }
+    }
+  });
+  return objects;
+};
+
 const countHour = (start: string, end: string) => {
   const getStart = start.split(':');
   const getStartHour = parseInt(getStart[0]);
@@ -97,6 +113,7 @@ const operation = {
   checkNameExit,
   pushNomalDayTypeToShifts,
   queryLastId,
+  fuzzySearchByCondition,
   countHour,
   groupByKey
 };

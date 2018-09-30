@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Actions } from '@actions/main';
 import { IStore } from '../../models';
 import * as service from '../../services';
-import ShiftTable from '@components/shift/modal-shift-table';
+import ShiftTable from '@components/shift/table-shift';
 
 type EditWorkerShiftProps = {
     className?: string;
@@ -45,12 +45,11 @@ class EditWorkerShift extends Component<Props> {
             'month': this.props.main.getSelectShiftMonth,
             'stationid': this.props.getStationId,
             'workerid': this.props.workerId,
-        })
-            .then((response: any) => {
-                this.props.modalfetchGetDataSuccess({ 'data': response });
-            }, (error) => {
-                this.props.modalfetchFailure(error);
-            });
+        }).then((response: any) => {
+            this.props.modalfetchGetDataSuccess({ 'data': response });
+        }, (error) => {
+            this.props.modalfetchFailure(error);
+        });
     }
     public fetchShift() {
         this.props.fetchBegin();

@@ -1,4 +1,4 @@
-import { IRouterContext} from 'koa-router';
+import { IRouterContext } from 'koa-router';
 import operation from '../libs/operation';
 
 class WorkController {
@@ -16,6 +16,23 @@ class WorkController {
     }
     ctx.status = 200;
   }
+  public static async getSearch(ctx: IRouterContext) {
+    const getConstraintIdArray = ctx.request.body!.constraintId;
+    const getSearchName = ctx.request.body!.name;
+    const getSearchMobile = ctx.request.body!.mobile;
+    const getAllWorkers = await operation.checkTable(ctx.db, '/worker');
+    let getSearchByName = [];
+    if (getSearchName.length > 0) {
+      getSearchByName = operation.fuzzySearchByCondition(getAllWorkers, 'name', getSearchName, getConstraintIdArray);
+    }
+    let getSearchByMobile = [];
+    if (getSearchMobile.length > 0) {
+      getSearchByMobile = operation.fuzzySearchByCondition(getAllWorkers, 'mobile', getSearchMobile, getConstraintIdArray);
+    }
+    const getResult = Array.from(new Set(getSearchByName.concat(getSearchByMobile)));
+    ctx.body = getResult;
+    ctx.status = 201;
+  }
 
   public static async add(ctx: IRouterContext) {
     const getName = ctx.request.body!.name;
@@ -28,7 +45,7 @@ class WorkController {
     }
     ctx.db.push(`/worker/${addId}`, { id: addId, name: getName, mobile: getMobile });
     ctx.status = 200;
-   // ctx.db.push('/test4', { test: 'test', json: { test: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }] } });
+    // ctx.db.push('/test4', { test: 'test', json: { test: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }] } });
     // ctx.db.push('/worker', { lists: [{ id: 1, name: 't1' }, { id: 2, name: 't2' }, { id: 3, name: 't23' }] } );
     // console.log(ctx.db);
     // userToBeSaved.name = ctx.request.body.name;

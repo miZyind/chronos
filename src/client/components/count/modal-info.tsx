@@ -27,8 +27,8 @@ class Info extends Component<InfoProps> {
     const { moadTitle, tbHdCell1, tbHdCell2, tbHdCell3, tbHdCell4, tbHdCell5, closeBtn } = nameProps;
     return (
       <Modal
-        open={open}
         className={className}
+        open={open}
       >
         <Modal.Content image scrolling>
           <Modal.Description>

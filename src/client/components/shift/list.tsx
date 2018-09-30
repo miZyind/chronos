@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import Selector from '@components/selector';
-import TableDays from '@components/shift/table-day';
+import TableDays from '@components/shift/table-days';
 import { connect } from 'react-redux';
 import { Actions } from '@actions/main';
 import { IStore } from '../../models';
 import shiftLabs from '#lib/shift';
 
-type DaysLineTableProps = {
+type ListTableProps = {
     className?: string;
 };
 
 type StateProps = IStore;
 type DispatchProps = typeof Actions;
-type Props = DaysLineTableProps & StateProps & DispatchProps;
+type Props = ListTableProps & StateProps & DispatchProps;
 
-class DaysLineTable extends Component<Props> {
+class ListTable extends Component<Props, any> {
+    constructor(prop: Props) {
+        super(prop);
+    }
     public render() {
         return (
             <div className={this.props.className} >
@@ -32,4 +35,4 @@ class DaysLineTable extends Component<Props> {
 export default connect<StateProps, DispatchProps>(
     (state: any) => state,
     Actions
-)(DaysLineTable);
+)(ListTable);

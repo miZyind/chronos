@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
-import DaysLineTable from '@components/shift/days-line-shift';
+import ShiftTable from '@components/shift/list';
 import StationTable from '@components/station/list';
 import WorkerTable from '@components/worker/list';
 import CountTable from '@components/count/list';
@@ -23,7 +23,7 @@ class MainTab extends Component<MainTabProps> {
             menuItem: tablTitle.title1, render: () =>
                 // tslint:disable-next-line:jsx-wrap-multiline
                 <Tab.Pane attached={false}>
-                    <DaysLineTable />
+                    <ShiftTable />
                 </Tab.Pane>
         },
         {

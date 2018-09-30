@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Selector from '@components/selector';
-import shiftLabs from '#lib/shift';
-import InfoMoal from '@components/count/info';
-import { Table } from 'semantic-ui-react';
-import Wating from '@components/waiting';
 import { Actions } from '@actions/main';
+import { Table } from 'semantic-ui-react';
+import shiftLabs from '#lib/shift';
+import Selector from '@components/selector';
+import InfoMoal from '@components/count/modal-info';
+import Wating from '@components/message-waiting';
 import { IStore } from '../../models';
 import * as service from '../../services';
 import Row from './row-list';

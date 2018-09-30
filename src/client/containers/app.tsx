@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Header, Image } from 'semantic-ui-react';
 // Component
-import MainTabs from '@components/main-tabs';
+import MainTabs from '@components/tab-main';
 // Action
 import { Actions } from '@actions/main';
 // Model

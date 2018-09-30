@@ -5,9 +5,10 @@ import { IFetch } from '../models/fetch';
 const initState: IFetch = {
   workerListItems: {},
   countListItems: {},
-  countByWorkerListItems: {},
+  countByWorkerListItems: [],
   stationListItems: [],
   workerEditShiftItems: [],
+  workerOptions: [],
   stationShiftsListByMonthArea: [],
   totalStationByMonthArea: 0,
   shiftEditItems: {},
@@ -75,6 +76,12 @@ const fetch = (state = initState, action: Actions) => {
           modalLoading: false,
           sendfinish: false,
           stationAllListItems: action.payload.data,
+        };
+      } else if (action.payload.type === 'workerOptions') {
+        console.log(action.payload.data);
+        return {
+          ...state,
+          workerOptions: action.payload.data,
         };
       } else {
         return {

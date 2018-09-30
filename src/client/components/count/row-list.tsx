@@ -7,7 +7,7 @@ type listRowProps = {
 };
 
 const listRow = ({ worker, btnEvent }: listRowProps) => (
-  <Table.Row key={`worker-${worker.workerId}}`}>
+  <Table.Row key={`worker-${worker.workerId}`}>
     <Table.Cell>{worker.workerId}</Table.Cell>
     <Table.Cell>{worker.workerName}</Table.Cell>
     <Table.Cell>{worker.dayCount}</Table.Cell>

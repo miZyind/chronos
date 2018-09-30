@@ -7,6 +7,7 @@ import CountController from './controller/count';
 const router = new Router({ prefix: '/api/v1' });
 
 router.get('/worker', WorkController.getAll);
+router.post('/worker/search', WorkController.getSearch);
 router.get('/worker/:id', WorkController.getOne);
 router.post('/worker', WorkController.add);
 router.put('/worker', WorkController.edit);

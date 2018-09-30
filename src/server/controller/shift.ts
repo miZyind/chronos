@@ -87,7 +87,8 @@ class ShiftController {
           const getCoverDays = getCoverData[coverWorkerId].coverDay;
           getCoverDays.map((coverDay: number) => {
             const getCoverWorkerName = operation.checkNameExit(getWorkerData[getCoverData[coverWorkerId].coverWorker].name);
-            singleNomalWorkerShift[coverDay - 1] = { 'type': '休', 'coverWorkerId': coverWorkerId, 'coverWorkerName': getCoverWorkerName };
+            const getCoverWorkerMobile = getWorkerData[getCoverData[coverWorkerId].coverWorker].mobile;
+            singleNomalWorkerShift[coverDay - 1] = { 'type': '休', 'coverWorkerId': coverWorkerId, 'coverWorkerName': getCoverWorkerName, 'coverWorkerMobile': getCoverWorkerMobile};
           });
         }
       });

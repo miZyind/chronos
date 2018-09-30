@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AddFormMoal from '@components/worker/add';
-import EditFormMoal from '@components/worker/edit';
+import AddFormMoal from '@components/worker/modal-add';
+import EditFormMoal from '@components/worker/modal-edit';
 import { Table, Button, Icon} from 'semantic-ui-react';
-import Wating from '@components/waiting';
+import Wating from '@components/message-waiting';
 import { Actions } from '@actions/main';
 import { IFetch } from '../../models/fetch';
 import * as service from '../../services';
@@ -67,6 +67,9 @@ class ListTable extends Component<Props> {
                             editId={id}
                             editName={getItemName}
                             editMobile={getItemMobile}
+                            fetchBeginEvent={this.props.fetchBegin}
+                            fetchSendSuccessEvent={this.props.fetchSendSuccess}
+                            fetchFailureEvent={this.props.fetchFailure}
                         />
                         <Button icon onClick={this.deleteWorker.bind(this, id)}> <Icon name='trash' /></Button>
                     </Table.Cell>
@@ -81,7 +84,12 @@ class ListTable extends Component<Props> {
         }
         return (
             <div className={this.props.className} >
-                <AddFormMoal />
+                <AddFormMoal
+                    className='addWorker'
+                    fetchBeginEvent={this.props.fetchBegin}
+                    fetchSendSuccessEvent={this.props.fetchSendSuccess}
+                    fetchFailureEvent={this.props.fetchFailure}
+                />
                 <Table celled>
                     <Table.Header>
                         <Table.Row>

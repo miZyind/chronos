@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Label, Pagination} from 'semantic-ui-react';
-import Wating from '@components/waiting';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import EditWorkerShift from '@components/shift/edit-worker-shift-modal';
+import Wating from '@components/message-waiting';
+import EditWorkerShift from '@components/shift/modal-edit-shift';
 import shiftLabs from '#lib/shift';
 import { Actions } from '@actions/main';
 import { IStore } from '../../models';
@@ -57,7 +57,6 @@ class TableDays extends Component<Props> {
             });
     }
     public handlePageChange = (e: any, { activePage }: any) => {
-        console.log(e);
         this.props.shiftpagination(activePage);
     }
     public printWorker(name: string, stationId: string, workerId: string, index: number) {
@@ -69,24 +68,17 @@ class TableDays extends Component<Props> {
         rows.push(<Table.Cell className='orange-cell' key={`day-tb-${stationId}-${workerId}-${index}`}><Label className='lab-cover' as='a' basic >{printName}</Label></Table.Cell>);
         return rows;
     }
-    public checkWeekend(day: string) {
-        const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
-        let result = false;
-        if (shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '六' || shiftLabs.getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '日') {
-            result = true;
-        }
-        return result;
-    }
     public printShiftType(shifts: any, stationId: string, workerId: string, index: number) {
+        const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
         const emptyWorld = '';
         const rows: JSX.Element[] = [];
         if (shifts && shifts.length > 0) {
             shifts.map((v: any, key: number) => {
                 if (v.type === '日' || v.type === '夜' || v.type === '無') {
                     if (v.type === '無') {
-                        rows.push(<Table.Cell className={(this.checkWeekend((key + 1).toString()) ? 'yellow-cell' : '')} key={`day-tb-${stationId}-${workerId}-${index}-${key}`} ><Label className='lab-cover1' as='a' basic >{emptyWorld}</Label></Table.Cell >);
+                        rows.push(<Table.Cell className={(shiftLabs.checkWeekend(getSelectShiftYear, getSelectShiftMonth, (key + 1).toString()) ? 'yellow-cell' : '')} key={`day-tb-${stationId}-${workerId}-${index}-${key}`} ><Label className='lab-cover1' as='a' basic >{emptyWorld}</Label></Table.Cell >);
                     } else {
-                        rows.push(<Table.Cell className={(this.checkWeekend((key + 1).toString()) ? 'yellow-cell' : '')} key={`day-tb-${stationId}-${workerId}-${index}-${key}`} >{v.type}</Table.Cell>);
+                        rows.push(<Table.Cell className={(shiftLabs.checkWeekend(getSelectShiftYear, getSelectShiftMonth, (key + 1).toString()) ? 'yellow-cell' : '')} key={`day-tb-${stationId}-${workerId}-${index}-${key}`} >{v.type}</Table.Cell>);
                     }
                 } else {
                     rows.push(<Table.Cell className='red-cell' key={`day-tb-${stationId}-${workerId}-${index}-${key}`} ><Label className='lab-cover1' as='a' basic >{v.coverWorkerName}</Label></Table.Cell>);

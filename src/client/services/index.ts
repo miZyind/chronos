@@ -12,9 +12,7 @@ export function postShift(opts: object): Promise<any> {
 }
 
 export function getShiftsByMonth(opts: any): Promise<any> {
-  console.log(opts);
   const startId = (parseInt(opts.page) * parseInt(opts.count) - parseInt(opts.count)) + 1;
-  console.log(startId);
   return httpUtil.get(`/api/v1/shift1/${opts.year}/${opts.month}/${opts.area}/${startId}/${opts.count}`);
 }
 
@@ -38,6 +36,9 @@ export function deleteStation(opts: object): Promise<any> {
 // worker
 export function getWorkers(): Promise<any> {
   return httpUtil.get('/api/v1/worker');
+}
+export function getSearchWorkers(opts: any): Promise<any> {
+  return httpUtil.postQuery('/api/v1/worker/search', opts);
 }
 export function postWorker(opts: object): Promise<any> {
   return httpUtil.post('/api/v1/worker', opts);

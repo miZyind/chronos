@@ -51,6 +51,14 @@ const dayPrint = (db: any, path: string) => {
 };
 const shiftPageListCounts = 5;
 
+const checkWeekend = (getSelectShiftYear: string, getSelectShiftMonth: string, day: string) => {
+  let result = false;
+  if (getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '六' || getWeekDay(getSelectShiftYear, getSelectShiftMonth, day) === '日') {
+    result = true;
+  }
+  return result;
+};
+
 const shift = {
   optionYears,
   optionAreas,
@@ -59,6 +67,7 @@ const shift = {
   getCommonEra,
   getWeekDay,
   dayPrint,
-  shiftPageListCounts
+  shiftPageListCounts,
+  checkWeekend
 };
 export default shift;

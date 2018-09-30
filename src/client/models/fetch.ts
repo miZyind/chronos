@@ -10,6 +10,11 @@ interface IFetch {
   countByWorkerListItems: Array<{ id: string }>;
   stationListItems: any;
   workerEditShiftItems: any;
+  workerOptions: Array<{
+    id: number,
+    name: string,
+    mobile: string
+  }>;
   stationShiftsListByMonthArea: any;
   shiftEditItems: any;
   items: any;
