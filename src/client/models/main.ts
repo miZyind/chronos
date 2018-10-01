@@ -13,6 +13,7 @@ interface IMain {
   getShift: any;
   getSelectWorker: any;
   modalLoading: boolean;
+  getOtherNomalWorker: any;
 }
 
 export {

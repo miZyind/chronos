@@ -78,7 +78,6 @@ const fetch = (state = initState, action: Actions) => {
           stationAllListItems: action.payload.data,
         };
       } else if (action.payload.type === 'workerOptions') {
-        console.log(action.payload.data);
         return {
           ...state,
           workerOptions: action.payload.data,

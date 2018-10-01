@@ -98,6 +98,7 @@ class EditTableShifts extends Component<Props> {
     }
     public showSelectWorkerModal = (type: string, key?: number) => {
         if (type === 'nomal') {
+            nomalConstraintId = this.props.main.getOtherNomalWorker.concat(nomalConstraintId);
             this.setState({
                 selWorkerId: this.props.main.getSelectWorker.id,
                 selWorkerName: this.props.main.getSelectWorker.name,

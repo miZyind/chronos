@@ -39,7 +39,8 @@ const initState: IMain = {
   getDays: getDaysInMonth([], parseInt(getCurrentMonth()), parseInt(getCurrentTaiwanYear())),
   getSelectArea: 'all',
   getSelectWorker: [],
-  modalLoading: false
+  modalLoading: false,
+  getOtherNomalWorker: []
 };
 
 const main = (state = initState, action: Actions) => {
@@ -96,7 +97,8 @@ const main = (state = initState, action: Actions) => {
       return {
         ...state,
         modalLoading: false,
-        getShift: action.payload.data
+        getShift: action.payload.data.shift,
+        getOtherNomalWorker: action.payload.data.worker
       };
     }
     default: {

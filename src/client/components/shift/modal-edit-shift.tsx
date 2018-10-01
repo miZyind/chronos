@@ -46,6 +46,7 @@ class EditWorkerShift extends Component<Props> {
             'stationid': this.props.getStationId,
             'workerid': this.props.workerId,
         }).then((response: any) => {
+            console.log(response);
             this.props.modalfetchGetDataSuccess({ 'data': response });
         }, (error) => {
             this.props.modalfetchFailure(error);

@@ -93,7 +93,13 @@ class ShiftController {
         }
       });
     }
-    ctx.body = singleNomalWorkerShift;
+    const otherNomalWorkers: any[] = [];
+    const getOtherNomalWorkersByStation = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/nomal`);
+    Object.keys(getOtherNomalWorkersByStation).map((workerId: any) => {
+      otherNomalWorkers.push(parseInt(workerId));
+    });
+    const data = { 'shift': singleNomalWorkerShift, 'worker': otherNomalWorkers };
+    ctx.body = data;
     ctx.status = 200;
   }
   public static async getAllByArea(ctx: IRouterContext) {
