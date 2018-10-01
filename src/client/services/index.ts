@@ -16,12 +16,20 @@ export function getShiftsByMonth(opts: any): Promise<any> {
   return httpUtil.get(`/api/v1/shift1/${opts.year}/${opts.month}/${opts.area}/${startId}/${opts.count}`);
 }
 
+export function deleteShift(opts: object): Promise<any> {
+  console.log(opts);
+  return httpUtil.del('/api/v1/shift', opts);
+}
+
 // stations
 export function getAllStations(): Promise<any> {
   return httpUtil.get(`/api/v1/station`);
 }
 export function getStations(opts: string): Promise<any> {
   return httpUtil.get(`/api/v1/station/area/${opts}`);
+}
+export function getOneStation(opts: any): Promise<any> {
+  return httpUtil.get(`/api/v1/station/${opts.stationId}`);
 }
 export function postStation(opts: object): Promise<any> {
   return httpUtil.post('/api/v1/station', opts);

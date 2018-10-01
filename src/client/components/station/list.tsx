@@ -50,7 +50,6 @@ class ListTable extends Component<Props> {
       .then((response: any) => {
         if (response === 'yes') {
           this.props.fetchSendSuccess();
-          alert('刪除成功');
         }
       }, (error) => {
         this.props.fetchFailure(error);
@@ -100,6 +99,9 @@ class ListTable extends Component<Props> {
                   editDayEnd={dayEnd}
                   editNightStart={nightStart}
                   editNightEnd={nightEnd}
+                  fetchBeginEvent={this.props.fetchBegin}
+                  fetchSendSuccessEvent={this.props.fetchSendSuccess}
+                  fetchFailureEvent={this.props.fetchFailure}
                 />
                 <Button icon onClick={this.deleteStation.bind(this, i.id)}> <Icon name='trash' /></Button>
               </Table.Cell>
@@ -118,7 +120,12 @@ class ListTable extends Component<Props> {
     return (
       <div className={this.props.className} >
         <Selector options={shiftLabs.optionAreas} currentSelected={this.props.selectArea} onChangeEvent={this.props.onChangeAreaEvent} />
-        <AddFormMoal />
+        <AddFormMoal
+          className='addStation'
+          fetchBeginEvent={this.props.fetchBegin}
+          fetchSendSuccessEvent={this.props.fetchSendSuccess}
+          fetchFailureEvent={this.props.fetchFailure}
+        />
         <Table celled>
           <Table.Header>
             <Table.Row>

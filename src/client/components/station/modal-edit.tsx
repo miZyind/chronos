@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button, Header, Modal, Form, Icon, TextArea } from 'semantic-ui-react';
-import { Actions } from '@actions/main';
-import { IFetch } from '../../models/fetch';
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
@@ -20,6 +17,9 @@ type EditFormProps = {
   editDayEnd: string;
   editNightStart: string;
   editNightEnd: string;
+  fetchBeginEvent: any;
+  fetchSendSuccessEvent: any;
+  fetchFailureEvent: any;
 };
 const formPropos = {
   title: '修改保全資料',
@@ -27,11 +27,8 @@ const formPropos = {
   selectArea: '地區'
 };
 const timeFormat = 'HH:mm';
-type FStateProps = IFetch;
-type DispatchProps = typeof Actions;
-type Props = EditFormProps & FStateProps & DispatchProps;
 
-class EditForm extends Component<Props> {
+class EditForm extends Component<EditFormProps> {
   public state = {
     open: false,
     dimmer: true,
@@ -55,7 +52,7 @@ class EditForm extends Component<Props> {
       sname, sworker, sarea, sdesc, sid,
       daystart, dayend, nightstart, nightend
     } = this.state;
-    this.props.fetchBegin();
+    this.props.fetchBeginEvent();
     const obj: object = {
       'name': sname,
       'area': sarea,
@@ -70,10 +67,10 @@ class EditForm extends Component<Props> {
     service.putStation(obj)
       .then((response: any) => {
         if (response === 'yes') {
-          this.props.fetchSendSuccess();
+          this.props.fetchSendSuccessEvent();
         }
       }, (error) => {
-        this.props.fetchFailure(error);
+        this.props.fetchFailureEvent(error);
       });
   }
   public edit = () => {
@@ -220,8 +217,4 @@ const StyledEditForm = styled(EditForm)`
   }
 `;
 
-export default connect<FStateProps, DispatchProps>(
-  (state: any) => state.fetch,
-  Actions
-// )(EditForm);
-)(StyledEditForm);
+export default StyledEditForm;

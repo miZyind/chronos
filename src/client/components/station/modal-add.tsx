@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button, Header, Modal, Form, TextArea } from 'semantic-ui-react';
-import { Actions } from '@actions/main';
-import { IFetch } from '../../models/fetch';
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
@@ -11,6 +8,9 @@ import styled from 'styled-components';
 
 type AddFormProps = {
   className?: string;
+  fetchBeginEvent: any;
+  fetchSendSuccessEvent: any;
+  fetchFailureEvent: any;
 };
 const formPropos = {
   title: '新增駐點',
@@ -20,11 +20,7 @@ const formPropos = {
 
 const timeFormat = 'HH:mm';
 
-type FStateProps = IFetch;
-type DispatchProps = typeof Actions;
-type Props = AddFormProps & FStateProps & DispatchProps;
-
-class AddForm extends Component<Props> {
+class AddForm extends Component<AddFormProps> {
   public state = {
     open: false,
     dimmer: true,
@@ -44,7 +40,7 @@ class AddForm extends Component<Props> {
 
   public fetchStation() {
     const { sname, sworker, sarea, sdesc, daystart, dayend, nightstart, nightend } = this.state;
-    this.props.fetchBegin();
+    this.props.fetchBeginEvent();
     const obj: object = {
       'name': sname,
       'area': sarea,
@@ -58,10 +54,10 @@ class AddForm extends Component<Props> {
     service.postStation(obj)
       .then((response: any) => {
         if (response === 'yes') {
-          this.props.fetchSendSuccess();
+          this.props.fetchSendSuccessEvent();
         }
       }, (error) => {
-        this.props.fetchFailure(error);
+        this.props.fetchFailureEvent(error);
       });
   }
   public add = () => {
@@ -207,7 +203,4 @@ const StyledAddForm = styled(AddForm) `
     padding: 50px;
   }
 `;
-export default connect<FStateProps, DispatchProps>(
-  (state: any) => state.fetch,
-  Actions
-)(StyledAddForm);
+export default StyledAddForm;

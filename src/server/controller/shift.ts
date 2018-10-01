@@ -220,6 +220,39 @@ class ShiftController {
     ctx.status = 200;
   }
 
+  public static async deleteOne(ctx: IRouterContext) {
+    const getYear = ctx.request.body!.year;
+    const getMonth = ctx.request.body!.month;
+    const getStationId = ctx.request.body!.stationid;
+    const getNomalWorkerId = ctx.request.body!.workerid;
+    console.log(ctx.request.body!);
+    // delete nomal count mark
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${getNomalWorkerId}/shift/${getStationId}-${getNomalWorkerId}`);
+    // check
+    const getNomalData = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark/${getNomalWorkerId}/shift`);
+    if (Object.keys(getNomalData).length === 0) {
+      ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${getNomalWorkerId}`);
+    }
+    // getCover
+    const getCovers = await operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getNomalWorkerId}/list`);
+    if (Object.keys(getCovers).length > 0) {
+      Object.keys(getCovers).map((coverWorker: any) => {
+         // delete cover count mark
+        ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${coverWorker}/shift/${getStationId}-${getNomalWorkerId}`);
+        // check
+        const getCoverData = operation.checkTable(ctx.db, `/calendar/${getYear}/${getMonth}/countMark/${coverWorker}/shift`);
+        if (Object.keys(getCoverData).length === 0) {
+          ctx.db.delete(`/calendar/${getYear}/${getMonth}/countMark/${coverWorker}`);
+        }
+      });
+    }
+    // delete cover shift
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/cover/${getNomalWorkerId}`);
+    // delete nomal shift
+    ctx.db.delete(`/calendar/${getYear}/${getMonth}/shift/${getStationId}/nomal/${getNomalWorkerId}`);
+
+    ctx.status = 200;
+  }
   public static async delete(ctx: IRouterContext) {
     ctx.db.delete(`/shift`);
     ctx.db.delete(`/hourCounts`);

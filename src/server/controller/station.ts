@@ -9,21 +9,21 @@ class StationController {
   }
   public static async getOne(ctx: IRouterContext) {
     ctx.body = [];
-    const getId = parseInt(ctx.params.id);
-    const getData = await operation.checkTable(ctx.db, `/station/${getId}`);
-    if (getData) {
-      ctx.body = getData;
-    }
+    const getStationId = ctx.params.id;
+    const getCurrentYear = (new Date().getFullYear() - 1911).toString();
+    const getCurrentMonth = (new Date().getMonth() + 1).toString();
+    const getInfoData = await operation.checkTable(ctx.db, `/station/${getStationId}`);
+    const getCurrentMonthShiftsData = await operation.checkTable(ctx.db, `/calendar/${getCurrentYear}/${getCurrentMonth}/shift/${getStationId}/nomal`);
+    getInfoData.shiftCount = Object.keys(getCurrentMonthShiftsData).length;
+    ctx.body = getInfoData;
     ctx.status = 200;
   }
   public static async getAllByArea(ctx: IRouterContext) {
     ctx.body = [];
     const getArea = ctx.params.area;
     const getData = await operation.checkTable(ctx.db, '/station');
-    if (getData) {
-      const getGroupByArea = await operation.groupByKey(getData, 'area', getArea);
-      ctx.body = getGroupByArea;
-    }
+    const getGroupByArea = await operation.groupByKey(getData, 'area', getArea);
+    ctx.body = getGroupByArea;
     ctx.status = 200;
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Label, Pagination} from 'semantic-ui-react';
+import { Table, Label, Pagination, Button, Icon} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Wating from '@components/message-waiting';
@@ -94,6 +94,27 @@ class TableDays extends Component<Props> {
         }
         return rows;
     }
+    public deleteSfhit(getStationId: string, getWorkerId: string) {
+        const r = confirm('確定清空此班表？');
+        if (r) {
+            this.props.fetchBegin();
+            const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
+            const obj: object = {
+                'year': getSelectShiftYear,
+                'month': getSelectShiftMonth,
+                'stationid': getStationId,
+                'workerid': getWorkerId
+            };
+            service.deleteShift(obj)
+                .then((response: any) => {
+                    if (response === 'yes') {
+                        this.props.fetchSendSuccess();
+                    }
+                }, (error) => {
+                    this.props.fetchFailure(error);
+                });
+        }
+    }
     public stationShifts() {
         const { stationShiftsListByMonthArea } = this.props.fetch;
         const rows: JSX.Element[] = [];
@@ -113,6 +134,7 @@ class TableDays extends Component<Props> {
                                     getStationName={stationShiftRow.stationName}
                                     workerId={workerShiftRow.nomalWorkerId}
                                 />
+                                <Button icon onClick={this.deleteSfhit.bind(this, stationShiftRow.stationId, workerShiftRow.nomalWorkerId)}> <Icon name='trash' /></Button>
                             </Table.Cell >
                         </Table.Row>
                     );
@@ -166,7 +188,6 @@ const TableDaysShifts = styled(TableDays) `
     .ui.table tbody tr td{
         font-size: 14px;
         height: 20px;
-        width: 1px;
         padding: 0px;
         text-align: center;
         border-left: none;

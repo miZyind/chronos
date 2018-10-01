@@ -43,7 +43,6 @@ class ListTable extends Component<Props> {
             .then((response: any) => {
                 if (response === 'yes') {
                     this.props.fetchSendSuccess();
-                    alert('刪除成功');
                 }
             }, (error) => {
                 this.props.fetchFailure(error);

@@ -31,4 +31,6 @@ router.get('/shift', ShiftController.getAll);
 router.get('/count/:year/:month/', CountController.getAllByMonth);
 router.get('/countbyworker/:year/:month/:worker', CountController.getOneByWorker);
 
+router.delete('/shift', ShiftController.deleteOne);
+
 export { router };
