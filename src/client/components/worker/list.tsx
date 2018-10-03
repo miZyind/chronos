@@ -19,23 +19,15 @@ type Props = ListTableProps & FStateProps & DispatchProps;
 class ListTable extends Component<Props> {
     constructor(prop: Props) {
         super(prop);
-        this.getWorkers();
+        this.props.fetchWorkerList();
     }
 
     public componentWillUpdate(nextProps: Props) {
         if (nextProps.sendfinish) {
-            this.getWorkers();
+            this.props.fetchWorkerList();
         }
     }
-    public getWorkers() {
-        this.props.fetchBegin();
-        service.getWorkers()
-            .then((response: any) => {
-                this.props.fetchGetDataSuccess({'type': 'workerList' , 'data': response });
-            }, (error) => {
-                this.props.fetchFailure(error);
-            });
-    }
+
     public deleteWorker(getId: any) {
         this.props.fetchBegin();
         const obj: object = { 'id': getId };

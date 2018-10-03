@@ -52,7 +52,7 @@ class AddForm extends Component<AddFormProps> {
       <Modal
         closeOnDimmerClick={closeondimmer}
         closeOnDocumentClick={closeondocument}
-        dimmer={dimmer}
+        dimmer={dimmer ? true : undefined}
         onClose={this.close}
         open={open}
         className={this.props.className}

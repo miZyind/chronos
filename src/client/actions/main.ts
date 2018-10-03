@@ -1,7 +1,7 @@
 // Helper
 import createAction from '@helpers/create-action';
 import { ActionsUnion } from '@helpers/actions-union';
-
+import * as service from '../services';
 import { IMain } from '../models/main';
 import { IFetch } from '../models/fetch';
 
@@ -25,6 +25,7 @@ enum ActionTypes {
   MODAL_FETCH_GET_DATA_SUCCESS = '[modal] MODAL FETCH GET DATA SUCCESS',
   MODAL_FETCH_FAILURE = '[modal] MODAL FETCH FAILURE',
   COVER_MODAL_SHOW = '[cover] COVER MODAL SHOW',
+  FETCH_WORKER_LIST = '[cover] FETCH WORKER LIST',
 }
 
 const Actions = {
@@ -46,6 +47,20 @@ const Actions = {
   modalfetchBegin: () => createAction(ActionTypes.MODAL_FETCH_BEGIN),
   modalfetchGetDataSuccess: (obj: object) => createAction(ActionTypes.MODAL_FETCH_GET_DATA_SUCCESS, obj),
   modalfetchFailure: (error: IFetch) => createAction(ActionTypes.MODAL_FETCH_FAILURE, error),
+  fetchWorkerList: () => {
+    return (dispatch: any) => {
+      dispatch(Actions.fetchBegin());
+      return service.getWorkers()
+        .then(
+          (workers) => {
+            dispatch(Actions.fetchGetDataSuccess({ 'type': 'workerList', 'data': workers }));
+          },
+          (error) => {
+            Actions.fetchFailure(error);
+          }
+        );
+    };
+  },
 };
 
 type Actions = ActionsUnion<typeof Actions>;

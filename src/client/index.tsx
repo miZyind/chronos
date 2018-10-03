@@ -3,9 +3,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import { createStore, compose } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 // Reducer
 import rootReducer from '@reducers/index';
+// Thunk
+import thunk from 'redux-thunk';
 // Style
 import 'semantic-ui-css/semantic.min.css';
 // Container
@@ -26,7 +28,9 @@ if (isDev) {
 
 // Store
 const composeEnhancers = isDev ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
-const store = createStore(rootReducer, composeEnhancers());
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const thunkEnhancer = applyMiddleware(thunk);
+const store = createStore(rootReducer, composeEnhancers(thunkEnhancer));
 const Component = isDev ? App : hot(module)(App);
 
 render(

@@ -3,6 +3,7 @@ import { ActionTypes, Actions } from '@actions/main';
 // Model
 import { IMain } from '../models/main';
 
+
 const getCurrentMonth = () => {
   return (new Date().getMonth() + 1).toString();
 };
@@ -101,6 +102,7 @@ const main = (state = initState, action: Actions) => {
         getOtherNomalWorker: action.payload.data.worker
       };
     }
+
     default: {
       return state;
     }
