@@ -1,56 +1,36 @@
 import React, { Component } from 'react';
-import { Button, Header, Modal, Form, Icon } from 'semantic-ui-react';
-import * as service from '../../services';
+import { Button, Header, Modal, Form } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 type EditFormProps = {
   className?: string;
-  editId: string;
-  editName: string;
-  editMobile: string;
-  fetchStepEvent: any;
+  editWorkerModalOpen: boolean;
+  editWorkerName: string;
+  editWorkerMobile: string;
+  editWorkerModalSubmitEvent: any;
+  editWorkerModalCloseEvent: any;
+  editWorkerModalFieldChangeEvent: any;
 };
 const formPropos = {
   title: '修改保全資料',
+  labName: '保全名稱',
+  labMobile: '保全手機',
+  tipInputName: '請輸入保全名稱',
+  tipInputMobile: '請輸入手機',
+  btnSubmit: '修改',
+  btnClose: '取消'
 };
 
 class EditForm extends Component<EditFormProps> {
-  public state = {
-    open: false,
-    dimmer: true,
-    closeondocument: false,
-    closeondimmer: false,
-    sname: this.props.editName,
-    smobile: this.props.editMobile,
-    sid: this.props.editId,
-  };
-  public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
-  public close = () => this.setState({ open: false });
-
-  public fetchWorker() {
-    const { sname, smobile, sid } = this.state;
-    const obj: object = { 'name': sname, 'mobile': smobile, 'id': sid };
-    this.props.fetchStepEvent('PUT', service.putWorker(obj));
-  }
-  public edit = () => {
-    this.setState({ open: false });
-    this.fetchWorker();
-  }
-  public change = (event: any) => {
-    this.setState({ [event.target.name]: event.target.value });
-  }
   public render() {
-    const { open, dimmer, closeondocument, closeondimmer, sname, smobile } = this.state;
-    const button = <Button onClick={this.show(true)} icon><Icon name='compose' /></Button>;
+    const { editWorkerModalOpen, editWorkerName, editWorkerMobile,
+            editWorkerModalFieldChangeEvent, editWorkerModalSubmitEvent,
+            editWorkerModalCloseEvent
+    } = this.props;
     return (
       <Modal
-        closeOnDimmerClick={closeondimmer}
-        closeOnDocumentClick={closeondocument}
-        dimmer={dimmer ? true : undefined}
-        onClose={this.close}
-        open={open}
         className={this.props.className}
-        trigger={button}
+        open={editWorkerModalOpen}
       >
         <Modal.Content image scrolling>
           <Modal.Description>
@@ -58,20 +38,20 @@ class EditForm extends Component<EditFormProps> {
             <Form>
               <Form.Group widths='equal'>
                 <Form.Field>
-                  <label>保全名稱</label>
-                  <input placeholder='請輸入保全名稱' name='sname' value={sname} onChange={this.change} />
+                  <label>{formPropos.labName}</label>
+                  <input placeholder={formPropos.tipInputName} name='editWorkerName' value={editWorkerName} onChange={editWorkerModalFieldChangeEvent} />
                 </Form.Field>
                 <Form.Field>
-                  <label>保全手機</label>
-                  <input placeholder='請輸入手機' name='smobile' value={smobile} onChange={this.change} />
+                  <label>{formPropos.labMobile}</label>
+                  <input placeholder={formPropos.tipInputMobile}  name='editWorkerMobile' value={editWorkerMobile} onChange={editWorkerModalFieldChangeEvent} />
                 </Form.Field>
               </Form.Group>
             </Form>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='black' onClick={this.edit} >修改</Button>
-          <Button color='black' onClick={this.close}>取消</Button>
+          <Button color='black' onClick={editWorkerModalSubmitEvent} >{formPropos.btnSubmit}</Button>
+          <Button color='black' onClick={editWorkerModalCloseEvent}>{formPropos.btnClose}</Button>
         </Modal.Actions>
       </Modal>
     );

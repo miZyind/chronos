@@ -1,51 +1,38 @@
 import React, { Component } from 'react';
 import { Button, Header, Modal, Form } from 'semantic-ui-react';
-import * as service from '../../services';
 import styled from 'styled-components';
 
 type AddFormProps = {
   className?: string;
-  fetchStepEvent: any;
+  addWorkerModalOpen: boolean;
+  addWorkerName: string;
+  addWorkerMobile: string;
+  addWorkerModalOpenEven: any;
+  addWorkerModalFieldChangeEvent: any;
+  addWorkerModalSubmitEvent: any;
+  addWorkerModalCloseEvent: any;
 };
 const formPropos = {
   title: '新增保全',
+  labName: '保全名稱',
+  labMobile: '保全手機',
+  tipInputName: '請輸入保全名稱',
+  tipInputMobile: '請輸入手機',
+  btnSubmit: '新增',
+  btnClose: '取消'
 };
 
 class AddForm extends Component<AddFormProps> {
-  public state = {
-    open: false,
-    dimmer: true,
-    closeondocument: false,
-    closeondimmer: false,
-    sname: '',
-    smobile: ''
-  };
-  public show = (dimmer: boolean) => () => this.setState({ dimmer, open: true });
-  public close = () => this.setState({ open: false });
-
-  public fetchWorker() {
-    const { sname, smobile } = this.state;
-    const obj: object = { 'name': sname, 'mobile': smobile };
-    this.props.fetchStepEvent('POST', service.postWorker(obj));
-  }
-  public add = () => {
-    this.setState({ open: false });
-    this.fetchWorker();
-  }
-  public change = (event: any) => {
-    this.setState({ [event.target.name]: event.target.value });
-  }
   public render() {
-    const { open, dimmer, closeondocument, closeondimmer, sname, smobile } = this.state;
-    const button = <Button onClick={this.show(true)}>{formPropos.title}</Button>;
+    const { addWorkerModalOpen, addWorkerName, addWorkerMobile,
+            addWorkerModalFieldChangeEvent, addWorkerModalSubmitEvent,
+            addWorkerModalCloseEvent, addWorkerModalOpenEven
+    } = this.props;
+    const button = <Button onClick={addWorkerModalOpenEven}>{formPropos.title}</Button>;
     return (
       <Modal
-        closeOnDimmerClick={closeondimmer}
-        closeOnDocumentClick={closeondocument}
-        dimmer={dimmer ? true : undefined}
-        onClose={this.close}
-        open={open}
         className={this.props.className}
+        open={addWorkerModalOpen}
         trigger={button}
       >
         <Modal.Content image scrolling>
@@ -54,20 +41,20 @@ class AddForm extends Component<AddFormProps> {
             <Form>
               <Form.Group widths='equal'>
                 <Form.Field>
-                  <label>保全名稱</label>
-                  <input placeholder='請輸入保全名稱' name='sname' value={sname} onChange={this.change} />
+                  <label>{formPropos.labName}</label>
+                  <input placeholder={formPropos.tipInputName} name='addWorkerName' value={addWorkerName} onChange={addWorkerModalFieldChangeEvent} />
                 </Form.Field>
                 <Form.Field>
-                  <label>保全手機</label>
-                  <input placeholder='請輸入手機' name='smobile' value={smobile} onChange={this.change} />
+                  <label>{formPropos.labMobile}</label>
+                  <input placeholder={formPropos.tipInputMobile} name='addWorkerMobile' value={addWorkerMobile} onChange={addWorkerModalFieldChangeEvent} />
                 </Form.Field>
               </Form.Group>
             </Form>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='black' onClick={this.add} >新增</Button>
-          <Button color='black' onClick={this.close}>取消</Button>
+          <Button color='black' onClick={addWorkerModalSubmitEvent}>{formPropos.btnSubmit}</Button>
+          <Button color='black' onClick={addWorkerModalCloseEvent}>{formPropos.btnClose}</Button>
         </Modal.Actions>
       </Modal>
     );
