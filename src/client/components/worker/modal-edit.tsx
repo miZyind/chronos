@@ -8,9 +8,7 @@ type EditFormProps = {
   editId: string;
   editName: string;
   editMobile: string;
-  fetchBeginEvent: any;
-  fetchSendSuccessEvent: any;
-  fetchFailureEvent: any;
+  fetchStepEvent: any;
 };
 const formPropos = {
   title: '修改保全資料',
@@ -31,16 +29,8 @@ class EditForm extends Component<EditFormProps> {
 
   public fetchWorker() {
     const { sname, smobile, sid } = this.state;
-    this.props.fetchBeginEvent();
     const obj: object = { 'name': sname, 'mobile': smobile, 'id': sid };
-    service.putWorker(obj)
-      .then((response: any) => {
-        if (response === 'yes') {
-          this.props.fetchSendSuccessEvent();
-        }
-      }, (error) => {
-        this.props.fetchFailureEvent(error);
-      });
+    this.props.fetchStepEvent('PUT', service.putWorker(obj));
   }
   public edit = () => {
     this.setState({ open: false });

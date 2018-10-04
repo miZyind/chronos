@@ -19,33 +19,26 @@ type Props = ListTableProps & FStateProps & DispatchProps;
 class ListTable extends Component<Props> {
     constructor(prop: Props) {
         super(prop);
-        this.props.fetchWorkerList();
+        this.props.fetchStep('GET', service.getWorkers(), 'workerList');
     }
 
     public componentWillUpdate(nextProps: Props) {
         if (nextProps.sendfinish) {
-            this.props.fetchWorkerList();
+            this.props.fetchStep('GET', service.getWorkers(), 'workerList');
         }
     }
 
     public deleteWorker(getId: any) {
-        this.props.fetchBegin();
-        const obj: object = { 'id': getId };
-        service.deleteWorker(obj)
-            .then((response: any) => {
-                if (response === 'yes') {
-                    this.props.fetchSendSuccess();
-                }
-            }, (error) => {
-                this.props.fetchFailure(error);
-            });
+        const r = confirm('確定刪除此保全人員？');
+        if (r) {
+            const obj: object = { 'id': getId };
+            this.props.fetchStep('DELETE', service.deleteWorker(obj));
+        }
     }
     public getLists() {
         const { workerListItems } = this.props;
-
         const rows: JSX.Element[] = [];
         Object.keys(workerListItems).map((id: any) => {
-            // tslint:disable-next-line:no-string-literal
             const getItemName = workerListItems[id].name;
             const getItemMobile = workerListItems[id].mobile;
             rows.push(
@@ -58,9 +51,7 @@ class ListTable extends Component<Props> {
                             editId={id}
                             editName={getItemName}
                             editMobile={getItemMobile}
-                            fetchBeginEvent={this.props.fetchBegin}
-                            fetchSendSuccessEvent={this.props.fetchSendSuccess}
-                            fetchFailureEvent={this.props.fetchFailure}
+                            fetchStepEvent={this.props.fetchStep}
                         />
                         <Button icon onClick={this.deleteWorker.bind(this, id)}> <Icon name='trash' /></Button>
                     </Table.Cell>
@@ -77,9 +68,7 @@ class ListTable extends Component<Props> {
             <div className={this.props.className} >
                 <AddFormMoal
                     className='addWorker'
-                    fetchBeginEvent={this.props.fetchBegin}
-                    fetchSendSuccessEvent={this.props.fetchSendSuccess}
-                    fetchFailureEvent={this.props.fetchFailure}
+                    fetchStepEvent={this.props.fetchStep}
                 />
                 <Table celled>
                     <Table.Header>

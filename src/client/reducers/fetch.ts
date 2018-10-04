@@ -25,7 +25,7 @@ const fetch = (state = initState, action: Actions) => {
         ...state,
         loading: true
       };
-    case ActionTypes.FETCH_GET_DATA_SUCCESS:
+    case ActionTypes.FETCH_GET_SUCCESS:
       if (action.payload.type === 'workerList') {
         return {
           ...state,

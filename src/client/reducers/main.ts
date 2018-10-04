@@ -3,7 +3,6 @@ import { ActionTypes, Actions } from '@actions/main';
 // Model
 import { IMain } from '../models/main';
 
-
 const getCurrentMonth = () => {
   return (new Date().getMonth() + 1).toString();
 };

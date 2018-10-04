@@ -5,9 +5,7 @@ import styled from 'styled-components';
 
 type AddFormProps = {
   className?: string;
-  fetchBeginEvent: any;
-  fetchSendSuccessEvent: any;
-  fetchFailureEvent: any;
+  fetchStepEvent: any;
 };
 const formPropos = {
   title: '新增保全',
@@ -27,16 +25,8 @@ class AddForm extends Component<AddFormProps> {
 
   public fetchWorker() {
     const { sname, smobile } = this.state;
-    this.props.fetchBeginEvent();
     const obj: object = { 'name': sname, 'mobile': smobile };
-    service.postWorker(obj)
-      .then((response: any) => {
-        if (response === 'yes') {
-          this.props.fetchSendSuccessEvent();
-        }
-      }, (error) => {
-        this.props.fetchFailureEvent(error);
-      });
+    this.props.fetchStepEvent('POST', service.postWorker(obj));
   }
   public add = () => {
     this.setState({ open: false });

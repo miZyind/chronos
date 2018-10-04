@@ -23,37 +23,24 @@ type Props = ListTableProps & FStateProps & DispatchProps;
 class ListTable extends Component<Props> {
   constructor(prop: Props) {
     super(prop);
-    this.getStations(this.props.selectArea);
+    this.props.fetchStep('GET', service.getStations(this.props.selectArea), 'stationList');
   }
 
   public componentWillUpdate(nextProps: Props) {
     if (nextProps.sendfinish !== this.props.sendfinish) {
-      this.getStations(nextProps.selectArea);
+      this.props.fetchStep('GET', service.getStations(this.props.selectArea), 'stationList');
     }
     if (nextProps.selectArea !== this.props.selectArea) {
-      this.getStations(nextProps.selectArea);
+      this.props.fetchStep('GET', service.getStations(this.props.selectArea), 'stationList');
     }
   }
-  public getStations(area: string) {
-    this.props.fetchBegin();
-    service.getStations(area)
-      .then((response: any) => {
-        this.props.fetchGetDataSuccess({ 'type': 'stationList', 'data': response });
-      }, (error) => {
-        this.props.fetchFailure(error);
-      });
-  }
+
   public deleteStation(getId: any) {
-    this.props.fetchBegin();
-    const obj: object = { 'id': getId };
-    service.deleteStation(obj)
-      .then((response: any) => {
-        if (response === 'yes') {
-          this.props.fetchSendSuccess();
-        }
-      }, (error) => {
-        this.props.fetchFailure(error);
-      });
+    const r = confirm('確定刪除此駐點？');
+    if (r) {
+      const obj: object = { 'id': getId };
+      this.props.fetchStep('DELETE', service.deleteStation(obj));
+    }
   }
   public getLists() {
     const { stationListItems } = this.props;

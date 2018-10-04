@@ -54,7 +54,7 @@ class ListTable extends Component<Props, any> {
     this.props.fetchBegin();
     service.getCounts(obj)
       .then((response: any) => {
-        this.props.fetchGetDataSuccess({ 'type': 'countList', 'data': response });
+        this.props.fetchGetSuccess({ 'type': 'countList', 'data': response });
         this.setState({ listIsLoaded: true });
       }, (error) => {
         this.props.fetchFailure(error);
@@ -68,7 +68,7 @@ class ListTable extends Component<Props, any> {
     };
     service.getCountByWorker(obj)
       .then((response: any) => {
-        this.props.fetchGetDataSuccess({ 'type': 'countListByWorker', 'data': response });
+        this.props.fetchGetSuccess({ 'type': 'countListByWorker', 'data': response });
         this.setState({ infoIsLoaded: true });
       }, (error) => {
         this.props.fetchFailure(error);

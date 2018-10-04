@@ -51,7 +51,7 @@ class TableDays extends Component<Props> {
         this.props.fetchBegin();
         service.getShiftsByMonth(obj)
             .then((response: any) => {
-                this.props.fetchGetDataSuccess({ 'type': 'stationShiftsListByMonthArea', 'data': response });
+                this.props.fetchGetSuccess({ 'type': 'stationShiftsListByMonthArea', 'data': response });
             }, (error) => {
                 this.props.fetchFailure(error);
             });
