@@ -6,9 +6,9 @@ import shiftLabs from '#lib/shift';
 import Selector from '@components/selector';
 import InfoMoal from '@components/count/modal-info';
 import Wating from '@components/message-waiting';
-import { IStore } from '../../models';
-import * as service from '../../services';
-import Row from './row-list';
+import { IStore } from '../models';
+import * as service from '../services';
+import Row from '@components/count/row-list';
 
 const nameProps = {
   tbHdCell1: 'Id',
@@ -45,20 +45,19 @@ class ListTable extends Component<Props, any> {
         this.getCounts(nextProps.main.getSelectCountYear, nextProps.main.getSelectCountMonth);
       }
     }
+    if (nextProps.fetch.countListItems !== this.props.fetch.countListItems) {
+      this.setState({ listIsLoaded: true });
+    }
+    if (nextProps.fetch.countByWorkerListItems !== this.props.fetch.countByWorkerListItems) {
+      this.setState({ infoIsLoaded: true });
+    }
   }
   public getCounts(year: string, month: string) {
     const obj: object = {
       'year': year,
       'month': month
     };
-    this.props.fetchBegin();
-    service.getCounts(obj)
-      .then((response: any) => {
-        this.props.fetchGetSuccess({ 'type': 'countList', 'data': response });
-        this.setState({ listIsLoaded: true });
-      }, (error) => {
-        this.props.fetchFailure(error);
-      });
+    this.props.fetchStep('GET', service.getCounts(obj), 'countList');
   }
   public fetchOneCount(getWorkerId: string) {
     const obj: object = {
@@ -66,19 +65,12 @@ class ListTable extends Component<Props, any> {
       'month': this.props.main.getSelectCountMonth,
       'worker': getWorkerId
     };
-    service.getCountByWorker(obj)
-      .then((response: any) => {
-        this.props.fetchGetSuccess({ 'type': 'countListByWorker', 'data': response });
-        this.setState({ infoIsLoaded: true });
-      }, (error) => {
-        this.props.fetchFailure(error);
-      });
+    this.props.fetchStep('GET', service.getCountByWorker(obj), 'countListByWorker');
   }
 
   public showInfo = (getWorkerId: string) => {
     this.fetchOneCount(getWorkerId);
     this.setState({ open: true });
-    console.log(this.props.fetch.countByWorkerListItems);
   }
   public close = () => {
     this.setState({ open: false });
@@ -107,7 +99,7 @@ class ListTable extends Component<Props, any> {
           </Table.Header>
           <Table.Body>{listIsLoaded && countListItems.map((worker: any, key: number) => <Row key={key} worker={worker} btnEvent={this.showInfo.bind(this, worker.workerId)} />)}</Table.Body>
         </Table>
-        <InfoMoal isLoaded={infoIsLoaded} countByWorkerListItems={countByWorkerListItems} open={open} closeEvent={this.close}/>
+        <InfoMoal isLoaded={infoIsLoaded} countByWorkerListItems={countByWorkerListItems} open={open} closeEvent={this.close} />
       </div>
     );
   }

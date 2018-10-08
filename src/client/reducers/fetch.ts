@@ -37,14 +37,12 @@ const fetch = (state = initState, action: Actions) => {
         return {
           ...state,
           loading: false,
-          sendfinish: false,
           countListItems: action.payload.data
         };
       } else if (action.payload.type === 'countListByWorker') {
         return {
           ...state,
           loading: false,
-          sendfinish: false,
           countByWorkerListItems: action.payload.data
         };
       } else if (action.payload.type === 'stationList') {

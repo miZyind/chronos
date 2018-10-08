@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import ShiftTable from '@components/shift/list';
 import StationTable from '@components/station/list';
-import WorkerTable from '@components/worker/list';
-import CountTable from '@components/count/list';
+import WorkerTable from '../containers/worker';
+import CountTable from '../containers/count';
 
 type MainTabProps = {
     className?: string;
@@ -21,10 +21,7 @@ class MainTab extends Component<MainTabProps> {
     public panes = [
         {
             menuItem: tablTitle.title1, render: () =>
-                // tslint:disable-next-line:jsx-wrap-multiline
-                <Tab.Pane attached={false}>
-                    <ShiftTable />
-                </Tab.Pane>
+                <Tab.Pane attached={false}><ShiftTable /></Tab.Pane>
         },
         {
             menuItem: tablTitle.title2, render: () =>
@@ -42,10 +39,7 @@ class MainTab extends Component<MainTabProps> {
         },
         {
             menuItem: tablTitle.title4, render: () =>
-                // tslint:disable-next-line:jsx-wrap-multiline
-                <Tab.Pane attached={false}>
-                    <CountTable/>
-                </Tab.Pane>
+                <Tab.Pane attached={false}><CountTable/></Tab.Pane>
         },
     ];
     public render() {
