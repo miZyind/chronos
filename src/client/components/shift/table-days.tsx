@@ -48,13 +48,7 @@ class TableDays extends Component<Props> {
             'page': page,
             'count': shiftLabs.shiftPageListCounts
         };
-        this.props.fetchBegin();
-        service.getShiftsByMonth(obj)
-            .then((response: any) => {
-                this.props.fetchGetSuccess({ 'type': 'stationShiftsListByMonthArea', 'data': response });
-            }, (error) => {
-                this.props.fetchFailure(error);
-            });
+        this.props.fetchStep('GET', service.getShiftsByMonth(obj), 'stationShiftsListByMonthArea');
     }
     public handlePageChange = (e: any, { activePage }: any) => {
         this.props.shiftpagination(activePage);
@@ -97,7 +91,6 @@ class TableDays extends Component<Props> {
     public deleteSfhit(getStationId: string, getWorkerId: string) {
         const r = confirm('確定清空此班表？');
         if (r) {
-            this.props.fetchBegin();
             const { getSelectShiftYear, getSelectShiftMonth } = this.props.main;
             const obj: object = {
                 'year': getSelectShiftYear,
@@ -105,14 +98,7 @@ class TableDays extends Component<Props> {
                 'stationid': getStationId,
                 'workerid': getWorkerId
             };
-            service.deleteShift(obj)
-                .then((response: any) => {
-                    if (response === 'yes') {
-                        this.props.fetchSendSuccess();
-                    }
-                }, (error) => {
-                    this.props.fetchFailure(error);
-                });
+            this.props.fetchStep('DELETE', service.deleteShift(obj));
         }
     }
     public stationShifts() {

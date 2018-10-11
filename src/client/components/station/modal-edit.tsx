@@ -106,7 +106,6 @@ class EditForm extends Component<EditFormProps> {
         onClose={this.close}
         open={open}
         className={this.props.className}
-        // style={backdropStyle}
         trigger={button}
       >
         <Modal.Content image scrolling>

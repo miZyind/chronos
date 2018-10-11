@@ -181,7 +181,8 @@ class EditTableShifts extends Component<Props> {
                     open={open}
                     closeEvent={this.close}
                     workerOptions={this.props.fetch.workerOptions}
-                    fetch={this.props.fetchGetDataSuccess}
+                    fetch={this.props.fetchGetSuccess}
+                    fetchStep={this.props.fetchStep}
                     getWorker={this.changeNomalWorker}
                 />
             </div>

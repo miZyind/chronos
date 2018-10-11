@@ -15,6 +15,7 @@ type SelectWorkerProps = {
     open: boolean;
     closeEvent: any;
     fetch: any;
+    fetchStep: any;
     workerOptions: any;
     constraintId: any;
     oriSelWorkerId: number;
@@ -39,6 +40,7 @@ class SelectWorker extends Component<SelectWorkerProps, any> {
             'name': qname,
             'mobile': qmobile
         };
+        // sthis.props.fetchStep('GET', service.getSearchWorkers(obj), 'workerOptions');
         service.getSearchWorkers(obj)
             .then((response: any) => {
                 const getData = JSON.parse(response);

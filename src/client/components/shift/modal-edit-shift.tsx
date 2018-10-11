@@ -52,30 +52,23 @@ class EditWorkerShift extends Component<Props> {
             this.props.modalfetchFailure(error);
         });
     }
-    public fetchShift() {
-        this.props.fetchBegin();
-        const obj: object = {
-            'year': this.props.main.getSelectShiftYear,
-            'month': this.props.main.getSelectShiftMonth,
-            'stationid': this.props.getStationId,
-            'stationname': this.props.getStationName,
-            'oldworkerid': this.props.workerId,
-            'newworkerid': this.props.main.getSelectWorker.id,
-            'workername': this.props.main.getSelectWorker.name,
-            'shift': this.props.main.getShift
-        };
-        service.postShift(obj)
-            .then((response: any) => {
-                if (response === 'yes') {
-                    this.props.fetchSendSuccess();
-                }
-            }, (error) => {
-                this.props.fetchFailure(error);
-            });
-    }
     public add = () => {
-        this.setState({ open: false });
-        this.fetchShift();
+        if (this.props.main.getSelectWorker.id === 0) {
+            alert('請選擇駐點保全');
+        } else {
+            this.props.fetchBegin();
+            const obj: object = {
+                'year': this.props.main.getSelectShiftYear,
+                'month': this.props.main.getSelectShiftMonth,
+                'stationid': this.props.getStationId,
+                'stationname': this.props.getStationName,
+                'oldworkerid': this.props.workerId,
+                'newworkerid': this.props.main.getSelectWorker.id,
+                'workername': this.props.main.getSelectWorker.name,
+                'shift': this.props.main.getShift
+            };
+            this.props.fetchStep('POST', service.postShift(obj));
+        }
     }
 
     public render() {
@@ -84,7 +77,7 @@ class EditWorkerShift extends Component<Props> {
             <Modal
                 closeOnDimmerClick={closeondimmer}
                 closeOnDocumentClick={closeondocument}
-                dimmer={dimmer}
+                dimmer={dimmer ? true : undefined}
                 onClose={this.close}
                 open={open}
                 className={this.props.className}
